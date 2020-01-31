@@ -18,6 +18,7 @@ var bells = 0;
 var sevens = 0;
 var blanks = 0;
 
+
 /* Utility function to show Player Stats */
 function showPlayerStats()
 {
