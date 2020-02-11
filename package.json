@@ -2,9 +2,10 @@
   "name": "webgame_as",
   "version": "1.0.0",
   "description": "Web Game Assignments",
-  "main": "index.html",
+  "browser": "index.html",
   "scripts": {
-    "test": "lite-server"
+    "test": "tsc && lite-server",
+    "tsc": "tsc"
   },
   "repository": "git+https://github.com/AbbyNode/WebGame_As.git",
   "author": "Abby Shah",
@@ -25,7 +26,9 @@
     "@types/easeljs": "^1.0.0",
     "@types/preloadjs": "^0.6.32",
     "@types/soundjs": "^0.6.27",
-    "@types/tweenjs": "^1.0.0"
+    "@types/tweenjs": "^1.0.0",
+    "lite-server": "^2.5.4",
+    "typescript": "^3.7.5"
   },
   "private": false
 }
