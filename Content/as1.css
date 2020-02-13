@@ -1,0 +1,11 @@
+#gameContainer {
+	position: relative;
+}
+
+#playerBet {
+	position: absolute;
+	top: 410px;
+	left: 418px;
+	width: 90px;
+	height: 16px;
+}
