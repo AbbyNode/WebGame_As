@@ -41,7 +41,7 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules/
+# node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
@@ -123,3 +123,36 @@ dist
 # TypeScript custom
 
 build/**/*.map
+
+
+# CreateJS Unignore dependencies
+
+node_modules/*
+
+# EaselJS
+!node_modules/easeljs/
+node_modules/easeljs/*
+!node_modules/easeljs/lib/
+node_modules/easeljs/lib/*
+!node_modules/easeljs/lib/easeljs.min.js
+
+# TweenJS
+!node_modules/tweenjs/
+node_modules/tweenjs/*
+!node_modules/tweenjs/lib/
+node_modules/tweenjs/lib/*
+!node_modules/tweenjs/lib/tweenjs.min.js
+
+# SoundJS
+!node_modules/soundjs/
+node_modules/soundjs/*
+!node_modules/soundjs/lib/
+node_modules/soundjs/lib/*
+!node_modules/soundjs/lib/soundjs.min.js
+
+# PreloadJS
+!node_modules/preloadjs/
+node_modules/preloadjs/*
+!node_modules/preloadjs/lib/
+node_modules/preloadjs/lib/*
+!node_modules/preloadjs/lib/preloadjs.min.js
