@@ -35,7 +35,15 @@ export class Reel extends createjs.Container {
 		this._slotSize = 128;
 		this._slotSpacing = Math.round((this._reelHeight - this._slotSize) / 2);
 
+		this.initReel();
 		this.initSlots();
+	}
+
+	private initReel() {
+		let mask = new createjs.Shape();
+		mask.graphics.beginFill("#f00").drawRect(0, this._yStart, this._slotSize, this._reelHeight);
+		this._reelClipped.mask = mask;
+		
 		this.addChild(this._reelClipped);
 	}
 
@@ -55,10 +63,10 @@ export class Reel extends createjs.Container {
 		this._slots.push({ bitmap: slot1Bitmap, item: SlotItem.Bunny });
 		this._slots.push({ bitmap: slot2Bitmap, item: SlotItem.Cat });
 		this._slots.push({ bitmap: slot3Bitmap, item: SlotItem.Snake });
+	}
 
-		let mask = new createjs.Shape();
-		mask.graphics.beginFill("#f00").drawRect(0, this._yStart, this._slotSize, this._reelHeight);
-		this._reelClipped.mask = mask;
+	private renderSlot(slotNum: number, yOffset: number) {
+		
 	}
 
 	public Update() {

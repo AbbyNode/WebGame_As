@@ -16,11 +16,17 @@ export class Reel extends createjs.Container {
         this._reelHeight = 238;
         this._slotSize = 128;
         this._slotSpacing = Math.round((this._reelHeight - this._slotSize) / 2);
+        this.initReel();
         this.initSlots();
-        this.addChild(this._reelClipped);
     }
     get selectedSlot() {
         return this._slots[this._selectedSlot];
+    }
+    initReel() {
+        let mask = new createjs.Shape();
+        mask.graphics.beginFill("#f00").drawRect(0, this._yStart, this._slotSize, this._reelHeight);
+        this._reelClipped.mask = mask;
+        this.addChild(this._reelClipped);
     }
     initSlots() {
         let slot2Bitmap = new createjs.Bitmap("../../Assets/As1/Cat_grey3.png");
@@ -35,13 +41,12 @@ export class Reel extends createjs.Container {
         this._slots.push({ bitmap: slot1Bitmap, item: SlotItem.Bunny });
         this._slots.push({ bitmap: slot2Bitmap, item: SlotItem.Cat });
         this._slots.push({ bitmap: slot3Bitmap, item: SlotItem.Snake });
-        let mask = new createjs.Shape();
-        mask.graphics.beginFill("#f00").drawRect(0, this._yStart, this._slotSize, this._reelHeight);
-        this._reelClipped.mask = mask;
+    }
+    renderSlot(slotNum, yOffset) {
     }
     Update() {
         this._slots.forEach(slot => {
-            // slot.y += 1;
+            // slot.bitmap.y += 1;
         });
     }
 }
