@@ -126,6 +126,8 @@ build/**/*.map
 
 
 # CreateJS Unignore dependencies
+# Remember to create an empty .nojekyll file for GitHub pages
+# https://github.com/isaacs/github/issues/844
 
 node_modules/*
 
