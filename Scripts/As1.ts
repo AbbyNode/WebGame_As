@@ -9,7 +9,7 @@ import { Reel } from "./As1/Reel.js";
  * Revision History:
  * 
  * v0.2:
- * 
+ * Created function to make multiple reels
  * 
  * v0.1:
  * Created Reels
@@ -20,21 +20,37 @@ import { Reel } from "./As1/Reel.js";
  * @extends {Game}
  */
 export class As1 extends Game {
+	private _reels: Reel[];
+
 	constructor() {
 		super();
 
+		let background = new createjs.Bitmap("../Assets/As1/SlotMachine1_5.png");
+		this._stage.addChild(background);
 
+		this._reels = this.createReels(5);
 	}
 
 	public Update() {
 		super.Update();
 
-		let background = new createjs.Bitmap("../Assets/As1/SlotMachine1_5.png");
-		this._stage.addChild(background);
+		this._reels.forEach(reel => { reel.Update(); });
+	}
 
-		let reel1 = new Reel();
-		reel1.x = 100;
-		this._stage.addChild(reel1);
+	private createReels(numReels: number) : Reel[] {
+		let xOffset = 104;
+		let spacing = 128+20;
+
+		let reels = [];
+
+		for (let i = 0; i <= numReels-1; i++) {
+			let reel = new Reel();
+			reel.x = xOffset + (spacing*i);
+			this._stage.addChild(reel);
+			reels.push(reel);
+		}
+
+		return reels;
 	}
 }
 
