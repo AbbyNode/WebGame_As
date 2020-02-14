@@ -10,6 +10,7 @@ export class Reel extends createjs.Container {
     constructor() {
         super();
         this._slots = [];
+        this._shownSlots = [];
         this._selectedSlot = -1;
         this._reelClipped = new createjs.Container();
         this._yStart = 55;
@@ -29,25 +30,60 @@ export class Reel extends createjs.Container {
         this.addChild(this._reelClipped);
     }
     initSlots() {
-        let slot2Bitmap = new createjs.Bitmap("../../Assets/As1/Cat_grey3.png");
-        slot2Bitmap.y = this._yStart + this._slotSpacing;
-        this._reelClipped.addChild(slot2Bitmap);
-        let slot1Bitmap = new createjs.Bitmap("../../Assets/As1/Bunny_white.png");
-        slot1Bitmap.y = slot2Bitmap.y - this._slotSize;
-        this._reelClipped.addChild(slot1Bitmap);
-        let slot3Bitmap = new createjs.Bitmap("../../Assets/As1/Snake_green.png");
-        slot3Bitmap.y = slot2Bitmap.y + this._slotSize;
-        this._reelClipped.addChild(slot3Bitmap);
-        this._slots.push({ bitmap: slot1Bitmap, item: SlotItem.Bunny });
-        this._slots.push({ bitmap: slot2Bitmap, item: SlotItem.Cat });
-        this._slots.push({ bitmap: slot3Bitmap, item: SlotItem.Snake });
+        let slot1 = this._addSlot("../../Assets/As1/Bunny_white.png", SlotItem.Bunny);
+        let slot2 = this._addSlot("../../Assets/As1/Cat_grey3.png", SlotItem.Cat);
+        let slot3 = this._addSlot("../../Assets/As1/Snake_green.png", SlotItem.Snake);
+        this._selectedSlot = Math.round(Math.random() * this._slots.length);
+        // console.log(this._selectedSlot);
+        this._renderNextSlots();
+        this._renderNextSlots();
+        this._renderNextSlots();
+        // slot2.bitmap.y = this._yStart + this._slotSpacing;
+        // this._reelClipped.addChild(slot2.bitmap);
+        // this._resetFirstSlot();
+        // // slot1.bitmap.y = slot2.bitmap.y - this._slotSize;
+        // // this._reelClipped.addChild(slot1.bitmap);
+        // slot3.bitmap.y = slot2.bitmap.y + this._slotSize;
+        // this._reelClipped.addChild(slot3.bitmap);
     }
-    renderSlot(slotNum, yOffset) {
+    _addSlot(path, item) {
+        let slot = {
+            bitmap: new createjs.Bitmap(path),
+            item: item
+        };
+        this._slots.push(slot);
+        return slot;
+    }
+    _renderNextSlots() {
+        this._selectedSlot++;
+        if (this._selectedSlot >= this._slots.length) {
+            this._selectedSlot = 0;
+        }
+        this._resetFirstSlot();
+    }
+    _resetFirstSlot() {
+        let index = (this._selectedSlot > 0 ? (this._selectedSlot - 1) : this._slots.length - 1);
+        let slot = this._slots[index];
+        slot.bitmap.y = (this._yStart + this._slotSpacing) - this._slotSize;
+        this._shownSlots.push(slot);
+        this._reelClipped.addChild(slot.bitmap);
+    }
+    rollRandom() {
+    }
+    rollTo(index) {
+    }
+    jumpTo(index) {
     }
     Update() {
-        this._slots.forEach(slot => {
-            // slot.bitmap.y += 1;
-        });
+        for (let i = 0; i <= this._shownSlots.length - 1; i++) {
+            let slot = this._shownSlots[i];
+            slot.bitmap.y += 1;
+            if (slot.bitmap.y >= 294) {
+                this._shownSlots.splice(i, 1);
+                this._reelClipped.removeChild(slot.bitmap);
+                this._renderNextSlots();
+            }
+        }
     }
 }
 //# sourceMappingURL=Reel.js.map
