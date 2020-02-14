@@ -8,10 +8,10 @@ export interface Slot {
 }
 
 export class Reel extends createjs.Container {
-	public static scrollSpeed = 8;
+	public static scrollSpeed = 16;
 	public static minUselessSpins = 1;
 	public static potentialUselessSpinsIncrease = 3;
-
+	
 	//#region Private vars
 
 	private _slots: Slot[];
@@ -19,13 +19,12 @@ export class Reel extends createjs.Container {
 	private _selectedSlot: number;
 	private _targetSlot: number;
 
-	private _hasShifted: boolean;
-
-	private _hitTarget: boolean;
+	private _middleIsInPosition: boolean;
 
 	private _uselessSpinsRemaining: number;
 	private _startedUselessSpinOnIndex: number;
-	private _hitUselessTarget: boolean;
+	
+	private _spinCompleteCallback : () => void;
 
 	private _reelClipped: createjs.Container;
 
@@ -46,6 +45,10 @@ export class Reel extends createjs.Container {
 		return (this._selectedSlot == this._targetSlot);
 	}
 
+	public set spinCompleteCallback(v : () => void) {
+		this._spinCompleteCallback = v;
+	}
+	
 	//#endregion
 
 	//#region Initialization
@@ -57,12 +60,12 @@ export class Reel extends createjs.Container {
 		this._shownSlots = [];
 		this._selectedSlot = -1;
 		this._targetSlot = -1;
-		this._hitTarget = false;
-		this._hasShifted = false;
+		this._middleIsInPosition = false;
 
 		this._uselessSpinsRemaining = 0;
 		this._startedUselessSpinOnIndex = -1;
-		this._hitUselessTarget = false;
+
+		this._spinCompleteCallback = () => {};
 
 		this._reelClipped = new createjs.Container();
 
@@ -125,12 +128,11 @@ export class Reel extends createjs.Container {
 
 		// Scroll 2 ahead
 		this._targetSlot = this._slotIndexWrapped(2);
-		this._hitTarget = false;
-		
+		this._middleIsInPosition = false;
+
 		// Reset useless spinning
 		this._uselessSpinsRemaining = 0;
 		this._startedUselessSpinOnIndex = -1;
-		this._hitUselessTarget = false;
 
 		// Set slots to initial position
 		this._slots[prevIndex].bitmap.y = this._yStart - this._slotSize;
@@ -163,10 +165,10 @@ export class Reel extends createjs.Container {
 
 	//#region Private update
 
-	private _updateSpin() {
+	private _updateSpin(speed: number = Reel.scrollSpeed) {
 		// Move slot bitmaps down
 		this._shownSlots.forEach(slotIndex => {
-			this._slots[slotIndex].bitmap.y += Reel.scrollSpeed;
+			this._slots[slotIndex].bitmap.y += speed;
 		});
 
 		// Hide bottom slot when it gets past the end
@@ -174,8 +176,8 @@ export class Reel extends createjs.Container {
 		let bottomSlot = this._slots[this._shownSlots[2]];
 		if (bottomSlot != undefined) {
 			if (bottomSlot.bitmap.y >= bottomSlotTriggerPos) {
-				this._resetSlotPos(bottomSlot);
-				this._shownSlots.pop(); // Remove last slot
+				this._resetSlotPos(bottomSlot); // Reset pos to hidden top area
+				this._shownSlots.pop(); // Remove last slot from array
 			}
 		}
 
@@ -184,51 +186,36 @@ export class Reel extends createjs.Container {
 		let topSlot = this._slots[this._shownSlots[0]];
 		if (topSlot.bitmap.y >= topSlotTriggerPos) {
 			let prevIndex = this._slotIndexWrapped(-1, this._shownSlots[0]);
-			this._shownSlots.unshift(prevIndex);
-			this._hasShifted = true;
-		}
-	}
-
-	private _updateUselessSpins() {
-		this._updateSpin();
-
-		// If array was shifted, target is considered not hit
-		if (this._hasShifted) {
-			this._hitUselessTarget = false;
-			this._hasShifted = false;
+			this._shownSlots.unshift(prevIndex); // Put new slot at beginning of array
+			this._middleIsInPosition = false; // Middle slot is out of position
 		}
 
-		// If target is not hit, check middle slot position
-		if (!this._hitUselessTarget) {
+		// If middle slot is out of position
+		if (!this._middleIsInPosition) {
 			let middleTriggerPos = this._yStart + this._slotSpacing;
 			let middleSlot = this._slots[this._shownSlots[1]]
 			if (middleSlot.bitmap.y >= middleTriggerPos) {
+				// Middle slot has reached the actual middle of reel
+				// Update selected slot
 				this._selectedSlot = this._slotIndexWrapped(1);
-				this._hitUselessTarget = true;
-				
-				if (this._selectedSlot == this._startedUselessSpinOnIndex) {
-					this._uselessSpinsRemaining--;
-				}
+				this._onSlotChange();
+
+				// Middle slot is now in position
+				this._middleIsInPosition = true;
 			}
 		}
 	}
 
-	private _updateSpinUntilTarget() {
-		this._updateSpin();
-		
-		// If array was shifted, target is considered not hit
-		if (this._hasShifted) {
-			this._hitTarget = false;
-			this._hasShifted = false;
-		}
-
-		// If target is not hit, check middle slot position
-		if (!this._hitTarget) {
-			let middleTriggerPos = this._yStart + this._slotSpacing;
-			let middleSlot = this._slots[this._shownSlots[1]]
-			if (middleSlot.bitmap.y >= middleTriggerPos) {
-				this._selectedSlot = this._slotIndexWrapped(1);
-				this._hitTarget = true;
+	// When slot changes from spinning
+	private _onSlotChange() {
+		// Update useless spins if needed
+		if (this._uselessSpinsRemaining >= 1) {
+			if (this._selectedSlot == this._startedUselessSpinOnIndex) {
+				this._uselessSpinsRemaining--;
+			}
+		} else {
+			if (this._selectedSlot == this._targetSlot) {
+				this._spinCompleteCallback();
 			}
 		}
 	}
@@ -238,21 +225,22 @@ export class Reel extends createjs.Container {
 	//#region Public methods
 
 	public rollToRandom() {
+		// Set random amount of useless spins
 		this._uselessSpinsRemaining = Math.round(Math.random() * Reel.potentialUselessSpinsIncrease) + Reel.minUselessSpins;
+		// and remember where the slots started
 		this._startedUselessSpinOnIndex = this._selectedSlot;
 
-		// set target after useless spins
-	}
-
-	public rollTo(index: number) {
-		this._targetSlot = index;
+		// Set random target
+		this._targetSlot = Math.round(Math.random() * (this._slots.length - 1));
 	}
 
 	public Update() {
 		if (this._uselessSpinsRemaining >= 1) {
-			this._updateUselessSpins();
-		} else if (this._targetSlot != this._selectedSlot) {
-			this._updateSpinUntilTarget();
+			// First do some useless spins
+			this._updateSpin(Reel.scrollSpeed);
+		} else if (this._selectedSlot != this._targetSlot) {
+			// then do the actual spins at half speed
+			this._updateSpin(Reel.scrollSpeed / 2);
 		}
 	}
 

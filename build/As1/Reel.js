@@ -15,11 +15,10 @@ export class Reel extends createjs.Container {
         this._shownSlots = [];
         this._selectedSlot = -1;
         this._targetSlot = -1;
-        this._hitTarget = false;
-        this._hasShifted = false;
+        this._middleIsInPosition = false;
         this._uselessSpinsRemaining = 0;
         this._startedUselessSpinOnIndex = -1;
-        this._hitUselessTarget = false;
+        this._spinCompleteCallback = () => { };
         this._reelClipped = new createjs.Container();
         this._yStart = 55;
         this._reelHeight = 238;
@@ -35,6 +34,9 @@ export class Reel extends createjs.Container {
     }
     get canRoll() {
         return (this._selectedSlot == this._targetSlot);
+    }
+    set spinCompleteCallback(v) {
+        this._spinCompleteCallback = v;
     }
     _initReel() {
         let mask = new createjs.Shape();
@@ -74,11 +76,10 @@ export class Reel extends createjs.Container {
         let nextIndex = this._slotIndexWrapped(1);
         // Scroll 2 ahead
         this._targetSlot = this._slotIndexWrapped(2);
-        this._hitTarget = false;
+        this._middleIsInPosition = false;
         // Reset useless spinning
         this._uselessSpinsRemaining = 0;
         this._startedUselessSpinOnIndex = -1;
-        this._hitUselessTarget = false;
         // Set slots to initial position
         this._slots[prevIndex].bitmap.y = this._yStart - this._slotSize;
         this._slots[this._selectedSlot].bitmap.y = this._yStart;
@@ -102,18 +103,18 @@ export class Reel extends createjs.Container {
     }
     //#endregion
     //#region Private update
-    _updateSpin() {
+    _updateSpin(speed = Reel.scrollSpeed) {
         // Move slot bitmaps down
         this._shownSlots.forEach(slotIndex => {
-            this._slots[slotIndex].bitmap.y += Reel.scrollSpeed;
+            this._slots[slotIndex].bitmap.y += speed;
         });
         // Hide bottom slot when it gets past the end
         let bottomSlotTriggerPos = this._yStart + this._reelHeight;
         let bottomSlot = this._slots[this._shownSlots[2]];
         if (bottomSlot != undefined) {
             if (bottomSlot.bitmap.y >= bottomSlotTriggerPos) {
-                this._resetSlotPos(bottomSlot);
-                this._shownSlots.pop(); // Remove last slot
+                this._resetSlotPos(bottomSlot); // Reset pos to hidden top area
+                this._shownSlots.pop(); // Remove last slot from array
             }
         }
         // Show next slot at top
@@ -121,71 +122,62 @@ export class Reel extends createjs.Container {
         let topSlot = this._slots[this._shownSlots[0]];
         if (topSlot.bitmap.y >= topSlotTriggerPos) {
             let prevIndex = this._slotIndexWrapped(-1, this._shownSlots[0]);
-            this._shownSlots.unshift(prevIndex);
-            this._hasShifted = true;
+            this._shownSlots.unshift(prevIndex); // Put new slot at beginning of array
+            this._middleIsInPosition = false; // Middle slot is out of position
         }
-    }
-    _updateUselessSpins() {
-        this._updateSpin();
-        // If array was shifted, target is considered not hit
-        if (this._hasShifted) {
-            this._hitUselessTarget = false;
-            this._hasShifted = false;
-        }
-        // If target is not hit, check middle slot position
-        if (!this._hitUselessTarget) {
+        // If middle slot is out of position
+        if (!this._middleIsInPosition) {
             let middleTriggerPos = this._yStart + this._slotSpacing;
             let middleSlot = this._slots[this._shownSlots[1]];
             if (middleSlot.bitmap.y >= middleTriggerPos) {
+                // Middle slot has reached the actual middle of reel
+                // Update selected slot
                 this._selectedSlot = this._slotIndexWrapped(1);
-                this._hitUselessTarget = true;
-                console.log(this._uselessSpinsRemaining);
-                if (this._selectedSlot == this._startedUselessSpinOnIndex) {
-                    this._uselessSpinsRemaining--;
-                }
+                this._onSlotChange();
+                // Middle slot is now in position
+                this._middleIsInPosition = true;
             }
         }
     }
-    _updateSpinUntilTarget() {
-        this._updateSpin();
-        // If array was shifted, target is considered not hit
-        if (this._hasShifted) {
-            this._hitTarget = false;
-            this._hasShifted = false;
+    // When slot changes from spinning
+    _onSlotChange() {
+        // Update useless spins if needed
+        if (this._uselessSpinsRemaining >= 1) {
+            if (this._selectedSlot == this._startedUselessSpinOnIndex) {
+                this._uselessSpinsRemaining--;
+            }
         }
-        // If target is not hit, check middle slot position
-        if (!this._hitTarget) {
-            let middleTriggerPos = this._yStart + this._slotSpacing;
-            let middleSlot = this._slots[this._shownSlots[1]];
-            if (middleSlot.bitmap.y >= middleTriggerPos) {
-                this._selectedSlot = this._slotIndexWrapped(1);
-                this._hitTarget = true;
+        else {
+            if (this._selectedSlot == this._targetSlot) {
+                this._spinCompleteCallback();
             }
         }
     }
     //#endregion
     //#region Public methods
     rollToRandom() {
+        // Set random amount of useless spins
         this._uselessSpinsRemaining = Math.round(Math.random() * Reel.potentialUselessSpinsIncrease) + Reel.minUselessSpins;
+        // and remember where the slots started
         this._startedUselessSpinOnIndex = this._selectedSlot;
-        // set target after useless spins
-    }
-    rollTo(index) {
-        this._targetSlot = index;
+        // Set random target
+        this._targetSlot = Math.round(Math.random() * (this._slots.length - 1));
     }
     Update() {
         if (this._uselessSpinsRemaining >= 1) {
-            this._updateUselessSpins();
+            // First do some useless spins
+            this._updateSpin(Reel.scrollSpeed);
         }
-        else if (this._targetSlot != this._selectedSlot) {
-            this._updateSpinUntilTarget();
+        else if (this._selectedSlot != this._targetSlot) {
+            // then do the actual spins at half speed
+            this._updateSpin(Reel.scrollSpeed / 2);
         }
     }
     reset() {
         this._resetSlots();
     }
 }
-Reel.scrollSpeed = 8;
+Reel.scrollSpeed = 16;
 Reel.minUselessSpins = 1;
 Reel.potentialUselessSpinsIncrease = 3;
 //# sourceMappingURL=Reel.js.map

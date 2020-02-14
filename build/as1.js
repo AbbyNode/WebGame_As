@@ -29,10 +29,11 @@ export class As1 extends Game {
         this._spinButton = new Button("../Assets/As1/Spin1.png", 452, 401, false);
         this._restartButton = new Button("../Assets/As1/Reset1.png", 10, 366, false);
         this._quitButton = new Button("../Assets/As1/Quit1.png", 10, 403, false);
+        this._spinningReelCount = 0;
         this._initStage();
         this._initButtons();
-        this._reels = this._createReels(1);
-        // this._reels = this._createReels(5);
+        // this._reels = this._createReels(1);
+        this._reels = this._createReels(5);
         this._betInput.value = "10";
     }
     _initStage() {
@@ -112,12 +113,16 @@ export class As1 extends Game {
         this._moneyLabel.value -= bet;
         this._reels.forEach(reel => {
             reel.rollToRandom();
+            this._spinningReelCount++;
         });
+    }
+    _checkWinConditions() {
         // win
         // Add bet to money
         // this._winJackpot();
         // lose
         // Add 50% to jackpot
+        console.log(this._moneyLabel.value);
         if (this._moneyLabel.value == 0) {
             this._restart("You've lost all your money. Restart?");
         }
@@ -134,6 +139,15 @@ export class As1 extends Game {
         for (let i = 0; i <= numReels - 1; i++) {
             let reel = new Reel();
             reel.x = xOffset + (spacing * i);
+            reel.spinCompleteCallback = () => {
+                // Track when reels stop spinning, then check for win
+                if (this._spinningReelCount >= 1) {
+                    this._spinningReelCount--;
+                    if (this._spinningReelCount <= 0) {
+                        this._checkWinConditions();
+                    }
+                }
+            };
             this._stage.addChild(reel);
             reels.push(reel);
         }
