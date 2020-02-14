@@ -31,8 +31,8 @@ export class As1 extends Game {
         this._quitButton = new Button("../Assets/As1/Quit1.png", 10, 403, false);
         this._initStage();
         this._initButtons();
-        // this._reels = this._createReels(1);
-        this._reels = this._createReels(5);
+        this._reels = this._createReels(1);
+        // this._reels = this._createReels(5);
         this._betInput.value = "10";
     }
     _initStage() {

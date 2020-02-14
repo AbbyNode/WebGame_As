@@ -18,11 +18,14 @@ export class Reel extends createjs.Container {
 	private _shownSlots: number[];
 	private _selectedSlot: number;
 	private _targetSlot: number;
-	private _hitTarget: boolean;
+
 	private _hasShifted: boolean;
+
+	private _hitTarget: boolean;
 
 	private _uselessSpinsRemaining: number;
 	private _startedUselessSpinOnIndex: number;
+	private _hitUselessTarget: boolean;
 
 	private _reelClipped: createjs.Container;
 
@@ -59,6 +62,7 @@ export class Reel extends createjs.Container {
 
 		this._uselessSpinsRemaining = 0;
 		this._startedUselessSpinOnIndex = -1;
+		this._hitUselessTarget = false;
 
 		this._reelClipped = new createjs.Container();
 
@@ -122,6 +126,11 @@ export class Reel extends createjs.Container {
 		// Scroll 2 ahead
 		this._targetSlot = this._slotIndexWrapped(2);
 		this._hitTarget = false;
+		
+		// Reset useless spinning
+		this._uselessSpinsRemaining = 0;
+		this._startedUselessSpinOnIndex = -1;
+		this._hitUselessTarget = false;
 
 		// Set slots to initial position
 		this._slots[prevIndex].bitmap.y = this._yStart - this._slotSize;
@@ -178,7 +187,35 @@ export class Reel extends createjs.Container {
 			this._shownSlots.unshift(prevIndex);
 			this._hasShifted = true;
 		}
+	}
 
+	private _updateUselessSpins() {
+		this._updateSpin();
+
+		// If array was shifted, target is considered not hit
+		if (this._hasShifted) {
+			this._hitUselessTarget = false;
+			this._hasShifted = false;
+		}
+
+		// If target is not hit, check middle slot position
+		if (!this._hitUselessTarget) {
+			let middleTriggerPos = this._yStart + this._slotSpacing;
+			let middleSlot = this._slots[this._shownSlots[1]]
+			if (middleSlot.bitmap.y >= middleTriggerPos) {
+				this._selectedSlot = this._slotIndexWrapped(1);
+				this._hitUselessTarget = true;
+				
+				if (this._selectedSlot == this._startedUselessSpinOnIndex) {
+					this._uselessSpinsRemaining--;
+				}
+			}
+		}
+	}
+
+	private _updateSpinUntilTarget() {
+		this._updateSpin();
+		
 		// If array was shifted, target is considered not hit
 		if (this._hasShifted) {
 			this._hitTarget = false;
@@ -196,27 +233,6 @@ export class Reel extends createjs.Container {
 		}
 	}
 
-	private _updateUselessSpins() {
-		this._updateSpin();
-
-		if (this._hasShifted) {
-			if (this._selectedSlot == this._startedUselessSpinOnIndex) {
-				console.log("WOW");
-				this._uselessSpinsRemaining--;
-			}
-		}
-
-		if (this._uselessSpinsRemaining <= 0) {
-			while (this._targetSlot == this._selectedSlot) {
-				this._targetSlot = Math.round(Math.random() * (this._slots.length - 1));
-			}
-		}
-	}
-
-	private _updateSpinUntilTarget() {
-		this._updateSpin();
-	}
-
 	//#endregion
 
 	//#region Public methods
@@ -224,6 +240,8 @@ export class Reel extends createjs.Container {
 	public rollToRandom() {
 		this._uselessSpinsRemaining = Math.round(Math.random() * Reel.potentialUselessSpinsIncrease) + Reel.minUselessSpins;
 		this._startedUselessSpinOnIndex = this._selectedSlot;
+
+		// set target after useless spins
 	}
 
 	public rollTo(index: number) {
