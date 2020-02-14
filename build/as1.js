@@ -31,7 +31,8 @@ export class As1 extends Game {
         this._quitButton = new Button("../Assets/As1/Quit1.png", 10, 403, false);
         this._initStage();
         this._initButtons();
-        this._reels = this._createReels(5);
+        this._reels = this._createReels(1);
+        // this._reels = this._createReels(5);
         this._betInput.value = "10";
     }
     _initStage() {
@@ -67,18 +68,32 @@ export class As1 extends Game {
     _trySpin() {
         let money = this._moneyLabel.value;
         let bet = Number(this._betInput.value);
+        // Check if reels are still rolling
+        let canRoll = true;
+        this._reels.forEach(reel => {
+            if (!reel.canRoll) {
+                canRoll = false;
+            }
+        });
+        if (!canRoll) {
+            return;
+        }
+        // Check if out of money
         if (money <= 0) {
             this._restart("You have no money left. Restart?");
             return;
         }
+        // Check if bet is valid
         if (bet == Number.NaN) {
             alert("Bet is invalid");
             return;
         }
+        // Check if bet is <= 0
         if (bet <= 0) {
             alert("You must bet more than $0");
             return;
         }
+        // Check if bet is too high
         if (bet > money) {
             alert(`Not enough money to bet $${bet}`);
             return;
@@ -95,6 +110,9 @@ export class As1 extends Game {
      */
     _spin(bet) {
         this._moneyLabel.value -= bet;
+        this._reels.forEach(reel => {
+            reel.rollToRandom();
+        });
         // win
         // Add bet to money
         // this._winJackpot();
@@ -131,6 +149,9 @@ export class As1 extends Game {
         if (confirm(msg)) {
             this._moneyLabel.value = 100;
             this._betInput.value = "10";
+            this._reels.forEach(reel => {
+                reel.reset();
+            });
         }
     }
     Update() {

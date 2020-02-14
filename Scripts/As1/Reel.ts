@@ -8,9 +8,14 @@ export interface Slot {
 }
 
 export class Reel extends createjs.Container {
+	public static scrollSpeed = 4;
+
+	//#region Private vars
+
 	private _slots: Slot[];
-	private _shownSlots: Slot[];
+	private _shownSlots: number[];
 	private _selectedSlot: number;
+	private _targetSlot: number;
 
 	private _reelClipped: createjs.Container;
 
@@ -19,9 +24,21 @@ export class Reel extends createjs.Container {
 	private _slotSize: number;
 	private _slotSpacing: number;
 
+	//#endregion
+
+	//#region Properties
+
 	public get selectedSlot(): Slot {
 		return this._slots[this._selectedSlot];
 	}
+
+	public get canRoll(): boolean {
+		return (this._selectedSlot == this._targetSlot);
+	}
+
+	//#endregion
+
+	//#region Initialization
 
 	constructor() {
 		super();
@@ -29,6 +46,7 @@ export class Reel extends createjs.Container {
 		this._slots = [];
 		this._shownSlots = [];
 		this._selectedSlot = -1;
+		this._targetSlot = -1;
 
 		this._reelClipped = new createjs.Container();
 
@@ -37,125 +55,136 @@ export class Reel extends createjs.Container {
 		this._slotSize = 128;
 		this._slotSpacing = Math.round((this._reelHeight - this._slotSize) / 2);
 
-		this.initReel();
-		this.initSlots();
+		this._initReel();
+		this._initSlots();
 	}
 
-	private initReel() {
+	private _initReel() {
 		let mask = new createjs.Shape();
 		mask.graphics.beginFill("#f00").drawRect(0, this._yStart, this._slotSize, this._reelHeight);
 		this._reelClipped.mask = mask;
-		
+
 		this.addChild(this._reelClipped);
 	}
 
-	private initSlots() {
+	private _initSlots() {
+		// Create all possible slots
 		this._slots[0] = this._createSlot("../../Assets/As1/Bunny_white.png", SlotItem.Bunny);
 		this._slots[1] = this._createSlot("../../Assets/As1/Cat_grey3.png", SlotItem.Cat);
 		this._slots[2] = this._createSlot("../../Assets/As1/Piglett_fullpink.png", SlotItem.Pig);
 		this._slots[3] = this._createSlot("../../Assets/As1/Snake_green.png", SlotItem.Snake);
 		this._slots[4] = this._createSlot("../../Assets/As1/Weasel_brown.png", SlotItem.Weasel);
 
-		this._selectedSlot = Math.round(Math.random() * (this._slots.length-1));
-		// console.log(this._selectedSlot);
-
-		// this._renderNextSlots();
-		// this._renderNextSlots();
-		// this._renderNextSlots();
-
-		let prevIndex = this._slotIndexWrapped(-1);
-		let nextIndex = this._slotIndexWrapped(1);
-
-		this._slots[prevIndex].bitmap.y = this._yStart - this._slotSize;
-		this._slots[this._selectedSlot].bitmap.y = this._yStart;
-		this._slots[nextIndex].bitmap.y = this._yStart + this._slotSize;
-
-		this._shownSlots[0] = this._slots[prevIndex];
-		this._shownSlots[1] = this._slots[this._selectedSlot];
-		this._shownSlots[2] = this._slots[nextIndex];
-
-		// slot2.bitmap.y = this._yStart + this._slotSpacing;
-		// this._reelClipped.addChild(slot2.bitmap);
-
-		// slot1.bitmap.y = slot2.bitmap.y - this._slotSize;
-		// this._reelClipped.addChild(slot1.bitmap);
-
-		// slot3.bitmap.y = slot2.bitmap.y + this._slotSize;
-		// this._reelClipped.addChild(slot3.bitmap);
+		this._resetSlots();
 	}
 
-	private _createSlot(path: string, item: SlotItem) : Slot {
+	private _createSlot(path: string, item: SlotItem): Slot {
 		let slot = {
 			bitmap: new createjs.Bitmap(path),
 			item: item
 		};
 
-
 		// Start hidden at top
-		slot.bitmap.y = this._yStart - this._slotSize;
+		this._resetSlotPos(slot);
 
 		this._reelClipped.addChild(slot.bitmap);
 
 		return slot;
 	}
 
-	private _renderNextSlots() {
-		this._selectedSlot++;
-		if (this._selectedSlot >= this._slots.length) {
-			this._selectedSlot = 0;
-		}
+	private _resetSlots() {
+		// Reset all slots
+		this._slots.forEach(slot => {
+			this._resetSlotPos(slot);
+		});
 
-		this._resetFirstSlot();
-	}
-
-	private _resetFirstSlot() {
+		// Get random index for slots to show
+		this._selectedSlot = Math.round(Math.random() * (this._slots.length - 1));
 		let prevIndex = this._slotIndexWrapped(-1);
+		let nextIndex = this._slotIndexWrapped(1);
+		this._targetSlot = this._slotIndexWrapped(2);
 
-		let slot = this._slots[prevIndex];
+		// Set slots to initial position
+		this._slots[prevIndex].bitmap.y = this._yStart - this._slotSize;
+		this._slots[this._selectedSlot].bitmap.y = this._yStart;
+		this._slots[nextIndex].bitmap.y = this._yStart + this._slotSize;
 
-		if (this._shownSlots.indexOf(slot) != -1) {
-			slot.bitmap.y = (this._yStart + this._slotSpacing) - this._slotSize;
-			this._shownSlots.push(slot);
-		}
+		// Save index of shown slots
+		this._shownSlots = [];
+		this._shownSlots[0] = prevIndex;
+		this._shownSlots[1] = this._selectedSlot;
+		this._shownSlots[2] = nextIndex;
 	}
 
-	private _slotIndexWrapped(offset: number) {
+	private _resetSlotPos(slot: Slot) {
+		slot.bitmap.y = this._yStart - this._slotSize;
+	}
+
+	private _slotIndexWrapped(offset: number, index: number = this._selectedSlot) {
 		// https://stackoverflow.com/questions/16964225/keep-an-index-within-bounds-and-wrap-around
-		let newIndex = this._selectedSlot + offset;
+		let newIndex = index + offset;
 		let bound = this._slots.length;
 		return (newIndex % bound + bound) % bound;
 	}
 
-	public rollRandom() {
-		
+	//#endregion
+
+	//#region Private update
+	
+	private _updateUntilTarget() {
+		// Move slot bitmaps down
+		this._shownSlots.forEach(slotIndex => {
+			this._slots[slotIndex].bitmap.y += Reel.scrollSpeed;
+		});
+
+		// Hide bottom slot when it gets past the end
+		let bottomSlotTriggerPos = this._yStart + this._reelHeight;
+		let bottomSlot = this._slots[this._shownSlots[2]];
+		if (bottomSlot != undefined) {
+			if (bottomSlot.bitmap.y >= bottomSlotTriggerPos) {
+				this._resetSlotPos(bottomSlot);
+				this._shownSlots.pop(); // Remove last slot
+			}
+		}
+
+		// Show next slot at top
+		let topSlotTriggerPos = this._yStart;
+		let topSlot = this._slots[this._shownSlots[0]];
+		if (topSlot.bitmap.y >= topSlotTriggerPos) {
+			let prevIndex = this._slotIndexWrapped(-1, this._shownSlots[0]);
+			this._shownSlots.unshift(prevIndex);
+		}
+
+		// Update selected slot if at correct pos
+		let middleTriggerPos = this._yStart + this._slotSpacing;
+		let middleSlot = this._slots[this._shownSlots[1]]
+		if (middleSlot.bitmap.y >= middleTriggerPos) {
+			this._selectedSlot = this._slotIndexWrapped(1);
+			// TODO: This should only trigger if ...
+		}
+	}
+
+	//#endregion
+
+	//#region Public methods
+
+	public rollToRandom() {
+		this._targetSlot = Math.round(Math.random() * (this._slots.length - 1));
 	}
 
 	public rollTo(index: number) {
-
-	}
-
-	public jumpTo(index: number) {
-
+		this._targetSlot = index;
 	}
 
 	public Update() {
-		this._shownSlots.forEach(slot => {
-			slot.bitmap.y += 1;
-		});
-
-		let triggerPos0 = this._yStart;
-		if (this._shownSlots[0].bitmap.y >= triggerPos0) {
-			// TODO: Complete swapping around
+		if (this._targetSlot != this._selectedSlot) {
+			this._updateUntilTarget();
 		}
-
-		// for (let i = 0; i <= this._shownSlots.length-1; i++) {
-		// 	let slot = this._shownSlots[i];
-		// 	// slot.bitmap.y += 1;
-		// 	if (slot.bitmap.y >= 294) {
-		// 		this._shownSlots.splice(i, 1);
-		// 		// this._reelClipped.removeChild(slot.bitmap);
-		// 		// this._renderNextSlots();
-		// 	}
-		// }
 	}
+
+	public reset() {
+		this._resetSlots();
+	}
+
+	//#endregion
 }
