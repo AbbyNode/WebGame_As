@@ -8,7 +8,9 @@ export interface Slot {
 }
 
 export class Reel extends createjs.Container {
-	public static scrollSpeed = 4;
+	public static scrollSpeed = 8;
+	public static minUselessSpins = 1;
+	public static potentialUselessSpinsIncrease = 3;
 
 	//#region Private vars
 
@@ -16,6 +18,11 @@ export class Reel extends createjs.Container {
 	private _shownSlots: number[];
 	private _selectedSlot: number;
 	private _targetSlot: number;
+	private _hitTarget: boolean;
+	private _hasShifted: boolean;
+
+	private _uselessSpinsRemaining: number;
+	private _startedUselessSpinOnIndex: number;
 
 	private _reelClipped: createjs.Container;
 
@@ -28,8 +35,8 @@ export class Reel extends createjs.Container {
 
 	//#region Properties
 
-	public get selectedSlot(): Slot {
-		return this._slots[this._selectedSlot];
+	public get targetSlot(): Slot {
+		return this._slots[this._targetSlot];
 	}
 
 	public get canRoll(): boolean {
@@ -47,6 +54,11 @@ export class Reel extends createjs.Container {
 		this._shownSlots = [];
 		this._selectedSlot = -1;
 		this._targetSlot = -1;
+		this._hitTarget = false;
+		this._hasShifted = false;
+
+		this._uselessSpinsRemaining = 0;
+		this._startedUselessSpinOnIndex = -1;
 
 		this._reelClipped = new createjs.Container();
 
@@ -92,6 +104,10 @@ export class Reel extends createjs.Container {
 		return slot;
 	}
 
+	//#endregion
+
+	//#region Resets
+
 	private _resetSlots() {
 		// Reset all slots
 		this._slots.forEach(slot => {
@@ -102,7 +118,10 @@ export class Reel extends createjs.Container {
 		this._selectedSlot = Math.round(Math.random() * (this._slots.length - 1));
 		let prevIndex = this._slotIndexWrapped(-1);
 		let nextIndex = this._slotIndexWrapped(1);
+
+		// Scroll 2 ahead
 		this._targetSlot = this._slotIndexWrapped(2);
+		this._hitTarget = false;
 
 		// Set slots to initial position
 		this._slots[prevIndex].bitmap.y = this._yStart - this._slotSize;
@@ -120,6 +139,10 @@ export class Reel extends createjs.Container {
 		slot.bitmap.y = this._yStart - this._slotSize;
 	}
 
+	//#endregion
+
+	//#region Switching
+
 	private _slotIndexWrapped(offset: number, index: number = this._selectedSlot) {
 		// https://stackoverflow.com/questions/16964225/keep-an-index-within-bounds-and-wrap-around
 		let newIndex = index + offset;
@@ -130,8 +153,8 @@ export class Reel extends createjs.Container {
 	//#endregion
 
 	//#region Private update
-	
-	private _updateUntilTarget() {
+
+	private _updateSpin() {
 		// Move slot bitmaps down
 		this._shownSlots.forEach(slotIndex => {
 			this._slots[slotIndex].bitmap.y += Reel.scrollSpeed;
@@ -153,15 +176,45 @@ export class Reel extends createjs.Container {
 		if (topSlot.bitmap.y >= topSlotTriggerPos) {
 			let prevIndex = this._slotIndexWrapped(-1, this._shownSlots[0]);
 			this._shownSlots.unshift(prevIndex);
+			this._hasShifted = true;
 		}
 
-		// Update selected slot if at correct pos
-		let middleTriggerPos = this._yStart + this._slotSpacing;
-		let middleSlot = this._slots[this._shownSlots[1]]
-		if (middleSlot.bitmap.y >= middleTriggerPos) {
-			this._selectedSlot = this._slotIndexWrapped(1);
-			// TODO: This should only trigger if ...
+		// If array was shifted, target is considered not hit
+		if (this._hasShifted) {
+			this._hitTarget = false;
+			this._hasShifted = false;
 		}
+
+		// If target is not hit, check middle slot position
+		if (!this._hitTarget) {
+			let middleTriggerPos = this._yStart + this._slotSpacing;
+			let middleSlot = this._slots[this._shownSlots[1]]
+			if (middleSlot.bitmap.y >= middleTriggerPos) {
+				this._selectedSlot = this._slotIndexWrapped(1);
+				this._hitTarget = true;
+			}
+		}
+	}
+
+	private _updateUselessSpins() {
+		this._updateSpin();
+
+		if (this._hasShifted) {
+			if (this._selectedSlot == this._startedUselessSpinOnIndex) {
+				console.log("WOW");
+				this._uselessSpinsRemaining--;
+			}
+		}
+
+		if (this._uselessSpinsRemaining <= 0) {
+			while (this._targetSlot == this._selectedSlot) {
+				this._targetSlot = Math.round(Math.random() * (this._slots.length - 1));
+			}
+		}
+	}
+
+	private _updateSpinUntilTarget() {
+		this._updateSpin();
 	}
 
 	//#endregion
@@ -169,7 +222,8 @@ export class Reel extends createjs.Container {
 	//#region Public methods
 
 	public rollToRandom() {
-		this._targetSlot = Math.round(Math.random() * (this._slots.length - 1));
+		this._uselessSpinsRemaining = Math.round(Math.random() * Reel.potentialUselessSpinsIncrease) + Reel.minUselessSpins;
+		this._startedUselessSpinOnIndex = this._selectedSlot;
 	}
 
 	public rollTo(index: number) {
@@ -177,8 +231,10 @@ export class Reel extends createjs.Container {
 	}
 
 	public Update() {
-		if (this._targetSlot != this._selectedSlot) {
-			this._updateUntilTarget();
+		if (this._uselessSpinsRemaining >= 1) {
+			this._updateUselessSpins();
+		} else if (this._targetSlot != this._selectedSlot) {
+			this._updateSpinUntilTarget();
 		}
 	}
 

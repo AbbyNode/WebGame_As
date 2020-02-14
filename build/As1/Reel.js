@@ -15,6 +15,9 @@ export class Reel extends createjs.Container {
         this._shownSlots = [];
         this._selectedSlot = -1;
         this._targetSlot = -1;
+        this._hitTarget = false;
+        this._hasShifted = false;
+        this._uselessSpinsRemaining = 0;
         this._reelClipped = new createjs.Container();
         this._yStart = 55;
         this._reelHeight = 238;
@@ -25,8 +28,8 @@ export class Reel extends createjs.Container {
     }
     //#endregion
     //#region Properties
-    get selectedSlot() {
-        return this._slots[this._selectedSlot];
+    get targetSlot() {
+        return this._slots[this._targetSlot];
     }
     get canRoll() {
         return (this._selectedSlot == this._targetSlot);
@@ -56,6 +59,8 @@ export class Reel extends createjs.Container {
         this._reelClipped.addChild(slot.bitmap);
         return slot;
     }
+    //#endregion
+    //#region Resets
     _resetSlots() {
         // Reset all slots
         this._slots.forEach(slot => {
@@ -65,7 +70,9 @@ export class Reel extends createjs.Container {
         this._selectedSlot = Math.round(Math.random() * (this._slots.length - 1));
         let prevIndex = this._slotIndexWrapped(-1);
         let nextIndex = this._slotIndexWrapped(1);
+        // Scroll 2 ahead
         this._targetSlot = this._slotIndexWrapped(2);
+        this._hitTarget = false;
         // Set slots to initial position
         this._slots[prevIndex].bitmap.y = this._yStart - this._slotSize;
         this._slots[this._selectedSlot].bitmap.y = this._yStart;
@@ -79,6 +86,8 @@ export class Reel extends createjs.Container {
     _resetSlotPos(slot) {
         slot.bitmap.y = this._yStart - this._slotSize;
     }
+    //#endregion
+    //#region Switching
     _slotIndexWrapped(offset, index = this._selectedSlot) {
         // https://stackoverflow.com/questions/16964225/keep-an-index-within-bounds-and-wrap-around
         let newIndex = index + offset;
@@ -87,6 +96,12 @@ export class Reel extends createjs.Container {
     }
     //#endregion
     //#region Private update
+    _updateUselessSpins() {
+        // Move slot bitmaps down
+        this._shownSlots.forEach(slotIndex => {
+            this._slots[slotIndex].bitmap.y += Reel.scrollSpeed;
+        });
+    }
     _updateUntilTarget() {
         // Move slot bitmaps down
         this._shownSlots.forEach(slotIndex => {
@@ -107,25 +122,39 @@ export class Reel extends createjs.Container {
         if (topSlot.bitmap.y >= topSlotTriggerPos) {
             let prevIndex = this._slotIndexWrapped(-1, this._shownSlots[0]);
             this._shownSlots.unshift(prevIndex);
+            this._hasShifted = true;
         }
-        // Update selected slot if at correct pos
-        let middleTriggerPos = this._yStart + this._slotSpacing;
-        let middleSlot = this._slots[this._shownSlots[1]];
-        if (middleSlot.bitmap.y >= middleTriggerPos) {
-            this._selectedSlot = this._slotIndexWrapped(1);
-            console.log(this._selectedSlot, this._targetSlot);
+        // If array was shifted, target is considered not hit
+        if (this._hasShifted) {
+            this._hitTarget = false;
+            this._hasShifted = false;
+        }
+        // If target is not hit, check middle slot position
+        if (!this._hitTarget) {
+            let middleTriggerPos = this._yStart + this._slotSpacing;
+            let middleSlot = this._slots[this._shownSlots[1]];
+            if (middleSlot.bitmap.y >= middleTriggerPos) {
+                this._selectedSlot = this._slotIndexWrapped(1);
+                this._hitTarget = true;
+            }
         }
     }
     //#endregion
     //#region Public methods
     rollToRandom() {
-        this._targetSlot = Math.round(Math.random() * (this._slots.length - 1));
+        this._uselessSpinsRemaining = Math.round(Math.random() * Reel.potentialUselessSpinsIncrease) + Reel.minUselessSpins;
+        while (this._targetSlot == this._selectedSlot) {
+            this._targetSlot = Math.round(Math.random() * (this._slots.length - 1));
+        }
     }
     rollTo(index) {
         this._targetSlot = index;
     }
     Update() {
-        if (this._targetSlot != this._selectedSlot) {
+        if (this._uselessSpinsRemaining >= 1) {
+            this._updateUselessSpins();
+        }
+        else if (this._targetSlot != this._selectedSlot) {
             this._updateUntilTarget();
         }
     }
@@ -133,5 +162,7 @@ export class Reel extends createjs.Container {
         this._resetSlots();
     }
 }
-Reel.scrollSpeed = 4;
+Reel.scrollSpeed = 8;
+Reel.minUselessSpins = 1;
+Reel.potentialUselessSpinsIncrease = 3;
 //# sourceMappingURL=Reel.js.map
