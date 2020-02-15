@@ -64,9 +64,9 @@ export class As1 extends Game {
 
 		this._betInput = <HTMLInputElement>document.getElementById("playerBet");
 
-		this._spinButton = new Button("../Assets/As1/images/Spin1.png", 452, 401, false);
-		this._restartButton = new Button("../Assets/As1/images/Reset1.png", 10, 366, false);
-		this._quitButton = new Button("../Assets/As1/images/Quit1.png", 10, 403, false);
+		this._spinButton = new Button("./Assets/As1/images/Spin1.png", 452, 401, false);
+		this._restartButton = new Button("./Assets/As1/images/Reset1.png", 10, 366, false);
+		this._quitButton = new Button("./Assets/As1/images/Quit1.png", 10, 403, false);
 
 		this._spinningReelCount = 0;
 		this._usedBetAmt = 0;
@@ -79,7 +79,7 @@ export class As1 extends Game {
 	}
 
 	private _initStage() {
-		let background = new createjs.Bitmap("../Assets/As1/images/SlotMachine1_5.png");
+		let background = new createjs.Bitmap("./Assets/As1/images/SlotMachine1_5.png");
 		this._stage.addChild(background);
 
 		this._stage.addChild(this._moneyLabel);
@@ -110,9 +110,9 @@ export class As1 extends Game {
 	}
 
 	private _initSounds() {
-		createjs.Sound.registerSound("../Assets/As1/sounds/spin.ogg", "spin");
-		createjs.Sound.registerSound("../Assets/As1/sounds/win.ogg", "win");
-		createjs.Sound.registerSound("../Assets/As1/sounds/lose.ogg", "lose");
+		createjs.Sound.registerSound("./Assets/As1/sounds/spin.ogg", "spin");
+		createjs.Sound.registerSound("./Assets/As1/sounds/win.ogg", "win");
+		createjs.Sound.registerSound("./Assets/As1/sounds/lose.ogg", "lose");
 	}
 
 	private _createReels(numReels: number): Reel[] {
