@@ -8,12 +8,22 @@ import { LabelNumber } from "./objects/LabelNumber.js";
  * Description: A slot machine game
  *
  * Revision History:
+ * (See GitHub for detailed commit history)
+ *
+ * v0.5:
+ * Added sounds
+ *
+ * v0.4:
+ * Created win conditions
+ *
+ * v0.3:
+ * Created buttons
  *
  * v0.2:
- * Created function to make multiple reels
+ * Made reels spin
  *
  * v0.1:
- * Created Reels
+ * Created Reels and art
  *
  *
  * @export
@@ -21,6 +31,8 @@ import { LabelNumber } from "./objects/LabelNumber.js";
  * @extends {Game}
  */
 export class As1 extends Game {
+    //#endregion
+    //#region initialization
     constructor() {
         super();
         this._reels = this._createReels(5);
@@ -65,6 +77,45 @@ export class As1 extends Game {
         createjs.Sound.registerSound("../Assets/As1/sounds/win.ogg", "win");
         createjs.Sound.registerSound("../Assets/As1/sounds/lose.ogg", "lose");
     }
+    _createReels(numReels) {
+        let xOffset = 104;
+        let spacing = 128 + 20;
+        let reels = [];
+        for (let i = 0; i <= numReels - 1; i++) {
+            let reel = new Reel();
+            reel.x = xOffset + (spacing * i);
+            reel.spinCompleteCallback = () => {
+                // Track when reels stop spinning, then check for win
+                if (this._spinningReelCount >= 1) {
+                    this._spinningReelCount--;
+                    if (this._spinningReelCount <= 0) {
+                        this._checkWinConditions();
+                    }
+                }
+            };
+            this._stage.addChild(reel);
+            reels.push(reel);
+        }
+        return reels;
+    }
+    /**
+     * Reset game with initial values
+     *
+     * @private
+     * @memberof As1
+     */
+    _restart(msg = "Are you sure you want to restart?") {
+        if (confirm(msg)) {
+            this._moneyLabel.value = 100;
+            this._betInput.value = "10";
+            this._spinningReelCount = 0;
+            this._usedBetAmt = 0;
+            this._reels.forEach(reel => {
+                reel.reset();
+            });
+        }
+    }
+    //#endregion
     /**
      * Handle spin button click.
      *
@@ -145,13 +196,8 @@ export class As1 extends Game {
                     winnings = this._usedBetAmt * 2;
                     return;
                 case 3:
-                    winnings = this._usedBetAmt * 1;
+                    winnings = this._usedBetAmt * 1.5;
                     return;
-                case 2:
-                    winnings = this._usedBetAmt * 0.5;
-                default:
-                    this._jackpotLabel.value += this._usedBetAmt;
-                    break;
             }
         });
         // Play sounds based on winnings
@@ -161,49 +207,15 @@ export class As1 extends Game {
         else {
             createjs.Sound.play("lose");
         }
+        if (winnings == 0) {
+            // also add to jackpot
+            this._jackpotLabel.value += this._usedBetAmt / 2;
+        }
         // Add winnings to money
         this._moneyLabel.value += winnings;
         // If money is at 0
         if (this._moneyLabel.value <= 0) {
             this._restart("You've lost all your money. Restart?");
-        }
-    }
-    _createReels(numReels) {
-        let xOffset = 104;
-        let spacing = 128 + 20;
-        let reels = [];
-        for (let i = 0; i <= numReels - 1; i++) {
-            let reel = new Reel();
-            reel.x = xOffset + (spacing * i);
-            reel.spinCompleteCallback = () => {
-                // Track when reels stop spinning, then check for win
-                if (this._spinningReelCount >= 1) {
-                    this._spinningReelCount--;
-                    if (this._spinningReelCount <= 0) {
-                        this._checkWinConditions();
-                    }
-                }
-            };
-            this._stage.addChild(reel);
-            reels.push(reel);
-        }
-        return reels;
-    }
-    /**
-     * Reset game with initial values
-     *
-     * @private
-     * @memberof As1
-     */
-    _restart(msg = "Are you sure you want to restart?") {
-        if (confirm(msg)) {
-            this._moneyLabel.value = 100;
-            this._betInput.value = "10";
-            this._spinningReelCount = 0;
-            this._usedBetAmt = 0;
-            this._reels.forEach(reel => {
-                reel.reset();
-            });
         }
     }
     Update() {
