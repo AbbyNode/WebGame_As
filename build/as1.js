@@ -134,6 +134,7 @@ export class As1 extends Game {
             }
         });
         if (!canRoll) {
+            console.log("Still rolling");
             return;
         }
         // Check if out of money
@@ -183,6 +184,7 @@ export class As1 extends Game {
             }
             symbolCount[reel.selectedSlotIndex]++;
         });
+        // console.log(symbolCount);
         // Calculate winnings
         let winnings = 0;
         symbolCount.some(amt => {
@@ -220,7 +222,7 @@ export class As1 extends Game {
     }
     Update() {
         super.Update();
-        this._reels.forEach(reel => { reel.Update(); });
+        this._reels.forEach(reel => { reel.update(); });
     }
 }
 new As1();
