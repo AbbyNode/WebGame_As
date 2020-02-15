@@ -23,6 +23,7 @@ import { LabelNumber } from "./objects/LabelNumber.js";
 export class As1 extends Game {
     constructor() {
         super();
+        this._reels = this._createReels(5);
         this._moneyLabel = new LabelNumber(100, "12pt", "Consolas", "#ffd800", 185, 413, false);
         this._jackpotLabel = new LabelNumber(666, "12pt", "Consolas", "#ffd800", 659, 413, false);
         this._betInput = document.getElementById("playerBet");
@@ -30,10 +31,9 @@ export class As1 extends Game {
         this._restartButton = new Button("../Assets/As1/Reset1.png", 10, 366, false);
         this._quitButton = new Button("../Assets/As1/Quit1.png", 10, 403, false);
         this._spinningReelCount = 0;
+        this._usedBetAmt = 0;
         this._initStage();
         this._initButtons();
-        // this._reels = this._createReels(1);
-        this._reels = this._createReels(5);
         this._betInput.value = "10";
     }
     _initStage() {
@@ -68,7 +68,7 @@ export class As1 extends Game {
      */
     _trySpin() {
         let money = this._moneyLabel.value;
-        let bet = Number(this._betInput.value);
+        this._usedBetAmt = Number(this._betInput.value);
         // Check if reels are still rolling
         let canRoll = true;
         this._reels.forEach(reel => {
@@ -85,45 +85,69 @@ export class As1 extends Game {
             return;
         }
         // Check if bet is valid
-        if (bet == Number.NaN) {
+        if (this._usedBetAmt == Number.NaN) {
             alert("Bet is invalid");
             return;
         }
         // Check if bet is <= 0
-        if (bet <= 0) {
+        if (this._usedBetAmt <= 0) {
             alert("You must bet more than $0");
             return;
         }
         // Check if bet is too high
-        if (bet > money) {
-            alert(`Not enough money to bet $${bet}`);
+        if (this._usedBetAmt > money) {
+            alert(`Not enough money to bet $${this._usedBetAmt}`);
             return;
         }
         // All conditions passed - spin the reels
-        this._spin(bet);
+        this._spin();
     }
     /**
      * Spin the reels
      *
      * @private
-     * @param {number} bet
      * @memberof As1
      */
-    _spin(bet) {
-        this._moneyLabel.value -= bet;
+    _spin() {
+        this._moneyLabel.value -= this._usedBetAmt;
         this._reels.forEach(reel => {
             reel.rollToRandom();
             this._spinningReelCount++;
         });
     }
     _checkWinConditions() {
-        // win
-        // Add bet to money
-        // this._winJackpot();
-        // lose
-        // Add 50% to jackpot
-        console.log(this._moneyLabel.value);
-        if (this._moneyLabel.value == 0) {
+        // Count how many of each item
+        let symbolCount = [];
+        this._reels.forEach(reel => {
+            if (symbolCount[reel.selectedSlotIndex] == undefined) {
+                symbolCount[reel.selectedSlotIndex] = 0;
+            }
+            symbolCount[reel.selectedSlotIndex]++;
+        });
+        // Calculate winnings
+        let winnings = 0;
+        symbolCount.some(amt => {
+            switch (amt) {
+                case 5:
+                    this._winJackpot();
+                    return;
+                case 4:
+                    winnings = this._usedBetAmt * 2;
+                    return;
+                case 3:
+                    winnings = this._usedBetAmt * 1;
+                    return;
+                case 2:
+                    winnings = this._usedBetAmt * 0.5;
+                default:
+                    this._jackpotLabel.value += this._usedBetAmt;
+                    break;
+            }
+        });
+        // Add winnings to money
+        this._moneyLabel.value += winnings;
+        // If money is at 0
+        if (this._moneyLabel.value <= 0) {
             this._restart("You've lost all your money. Restart?");
         }
     }
@@ -163,6 +187,8 @@ export class As1 extends Game {
         if (confirm(msg)) {
             this._moneyLabel.value = 100;
             this._betInput.value = "10";
+            this._spinningReelCount = 0;
+            this._usedBetAmt = 0;
             this._reels.forEach(reel => {
                 reel.reset();
             });
@@ -183,5 +209,5 @@ new As1();
  *
  * Slot Images:
  * https://starbounder.org/Pets
- */ 
+ */
 //# sourceMappingURL=As1.js.map

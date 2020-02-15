@@ -29,8 +29,11 @@ export class Reel extends createjs.Container {
     }
     //#endregion
     //#region Properties
-    get targetSlot() {
-        return this._slots[this._targetSlot];
+    get selectedSlot() {
+        return this._slots[this._selectedSlot];
+    }
+    get selectedSlotIndex() {
+        return this._selectedSlot;
     }
     get canRoll() {
         return (this._selectedSlot == this._targetSlot);
@@ -132,7 +135,7 @@ export class Reel extends createjs.Container {
             if (middleSlot.bitmap.y >= middleTriggerPos) {
                 // Middle slot has reached the actual middle of reel
                 // Update selected slot
-                this._selectedSlot = this._slotIndexWrapped(1);
+                this._selectedSlot = this._shownSlots[1];
                 this._onSlotChange();
                 // Middle slot is now in position
                 this._middleIsInPosition = true;
@@ -161,7 +164,9 @@ export class Reel extends createjs.Container {
         // and remember where the slots started
         this._startedUselessSpinOnIndex = this._selectedSlot;
         // Set random target
-        this._targetSlot = Math.round(Math.random() * (this._slots.length - 1));
+        while (this._targetSlot == this._selectedSlot) {
+            this._targetSlot = Math.round(Math.random() * (this._slots.length - 1));
+        }
     }
     Update() {
         if (this._uselessSpinsRemaining >= 1) {
