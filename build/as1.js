@@ -27,17 +27,18 @@ export class As1 extends Game {
         this._moneyLabel = new LabelNumber(100, "12pt", "Consolas", "#ffd800", 185, 413, false);
         this._jackpotLabel = new LabelNumber(666, "12pt", "Consolas", "#ffd800", 659, 413, false);
         this._betInput = document.getElementById("playerBet");
-        this._spinButton = new Button("../Assets/As1/Spin1.png", 452, 401, false);
-        this._restartButton = new Button("../Assets/As1/Reset1.png", 10, 366, false);
-        this._quitButton = new Button("../Assets/As1/Quit1.png", 10, 403, false);
+        this._spinButton = new Button("../Assets/As1/images/Spin1.png", 452, 401, false);
+        this._restartButton = new Button("../Assets/As1/images/Reset1.png", 10, 366, false);
+        this._quitButton = new Button("../Assets/As1/images/Quit1.png", 10, 403, false);
         this._spinningReelCount = 0;
         this._usedBetAmt = 0;
         this._initStage();
         this._initButtons();
+        this._initSounds();
         this._betInput.value = "10";
     }
     _initStage() {
-        let background = new createjs.Bitmap("../Assets/As1/SlotMachine1_5.png");
+        let background = new createjs.Bitmap("../Assets/As1/images/SlotMachine1_5.png");
         this._stage.addChild(background);
         this._stage.addChild(this._moneyLabel);
         this._stage.addChild(this._jackpotLabel);
@@ -58,6 +59,11 @@ export class As1 extends Game {
                 document.location.href = "../index.html";
             }
         });
+    }
+    _initSounds() {
+        createjs.Sound.registerSound("../Assets/As1/sounds/spin.ogg", "spin");
+        createjs.Sound.registerSound("../Assets/As1/sounds/win.ogg", "win");
+        createjs.Sound.registerSound("../Assets/As1/sounds/lose.ogg", "lose");
     }
     /**
      * Handle spin button click.
@@ -110,6 +116,8 @@ export class As1 extends Game {
      */
     _spin() {
         this._moneyLabel.value -= this._usedBetAmt;
+        // Play spin sound
+        createjs.Sound.play("spin");
         this._reels.forEach(reel => {
             reel.rollToRandom();
             this._spinningReelCount++;
@@ -129,7 +137,9 @@ export class As1 extends Game {
         symbolCount.some(amt => {
             switch (amt) {
                 case 5:
-                    this._winJackpot();
+                    alert(`You won the jackpot of $${this._jackpotLabel.value}!`);
+                    winnings = this._jackpotLabel.value;
+                    this._jackpotLabel.value = 0;
                     return;
                 case 4:
                     winnings = this._usedBetAmt * 2;
@@ -144,17 +154,19 @@ export class As1 extends Game {
                     break;
             }
         });
+        // Play sounds based on winnings
+        if (winnings > this._usedBetAmt) {
+            createjs.Sound.play("win");
+        }
+        else {
+            createjs.Sound.play("lose");
+        }
         // Add winnings to money
         this._moneyLabel.value += winnings;
         // If money is at 0
         if (this._moneyLabel.value <= 0) {
             this._restart("You've lost all your money. Restart?");
         }
-    }
-    _winJackpot() {
-        alert(`You won the jackpot of $${this._jackpotLabel.value}!`);
-        this._moneyLabel.value += this._jackpotLabel.value;
-        this._jackpotLabel.value = 0;
     }
     _createReels(numReels) {
         let xOffset = 104;
@@ -209,5 +221,10 @@ new As1();
  *
  * Slot Images:
  * https://starbounder.org/Pets
+ *
+ * Sounds:
+ * https://freesound.org/people/pierrecartoons1979/sounds/118237/
+ * https://freesound.org/people/Mativve/sounds/391539/
+ * https://freesound.org/people/cabled_mess/sounds/350988/
  */
 //# sourceMappingURL=As1.js.map

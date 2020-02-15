@@ -49,11 +49,11 @@ export class Reel extends createjs.Container {
     }
     _initSlots() {
         // Create all possible slots
-        this._slots[0] = this._createSlot("../../Assets/As1/Bunny_white.png", SlotItem.Bunny);
-        this._slots[1] = this._createSlot("../../Assets/As1/Cat_grey3.png", SlotItem.Cat);
-        this._slots[2] = this._createSlot("../../Assets/As1/Piglett_fullpink.png", SlotItem.Pig);
-        this._slots[3] = this._createSlot("../../Assets/As1/Snake_green.png", SlotItem.Snake);
-        this._slots[4] = this._createSlot("../../Assets/As1/Weasel_brown.png", SlotItem.Weasel);
+        this._slots[0] = this._createSlot("../../Assets/As1/images/Bunny_white.png", SlotItem.Bunny);
+        this._slots[1] = this._createSlot("../../Assets/As1/images/Cat_grey3.png", SlotItem.Cat);
+        this._slots[2] = this._createSlot("../../Assets/As1/images/Piglett_fullpink.png", SlotItem.Pig);
+        this._slots[3] = this._createSlot("../../Assets/As1/images/Snake_green.png", SlotItem.Snake);
+        this._slots[4] = this._createSlot("../../Assets/As1/images/Weasel_brown.png", SlotItem.Weasel);
         this._resetSlots();
     }
     _createSlot(path, item) {
