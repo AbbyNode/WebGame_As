@@ -10,9 +10,9 @@ export class Label extends createjs.Text {
 	 * @param {boolean} isCentered
 	 * @memberof Label
 	 */
-	constructor(text: string = "label",
-		fontSize: string = "1", fontFamily: string = "Consolas", fontColor: string = "#000000",
-		x: number = 0, y: number = 0, isCentered: boolean = false) {
+	constructor(text = "label",
+		fontSize = "1", fontFamily = "Consolas", fontColor = "#000000",
+		x = 0, y = 0, isCentered = false) {
 		super(text, `${fontSize} ${fontFamily}`, fontColor);
 		if (isCentered) {
 			this.regX = this.getBounds().width * 0.5;

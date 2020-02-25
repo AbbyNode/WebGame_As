@@ -37,7 +37,7 @@ export class Vector2 {
         this._sqrMagnitude = sqrMagnitude;
     }
     get normalized() {
-        let vector2 = new Vector2(this.x, this.y);
+        const vector2 = new Vector2(this.x, this.y);
         vector2.normalize();
         return vector2;
     }
@@ -74,10 +74,11 @@ export class Vector2 {
         return new Vector2(-1, 0);
     }
     normalize() {
-        let magnitude = this.magnitude;
+        const magnitude = this.magnitude;
         if (magnitude > 9.99999974737875E-06) {
             this.x = this.x / magnitude;
             this.y = this.y / magnitude;
+            return this;
         }
         else {
             return Vector2.zero();
@@ -111,8 +112,8 @@ export class Vector2 {
      * @memberof Vector2
      */
     static sqrDistance(p1, p2) {
-        let xDiff = (p2.x - p1.x);
-        let yDiff = (p2.y - p1.y);
+        const xDiff = (p2.x - p1.x);
+        const yDiff = (p2.y - p1.y);
         return xDiff * xDiff + yDiff * yDiff;
     }
     static subtract(lhs, rhs) {

@@ -1,7 +1,7 @@
 import { GameObject } from "./GameObject.js";
 
 export class Button extends GameObject {
-	constructor(imgPath: string = "./Assets/images/default.png", x: number = 0, y: number = 0, isCentered: boolean = false) {
+	constructor(imgPath = "./Assets/images/default.png", x = 0, y = 0, isCentered = false) {
 		super(imgPath, x, y, isCentered);
 
 		this.on("mouseover", this.mouseover);

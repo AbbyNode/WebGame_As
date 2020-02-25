@@ -6,17 +6,15 @@ export abstract class Game {
 		this._canvas = document.getElementsByTagName('canvas')[0];
 		this._stage = new createjs.Stage(this._canvas);
 
-		let game = this;
-		window.addEventListener("load", function() {
-			game.Start();
+		window.addEventListener("load", () => {
+			this.Start();
 		});
 	}
 
 	public Start(): void {
-		let game = this;
 		createjs.Ticker.framerate = 60; // 60 fps
-		createjs.Ticker.on('tick', function() {
-			game.Update();
+		createjs.Ticker.on('tick', () => {
+			this.Update();
 		});
 		// this._stage.enableMouseOver(20);
 	}

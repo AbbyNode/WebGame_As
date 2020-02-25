@@ -3,13 +3,13 @@ import { Vector2 } from "./Vector2.js";
 export abstract class GameObject extends createjs.Bitmap {
 	// MEMBER VARIABLES
 
-	private _width: number = 0;
-	private _height: number = 0;
-	private _halfWidth: number = 0;
-	private _halfHeight: number = 0;
-	private _isColliding: boolean = false;
+	private _width = 0;
+	private _height = 0;
+	private _halfWidth = 0;
+	private _halfHeight = 0;
+	private _isColliding = false;
 	private _position: Vector2 = new Vector2(0, 0);
-	private _isCentered: boolean = false;
+	private _isCentered = false;
 
 	// PROPERTIES
 
@@ -80,7 +80,7 @@ export abstract class GameObject extends createjs.Bitmap {
 	 * @param {boolean} [isCentered=false]
 	 * @memberof GameObject
 	 */
-	constructor(imagePath: string = "./Assets/images/default.png", x: number = 0, y: number = 0, isCentered: boolean = false) {
+	constructor(imagePath = "./Assets/images/default.png", x = 0, y = 0, isCentered = false) {
 		super(imagePath);
 
 		this.image.addEventListener("load", () => {

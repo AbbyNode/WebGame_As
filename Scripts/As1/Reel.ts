@@ -11,7 +11,7 @@ export class Reel extends createjs.Container {
 	public static scrollSpeed = 16;
 	public static minUselessSpins = 1;
 	public static potentialUselessSpinsIncrease = 3;
-	
+
 	//#region Private vars
 
 	private _slots: Slot[];
@@ -23,10 +23,10 @@ export class Reel extends createjs.Container {
 
 	private _uselessSpinsRemaining: number;
 	private _startedUselessSpinOnIndex: number;
-	
+
 	private _needsSpin: boolean;
 	// private _startedOnTarget: boolean;
-	private _spinCompleteCallback : () => void;
+	private _spinCompleteCallback: (() => void) | undefined;
 
 	private _reelClipped: createjs.Container;
 
@@ -51,10 +51,10 @@ export class Reel extends createjs.Container {
 		return (this._selectedSlot == this._targetSlot);
 	}
 
-	public set spinCompleteCallback(v : () => void) {
+	public set spinCompleteCallback(v: () => void) {
 		this._spinCompleteCallback = v;
 	}
-	
+
 	//#endregion
 
 	//#region Initialization
@@ -73,7 +73,7 @@ export class Reel extends createjs.Container {
 
 		this._needsSpin = false;
 		// this._startedOnTarget = false;
-		this._spinCompleteCallback = () => {};
+		this._spinCompleteCallback = undefined;
 
 		this._reelClipped = new createjs.Container();
 
@@ -86,15 +86,15 @@ export class Reel extends createjs.Container {
 		this._initSlots();
 	}
 
-	private _initReel() {
-		let mask = new createjs.Shape();
+	private _initReel(): void {
+		const mask = new createjs.Shape();
 		mask.graphics.beginFill("#f00").drawRect(0, this._yStart, this._slotSize, this._reelHeight);
 		this._reelClipped.mask = mask;
 
 		this.addChild(this._reelClipped);
 	}
 
-	private _initSlots() {
+	private _initSlots(): void {
 		// Create all possible slots
 		this._slots[0] = this._createSlot("./Assets/As1/images/Bunny_white.png", SlotItem.Bunny);
 		this._slots[1] = this._createSlot("./Assets/As1/images/Cat_grey3.png", SlotItem.Cat);
@@ -106,7 +106,7 @@ export class Reel extends createjs.Container {
 	}
 
 	private _createSlot(path: string, item: SlotItem): Slot {
-		let slot = {
+		const slot = {
 			bitmap: new createjs.Bitmap(path),
 			item: item
 		};
@@ -123,7 +123,7 @@ export class Reel extends createjs.Container {
 
 	//#region Resets
 
-	private _resetSlots() {
+	private _resetSlots(): void {
 		// Reset all slots
 		this._slots.forEach(slot => {
 			this._resetSlotPos(slot);
@@ -131,8 +131,8 @@ export class Reel extends createjs.Container {
 
 		// Get random index for slots to show
 		this._selectedSlot = Math.round(Math.random() * (this._slots.length - 1));
-		let prevIndex = this._slotIndexWrapped(-1);
-		let nextIndex = this._slotIndexWrapped(1);
+		const prevIndex = this._slotIndexWrapped(-1);
+		const nextIndex = this._slotIndexWrapped(1);
 
 		// Reset target
 		this._targetSlot = this._selectedSlot;
@@ -141,7 +141,7 @@ export class Reel extends createjs.Container {
 		// Reset useless spinning
 		this._uselessSpinsRemaining = 0;
 		this._startedUselessSpinOnIndex = -1;
-		
+
 		// Reset spin flags
 		this._needsSpin = false;
 		// this._startedOnTarget = false;
@@ -161,7 +161,7 @@ export class Reel extends createjs.Container {
 		this.rollTo(this._slotIndexWrapped(2));
 	}
 
-	private _resetSlotPos(slot: Slot) {
+	private _resetSlotPos(slot: Slot): void {
 		slot.bitmap.y = this._yStart - this._slotSize;
 	}
 
@@ -169,10 +169,10 @@ export class Reel extends createjs.Container {
 
 	//#region Switching
 
-	private _slotIndexWrapped(offset: number, index: number = this._selectedSlot) {
+	private _slotIndexWrapped(offset: number, index: number = this._selectedSlot): number {
 		// https://stackoverflow.com/questions/16964225/keep-an-index-within-bounds-and-wrap-around
-		let newIndex = index + offset;
-		let bound = this._slots.length;
+		const newIndex = index + offset;
+		const bound = this._slots.length;
 		return (newIndex % bound + bound) % bound;
 	}
 
@@ -180,15 +180,15 @@ export class Reel extends createjs.Container {
 
 	//#region Private update
 
-	private _updateSpin(speed: number = Reel.scrollSpeed) {
+	private _updateSpin(speed: number = Reel.scrollSpeed): void {
 		// Move slot bitmaps down
 		this._shownSlots.forEach(slotIndex => {
 			this._slots[slotIndex].bitmap.y += speed;
 		});
 
 		// Hide bottom slot when it gets past the end
-		let bottomSlotTriggerPos = this._yStart + this._reelHeight;
-		let bottomSlot = this._slots[this._shownSlots[2]];
+		const bottomSlotTriggerPos = this._yStart + this._reelHeight;
+		const bottomSlot = this._slots[this._shownSlots[2]];
 		if (bottomSlot != undefined) {
 			if (bottomSlot.bitmap.y >= bottomSlotTriggerPos) {
 				this._resetSlotPos(bottomSlot); // Reset pos to hidden top area
@@ -197,18 +197,18 @@ export class Reel extends createjs.Container {
 		}
 
 		// Show next slot at top
-		let topSlotTriggerPos = this._yStart;
-		let topSlot = this._slots[this._shownSlots[0]];
+		const topSlotTriggerPos = this._yStart;
+		const topSlot = this._slots[this._shownSlots[0]];
 		if (topSlot.bitmap.y >= topSlotTriggerPos) {
-			let prevIndex = this._slotIndexWrapped(-1, this._shownSlots[0]);
+			const prevIndex = this._slotIndexWrapped(-1, this._shownSlots[0]);
 			this._shownSlots.unshift(prevIndex); // Put new slot at beginning of array
 			this._middleIsInPosition = false; // Middle slot is out of position
 		}
 
 		// If middle slot is out of position
 		if (!this._middleIsInPosition) {
-			let middleTriggerPos = this._yStart + this._slotSpacing;
-			let middleSlot = this._slots[this._shownSlots[1]]
+			const middleTriggerPos = this._yStart + this._slotSpacing;
+			const middleSlot = this._slots[this._shownSlots[1]]
 			if (middleSlot.bitmap.y >= middleTriggerPos) {
 				// Middle slot has reached the actual middle of reel
 				// Update selected slot
@@ -222,12 +222,12 @@ export class Reel extends createjs.Container {
 	}
 
 	// When slot changes from spinning
-	private _onSlotChange() {
+	private _onSlotChange(): void {
 		// Update useless spins if needed
 		if (this._uselessSpinsRemaining >= 1) {
 			if (this._selectedSlot == this._startedUselessSpinOnIndex) {
 				this._uselessSpinsRemaining--;
-				
+
 				// When useless spins are done,
 				if (this._uselessSpinsRemaining <= 0) {
 					this._needsSpin = true;
@@ -236,7 +236,9 @@ export class Reel extends createjs.Container {
 		} else {
 			// End spin when reached target
 			if (this._selectedSlot == this._targetSlot) {
-				this._spinCompleteCallback();
+				if (this._spinCompleteCallback != undefined) {
+					this._spinCompleteCallback();
+				}
 				this._needsSpin = false;
 			}
 		}
@@ -246,11 +248,11 @@ export class Reel extends createjs.Container {
 
 	//#region Public methods
 
-	public rollToRandom() {
+	public rollToRandom(): void {
 		this.rollTo(Math.round(Math.random() * (this._slots.length - 1)));
 	}
 
-	public rollTo(index: number) {
+	public rollTo(index: number): void {
 		// Set random amount of useless spins
 		this._uselessSpinsRemaining = Math.round(Math.random() * Reel.potentialUselessSpinsIncrease) + Reel.minUselessSpins;
 		// and remember where the slots started
@@ -262,7 +264,7 @@ export class Reel extends createjs.Container {
 		// this._startedOnTarget = (this._targetSlot == this._selectedSlot);
 	}
 
-	public update() {
+	public update(): void {
 		if (this._uselessSpinsRemaining >= 1) {
 			// First do some useless spins
 			this._updateSpin(Reel.scrollSpeed);
@@ -272,7 +274,7 @@ export class Reel extends createjs.Container {
 		}
 	}
 
-	public reset() {
+	public reset(): void {
 		this._resetSlots();
 	}
 

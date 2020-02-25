@@ -11,8 +11,8 @@ export class LabelNumber extends Label {
 		this.text = v.toString();
 	}
 
-	constructor(value: number, fontSize: string = "1", fontFamily: string = "Consolas", fontColor: string = "#000000",
-		x: number = 0, y: number = 0, isCentered: boolean = false) {
+	constructor(value: number, fontSize = "1", fontFamily = "Consolas", fontColor = "#000000",
+		x = 0, y = 0, isCentered = false) {
 		super(value.toString(), fontSize, fontFamily, fontColor, x, y, isCentered);
 
 		this._value = value;

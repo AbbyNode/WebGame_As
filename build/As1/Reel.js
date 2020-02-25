@@ -20,7 +20,7 @@ export class Reel extends createjs.Container {
         this._startedUselessSpinOnIndex = -1;
         this._needsSpin = false;
         // this._startedOnTarget = false;
-        this._spinCompleteCallback = () => { };
+        this._spinCompleteCallback = undefined;
         this._reelClipped = new createjs.Container();
         this._yStart = 55;
         this._reelHeight = 238;
@@ -44,7 +44,7 @@ export class Reel extends createjs.Container {
         this._spinCompleteCallback = v;
     }
     _initReel() {
-        let mask = new createjs.Shape();
+        const mask = new createjs.Shape();
         mask.graphics.beginFill("#f00").drawRect(0, this._yStart, this._slotSize, this._reelHeight);
         this._reelClipped.mask = mask;
         this.addChild(this._reelClipped);
@@ -59,7 +59,7 @@ export class Reel extends createjs.Container {
         this._resetSlots();
     }
     _createSlot(path, item) {
-        let slot = {
+        const slot = {
             bitmap: new createjs.Bitmap(path),
             item: item
         };
@@ -77,8 +77,8 @@ export class Reel extends createjs.Container {
         });
         // Get random index for slots to show
         this._selectedSlot = Math.round(Math.random() * (this._slots.length - 1));
-        let prevIndex = this._slotIndexWrapped(-1);
-        let nextIndex = this._slotIndexWrapped(1);
+        const prevIndex = this._slotIndexWrapped(-1);
+        const nextIndex = this._slotIndexWrapped(1);
         // Reset target
         this._targetSlot = this._selectedSlot;
         this._middleIsInPosition = false;
@@ -107,8 +107,8 @@ export class Reel extends createjs.Container {
     //#region Switching
     _slotIndexWrapped(offset, index = this._selectedSlot) {
         // https://stackoverflow.com/questions/16964225/keep-an-index-within-bounds-and-wrap-around
-        let newIndex = index + offset;
-        let bound = this._slots.length;
+        const newIndex = index + offset;
+        const bound = this._slots.length;
         return (newIndex % bound + bound) % bound;
     }
     //#endregion
@@ -119,8 +119,8 @@ export class Reel extends createjs.Container {
             this._slots[slotIndex].bitmap.y += speed;
         });
         // Hide bottom slot when it gets past the end
-        let bottomSlotTriggerPos = this._yStart + this._reelHeight;
-        let bottomSlot = this._slots[this._shownSlots[2]];
+        const bottomSlotTriggerPos = this._yStart + this._reelHeight;
+        const bottomSlot = this._slots[this._shownSlots[2]];
         if (bottomSlot != undefined) {
             if (bottomSlot.bitmap.y >= bottomSlotTriggerPos) {
                 this._resetSlotPos(bottomSlot); // Reset pos to hidden top area
@@ -128,17 +128,17 @@ export class Reel extends createjs.Container {
             }
         }
         // Show next slot at top
-        let topSlotTriggerPos = this._yStart;
-        let topSlot = this._slots[this._shownSlots[0]];
+        const topSlotTriggerPos = this._yStart;
+        const topSlot = this._slots[this._shownSlots[0]];
         if (topSlot.bitmap.y >= topSlotTriggerPos) {
-            let prevIndex = this._slotIndexWrapped(-1, this._shownSlots[0]);
+            const prevIndex = this._slotIndexWrapped(-1, this._shownSlots[0]);
             this._shownSlots.unshift(prevIndex); // Put new slot at beginning of array
             this._middleIsInPosition = false; // Middle slot is out of position
         }
         // If middle slot is out of position
         if (!this._middleIsInPosition) {
-            let middleTriggerPos = this._yStart + this._slotSpacing;
-            let middleSlot = this._slots[this._shownSlots[1]];
+            const middleTriggerPos = this._yStart + this._slotSpacing;
+            const middleSlot = this._slots[this._shownSlots[1]];
             if (middleSlot.bitmap.y >= middleTriggerPos) {
                 // Middle slot has reached the actual middle of reel
                 // Update selected slot
@@ -164,7 +164,9 @@ export class Reel extends createjs.Container {
         else {
             // End spin when reached target
             if (this._selectedSlot == this._targetSlot) {
-                this._spinCompleteCallback();
+                if (this._spinCompleteCallback != undefined) {
+                    this._spinCompleteCallback();
+                }
                 this._needsSpin = false;
             }
         }

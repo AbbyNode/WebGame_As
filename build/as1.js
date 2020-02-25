@@ -50,7 +50,7 @@ export class As1 extends Game {
         this._betInput.value = "10";
     }
     _initStage() {
-        let background = new createjs.Bitmap("./Assets/As1/images/SlotMachine1_5.png");
+        const background = new createjs.Bitmap("./Assets/As1/images/SlotMachine1_5.png");
         this._stage.addChild(background);
         this._stage.addChild(this._moneyLabel);
         this._stage.addChild(this._jackpotLabel);
@@ -60,13 +60,13 @@ export class As1 extends Game {
         this._stage.enableMouseOver(20);
     }
     _initButtons() {
-        this._spinButton.addEventListener("click", e => {
+        this._spinButton.addEventListener("click", () => {
             this._trySpin();
         });
-        this._restartButton.addEventListener("click", e => {
+        this._restartButton.addEventListener("click", () => {
             this._restart();
         });
-        this._quitButton.addEventListener("click", e => {
+        this._quitButton.addEventListener("click", () => {
             if (confirm("Are you sure you want to quit the game?")) {
                 document.location.href = "../index.html";
             }
@@ -78,11 +78,11 @@ export class As1 extends Game {
         createjs.Sound.registerSound("./Assets/As1/sounds/lose.ogg", "lose");
     }
     _createReels(numReels) {
-        let xOffset = 104;
-        let spacing = 128 + 20;
-        let reels = [];
+        const xOffset = 104;
+        const spacing = 128 + 20;
+        const reels = [];
         for (let i = 0; i <= numReels - 1; i++) {
-            let reel = new Reel();
+            const reel = new Reel();
             reel.x = xOffset + (spacing * i);
             reel.spinCompleteCallback = () => {
                 // Track when reels stop spinning, then check for win
@@ -124,7 +124,7 @@ export class As1 extends Game {
      * @memberof As1
      */
     _trySpin() {
-        let money = this._moneyLabel.value;
+        const money = this._moneyLabel.value;
         this._usedBetAmt = Number(this._betInput.value);
         // Check if reels are still rolling
         let canRoll = true;
@@ -177,7 +177,7 @@ export class As1 extends Game {
     }
     _checkWinConditions() {
         // Count how many of each item
-        let symbolCount = [];
+        const symbolCount = [];
         this._reels.forEach(reel => {
             if (symbolCount[reel.selectedSlotIndex] == undefined) {
                 symbolCount[reel.selectedSlotIndex] = 0;

@@ -1,9 +1,9 @@
 export class Vector2 {
 	// PRIVATE INSTANCE
-	private _x: number = 0;
-	private _y: number = 0;
-	private _magnitude: number = 0;
-	private _sqrMagnitude: number = 0;
+	private _x = 0;
+	private _y = 0;
+	private _magnitude = 0;
+	private _sqrMagnitude = 0;
 
 	// PUBLIC PROP
 
@@ -40,14 +40,14 @@ export class Vector2 {
 	}
 
 	get normalized(): Vector2 {
-		let vector2 = new Vector2(this.x, this.y);
+		const vector2 = new Vector2(this.x, this.y);
 		vector2.normalize();
 		return vector2;
 	}
 
 	// CONSTRUCTOR
 
-	constructor(x: number = 0, y: number = 0) {
+	constructor(x = 0, y = 0) {
 		this.x = x;
 		this.y = y;
 		this.sqrMagnitude = this.x * this.x + this.y * this.y;
@@ -58,17 +58,17 @@ export class Vector2 {
 
 	// PUBLIC METHODS
 
-	public add(addVector: Vector2) {
+	public add(addVector: Vector2): void {
 		this.x += addVector.x;
 		this.y += addVector.y;
 	}
 
-	public subtract(subtractVector: Vector2) {
+	public subtract(subtractVector: Vector2): void {
 		this.x -= subtractVector.x;
 		this.y -= subtractVector.y;
 	}
 
-	public scale(scalar: number) {
+	public scale(scalar: number): void {
 		this.x *= scalar;
 		this.y *= scalar;
 	}
@@ -97,11 +97,12 @@ export class Vector2 {
 		return new Vector2(-1, 0);
 	}
 
-	public normalize() {
-		let magnitude = this.magnitude;
+	public normalize(): Vector2 {
+		const magnitude = this.magnitude;
 		if (magnitude > 9.99999974737875E-06) {
 			this.x = this.x / magnitude;
 			this.y = this.y / magnitude;
+			return this;
 		} else {
 			return Vector2.zero();
 		}
@@ -137,8 +138,8 @@ export class Vector2 {
 	 * @memberof Vector2
 	 */
 	public static sqrDistance(p1: Vector2, p2: Vector2): number {
-		let xDiff = (p2.x - p1.x);
-		let yDiff = (p2.y - p1.y);
+		const xDiff = (p2.x - p1.x);
+		const yDiff = (p2.y - p1.y);
 		return xDiff * xDiff + yDiff * yDiff;
 	}
 

@@ -1,5 +1,5 @@
 import { Game } from "./Game.js";
-import { Reel, Slot } from "./As1/Reel.js";
+import { Reel } from "./As1/Reel.js";
 import { Button } from "./objects/Button.js";
 import { LabelNumber } from "./objects/LabelNumber.js";
 
@@ -62,7 +62,7 @@ export class As1 extends Game {
 		this._jackpotLabel = new LabelNumber(666, "12pt", "Consolas",
 			"#ffd800", 659, 413, false);
 
-		this._betInput = <HTMLInputElement>document.getElementById("playerBet");
+		this._betInput = document.getElementById("playerBet") as HTMLInputElement;
 
 		this._spinButton = new Button("./Assets/As1/images/Spin1.png", 452, 401, false);
 		this._restartButton = new Button("./Assets/As1/images/Reset1.png", 10, 366, false);
@@ -78,8 +78,8 @@ export class As1 extends Game {
 		this._betInput.value = "10";
 	}
 
-	private _initStage() {
-		let background = new createjs.Bitmap("./Assets/As1/images/SlotMachine1_5.png");
+	private _initStage(): void {
+		const background = new createjs.Bitmap("./Assets/As1/images/SlotMachine1_5.png");
 		this._stage.addChild(background);
 
 		this._stage.addChild(this._moneyLabel);
@@ -93,40 +93,40 @@ export class As1 extends Game {
 		this._stage.enableMouseOver(20);
 	}
 
-	private _initButtons() {
-		this._spinButton.addEventListener("click", e => {
+	private _initButtons(): void {
+		this._spinButton.addEventListener("click", () => {
 			this._trySpin();
 		});
 
-		this._restartButton.addEventListener("click", e => {
+		this._restartButton.addEventListener("click", () => {
 			this._restart();
 		});
 
-		this._quitButton.addEventListener("click", e => {
+		this._quitButton.addEventListener("click", () => {
 			if (confirm("Are you sure you want to quit the game?")) {
 				document.location.href = "../index.html";
 			}
 		});
 	}
 
-	private _initSounds() {
+	private _initSounds(): void {
 		createjs.Sound.registerSound("./Assets/As1/sounds/spin.ogg", "spin");
 		createjs.Sound.registerSound("./Assets/As1/sounds/win.ogg", "win");
 		createjs.Sound.registerSound("./Assets/As1/sounds/lose.ogg", "lose");
 	}
 
 	private _createReels(numReels: number): Reel[] {
-		let xOffset = 104;
-		let spacing = 128 + 20;
+		const xOffset = 104;
+		const spacing = 128 + 20;
 
-		let reels = [];
+		const reels = [];
 
 		for (let i = 0; i <= numReels - 1; i++) {
-			let reel = new Reel();
+			const reel = new Reel();
 
 			reel.x = xOffset + (spacing * i);
 
-			reel.spinCompleteCallback = () => {
+			reel.spinCompleteCallback = (): void => {
 				// Track when reels stop spinning, then check for win
 				if (this._spinningReelCount >= 1) {
 					this._spinningReelCount--;
@@ -150,7 +150,7 @@ export class As1 extends Game {
 	 * @private
 	 * @memberof As1
 	 */
-	private _restart(msg: string = "Are you sure you want to restart?") {
+	private _restart(msg = "Are you sure you want to restart?"): void {
 		if (confirm(msg)) {
 			this._moneyLabel.value = 100;
 			this._betInput.value = "10";
@@ -173,8 +173,8 @@ export class As1 extends Game {
 	 * @returns
 	 * @memberof As1
 	 */
-	private _trySpin() {
-		let money = this._moneyLabel.value;
+	private _trySpin(): void {
+		const money = this._moneyLabel.value;
 		this._usedBetAmt = Number(this._betInput.value);
 
 		// Check if reels are still rolling
@@ -223,7 +223,7 @@ export class As1 extends Game {
 	 * @private
 	 * @memberof As1
 	 */
-	private _spin() {
+	private _spin(): void {
 		this._moneyLabel.value -= this._usedBetAmt;
 
 		// Play spin sound
@@ -235,10 +235,10 @@ export class As1 extends Game {
 		});
 	}
 
-	private _checkWinConditions() {
+	private _checkWinConditions(): void {
 		// Count how many of each item
 
-		let symbolCount: number[] = [];
+		const symbolCount: number[] = [];
 
 		this._reels.forEach(reel => {
 			if (symbolCount[reel.selectedSlotIndex] == undefined) {
@@ -290,7 +290,7 @@ export class As1 extends Game {
 		}
 	}
 
-	public Update() {
+	public Update(): void {
 		super.Update();
 		this._reels.forEach(reel => { reel.update(); });
 	}
