@@ -1,5 +1,5 @@
-import { Game } from "./Game.js";
-import { Reel } from "./As1/Reel.js";
+import { Game } from "../Game.js";
+import { Reel } from "./Reel.js";
 import { Button } from "./engine_old/Button.js";
 import { LabelNumber } from "./engine_old/LabelNumber.js";
 /**
