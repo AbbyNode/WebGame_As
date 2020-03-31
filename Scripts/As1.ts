@@ -1,7 +1,7 @@
 import { Game } from "./Game.js";
 import { Reel } from "./As1/Reel.js";
-import { Button } from "./objects/Button.js";
-import { LabelNumber } from "./objects/LabelNumber.js";
+import { Button } from "./engine_old/Button.js";
+import { LabelNumber } from "./engine_old/LabelNumber.js";
 
 /**
  * Author: Abby Shah
