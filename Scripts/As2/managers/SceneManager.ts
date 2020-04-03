@@ -4,9 +4,11 @@ import { Scene } from "../scenes/Scene.js";
 import { MenuScene } from "../scenes/MenuScene.js";
 import { WinScene } from "../scenes/WinScene.js";
 import { LoseScene } from "../scenes/LoseScene.js";
+import { GameScene } from "../scenes/GameScene.js";
 
 export enum SceneName {
 	Menu,
+	Game,
 	Win,
 	Lose
 }
@@ -44,6 +46,8 @@ export class SceneManager {
 		switch (sceneName) {
 			case SceneName.Menu:
 				return new MenuScene(this._stage);
+			case SceneName.Game:
+				return new GameScene(this._stage);
 			case SceneName.Win:
 				return new WinScene(this._stage);
 			case SceneName.Lose:

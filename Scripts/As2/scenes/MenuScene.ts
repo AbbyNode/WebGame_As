@@ -2,6 +2,7 @@ import { Scene } from "./Scene.js";
 import { Button } from "../../objects/ui/Button.js";
 import { Global } from "../managers/Global.js";
 import { AssetName } from "../managers/AssetManager.js";
+import { SceneName } from "../managers/SceneManager.js";
 
 export class MenuScene extends Scene {
 	constructor(stage: createjs.Stage) {
@@ -14,7 +15,7 @@ export class MenuScene extends Scene {
 		// this._objects.push(background);
 
 		const buttonStart = new Button("Start", (event) => {
-			// Global.levelManager.start();
+			Global.sceneManager.setScene(SceneName.Game);
 		});
 		buttonStart.transform.position = {x: 1500, y: 750};
 		buttonStart.init(stage);

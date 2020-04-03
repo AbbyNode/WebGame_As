@@ -1,4 +1,6 @@
 import { Game } from "../Game.js";
+import { Global } from "./managers/Global.js";
+import { SceneName } from "./managers/SceneManager.js";
 /**
  * Author: Abby Shah
  * Creation Date: 2020, March
@@ -19,11 +21,16 @@ export class As2 extends Game {
     //#endregion
     constructor() {
         super();
+        Global.init(this._stage);
+        Global.assetManager.onComplete(this.Start, this);
+        Global.assetManager.load();
     }
     Start() {
+        Global.sceneManager.setScene(SceneName.Menu);
         super.Start();
     }
     Update() {
+        Global.sceneManager.update();
         super.Update();
     }
 }

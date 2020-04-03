@@ -1,4 +1,6 @@
 import { Game } from "../Game.js";
+import { Global } from "./managers/Global.js";
+import { SceneName } from "./managers/SceneManager.js";
 
 /**
  * Author: Abby Shah
@@ -23,16 +25,19 @@ export class As2 extends Game {
 	constructor() {
 		super();
 		
+		Global.init(this._stage);
+		Global.assetManager.onComplete(this.Start, this);
+		Global.assetManager.load();
 	}
 
 	public Start(): void {
+		Global.sceneManager.setScene(SceneName.Menu);
 		super.Start();
-
 	}
 
 	public Update(): void {
+		Global.sceneManager.update();
 		super.Update();
-
 	}
 }
 
@@ -41,6 +46,9 @@ new As2();
 /**
  * Asset Sources
  *
+ * https://opengameart.org/content/lpc-flames
+ * 
+ * 
  * 
  */
 
