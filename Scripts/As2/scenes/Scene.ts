@@ -1,4 +1,4 @@
-import { GameObject } from "../engine/gameobject/GameObject.js";
+import { GameObject } from "../../engine/gameobject/GameObject.js";
 
 export abstract class Scene {
 	protected stage: createjs.Stage;

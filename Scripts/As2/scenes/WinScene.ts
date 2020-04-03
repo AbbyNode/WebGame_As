@@ -1,20 +1,20 @@
 import { Scene } from "./Scene.js";
-import { Label } from "../objects/ui/Label.js";
+import { Label } from "../../objects/ui/Label.js";
 import { Global } from "../managers/Global.js";
 import { AssetName } from "../managers/AssetManager.js";
-import { UIBackground } from "../objects/ui/UIBackground.js";
-import { Button } from "../objects/ui/Button.js";
+import { UIBackground } from "../../objects/ui/UIBackground.js";
+import { Button } from "../../objects/ui/Button.js";
 import { SceneName } from "../managers/SceneManager.js";
 
 export class WinScene extends Scene {
 	constructor(stage: createjs.Stage) {
 		super(stage);
 
-		const background = new createjs.Bitmap(Global.assetManager.getResult(AssetName.Image_Background));
-		background.scaleX = 4.48;
-		background.scaleY = 4.48;
-		this.stage.addChild(background);
-		this._objects.push(background);
+		// const background = new createjs.Bitmap(Global.assetManager.getResult(AssetName.Image_Background));
+		// background.scaleX = 4.48;
+		// background.scaleY = 4.48;
+		// this.stage.addChild(background);
+		// this._objects.push(background);
 
 		const xOffset = 645;
 
@@ -23,7 +23,7 @@ export class WinScene extends Scene {
 		uiBackground.init(this.stage);
 		this._objects.push(uiBackground);
 
-		const label = new Label("Mission complete!", true);
+		const label = new Label("You won!", true);
 		label.transform.position = { x: xOffset + 286, y: 300 };
 		label.init(this.stage);
 		this._objects.push(label);
