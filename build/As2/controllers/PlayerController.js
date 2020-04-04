@@ -1,4 +1,10 @@
 import { KeyboardInput } from "./KeyboardInput.js";
+/**
+ * Player Controller translates keyboard input into player movement and actions.
+ *
+ * @export
+ * @class PlayerController
+ */
 export class PlayerController {
     constructor(player, scrollingLevel) {
         this._player = player;

@@ -5,6 +5,13 @@ import { AssetName } from "../managers/AssetManager.js";
 import { Collider } from "../../engine/components/Collider.js";
 import { ColliderTag } from "../managers/ColliderTag.js";
 import { EventName } from "../../engine/components/EventName.js";
+/**
+ * Player GameObject. This class is the core of the player sprite and movement.
+ *
+ * @export
+ * @class Player
+ * @extends {GameObject}
+ */
 export class Player extends GameObject {
     //#endregion
     constructor() {

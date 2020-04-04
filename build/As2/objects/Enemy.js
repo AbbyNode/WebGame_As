@@ -5,6 +5,13 @@ import { AssetName } from "../managers/AssetManager.js";
 import { Collider } from "../../engine/components/Collider.js";
 import { ColliderTag } from "../managers/ColliderTag.js";
 import { EventName } from "../../engine/components/EventName.js";
+/**
+ * Enemy GameObject
+ *
+ * @export
+ * @class Enemy
+ * @extends {GameObject}
+ */
 export class Enemy extends GameObject {
     constructor() {
         super();

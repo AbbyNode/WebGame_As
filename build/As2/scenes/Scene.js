@@ -1,4 +1,11 @@
 import { GameObject } from "../../engine/gameobject/GameObject.js";
+/**
+ * Parent class for all scenes.
+ *
+ * @export
+ * @abstract
+ * @class Scene
+ */
 export class Scene {
     constructor(stage) {
         this.stage = stage;

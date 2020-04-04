@@ -1,3 +1,10 @@
+/**
+ * Scrolling background loops a bitmap image to scroll across the screen by a specified amount.
+ * Can be used for paralax.
+ *
+ * @export
+ * @class ScrollingBackground
+ */
 export class ScrollingBackground {
     //#endregion
     constructor(image, scrollScale = 1) {
@@ -29,11 +36,23 @@ export class ScrollingBackground {
     set container(v) {
         this._container = v;
     }
+    /**
+     * Swaps the duplicate sprite to start the loop again.
+     *
+     * @private
+     * @memberof ScrollingBackground
+     */
     _scrollWarp() {
         const bitmapTemp = this._bitmap1;
         this._bitmap1 = this._bitmap2;
         this._bitmap2 = bitmapTemp;
     }
+    /**
+     * Scrolls the background by specified amount
+     *
+     * @param {number} amount
+     * @memberof ScrollingBackground
+     */
     scroll(amount) {
         this._bitmap1.x -= amount * this._scrollScale;
         if (this._bitmap1.x <= -this._width) {

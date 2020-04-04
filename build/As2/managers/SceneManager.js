@@ -2,12 +2,14 @@ import { MenuScene } from "../scenes/MenuScene.js";
 import { WinScene } from "../scenes/WinScene.js";
 import { LoseScene } from "../scenes/LoseScene.js";
 import { GameScene } from "../scenes/GameScene.js";
+import { InstructionsScene } from "../scenes/InstructionsScene.js";
 export var SceneName;
 (function (SceneName) {
     SceneName[SceneName["Menu"] = 0] = "Menu";
     SceneName[SceneName["Game"] = 1] = "Game";
-    SceneName[SceneName["Win"] = 2] = "Win";
-    SceneName[SceneName["Lose"] = 3] = "Lose";
+    SceneName[SceneName["Instructions"] = 2] = "Instructions";
+    SceneName[SceneName["Win"] = 3] = "Win";
+    SceneName[SceneName["Lose"] = 4] = "Lose";
 })(SceneName || (SceneName = {}));
 export class SceneManager {
     constructor(stage) {
@@ -36,6 +38,8 @@ export class SceneManager {
                 return new MenuScene(this._stage);
             case SceneName.Game:
                 return new GameScene(this._stage);
+            case SceneName.Instructions:
+                return new InstructionsScene(this._stage);
             case SceneName.Win:
                 return new WinScene(this._stage);
             case SceneName.Lose:

@@ -4,6 +4,13 @@ import { Global } from "../managers/Global.js";
 import { AssetName } from "../managers/AssetManager.js";
 import { Collider } from "../../engine/components/Collider.js";
 import { ColliderTag } from "../managers/ColliderTag.js";
+/**
+ * Platform GameObject
+ *
+ * @export
+ * @class Platform
+ * @extends {GameObject}
+ */
 export class Platform extends GameObject {
     constructor(size) {
         super();

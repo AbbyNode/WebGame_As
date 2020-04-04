@@ -38,35 +38,39 @@ export class MenuScene extends Scene {
 
 		// Game Title
 		const title = new Label("2D Scrolling Game", true);
-		title.transform.position = {x: 400, y: 200};
+		title.transform.position = {x: 400, y: 180};
 		title.init(this.stage);
 
 		// Author
 		const subtitle = new Label("By Abby Shah", true);
-		subtitle.transform.position = {x: 400, y: 250};
+		subtitle.transform.position = {x: 400, y: 230};
 		subtitle.init(this.stage);
 
 		// Start button
 		const buttonStart = new Button("Start", (event) => {
 			Global.sceneManager.setScene(SceneName.Game);
-		});
-		buttonStart.transform.position = {x: 310, y: 340};
+		}, { width: 230, height: 50 });
+		buttonStart.transform.position = {x: 285, y: 280};
 		buttonStart.init(stage);
 		this._objects.push(buttonStart);
 
 		// Instructions button
 		const buttonInstructions = new Button("Instructions", (event) => {
-			Global.sceneManager.setScene(SceneName.Game);
-		});
-		buttonInstructions.transform.position = {x: 310, y: 340};
+			Global.sceneManager.setScene(SceneName.Instructions);
+		}, { width: 230, height: 50 });
+		buttonInstructions.transform.position = {x: 285, y: 340};
 		buttonInstructions.init(stage);
 		this._objects.push(buttonInstructions);
 		
 		// Exit button
 		const buttonExit = new Button("Exit", (event) => {
-			window.history.back();
-		});
-		buttonExit.transform.position = {x: 310, y: 340};
+			if (window.history.length >= 1) {
+				window.history.back();
+			} else {
+				window.close();
+			}
+		}, { width: 230, height: 50 });
+		buttonExit.transform.position = {x: 285, y: 400};
 		buttonExit.init(stage);
 		this._objects.push(buttonExit);
 	}

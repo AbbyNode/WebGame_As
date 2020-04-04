@@ -1,3 +1,9 @@
+/**
+ * Utility class to help track keyboard input.
+ *
+ * @export
+ * @class KeyboardInput
+ */
 export class KeyboardInput {
     constructor() {
         this._keyMap = new Map();
