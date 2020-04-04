@@ -65,8 +65,8 @@ export class GameScene extends Scene {
 		this._scrollingLevel.init();
 		this._playerController.initWASD();
 
-		this._player.eventManager.addListener(EventName.Collider_CollidedTick, () => {
-			console.log("ow");
+		this._player.eventManager.addListener(EventName.Collider_CollidedTick, (collider) => {
+			console.log("ow", collider);
 		});
 	}
 
@@ -79,6 +79,10 @@ export class GameScene extends Scene {
 	public destroy(): void {
 		super.destroy();
 		
+		this.stage.removeChild(this._background.container);
+
+		this._player.destroy();
 		this._playerController.destroy();
+		this._scrollingLevel.destroy();
 	}
 }

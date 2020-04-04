@@ -1,7 +1,18 @@
 import { Scene } from "./Scene.js";
+import { Button } from "../../objects/ui/Button.js";
+import { Global } from "../managers/Global.js";
+import { AssetName } from "../managers/AssetManager.js";
+import { SceneName } from "../managers/SceneManager.js";
+import { ScrollingBackground } from "../objects/ScrollingBackground.js";
 import { Label } from "../../objects/ui/Label.js";
 import { UIBackground } from "../../objects/ui/UIBackground.js";
-import { Button } from "../../objects/ui/Button.js";
+/**
+ * Lose Scene
+ *
+ * @export
+ * @class MenuScene
+ * @extends {Scene}
+ */
 export class LoseScene extends Scene {
     constructor(stage) {
         super(stage);
@@ -10,29 +21,31 @@ export class LoseScene extends Scene {
         // background.scaleY = 4.48;
         // this.stage.addChild(background);
         // this._objects.push(background);
-        const xOffset = 645;
-        const uiBackground = new UIBackground({ width: 572, height: 796 }, "#ff5555");
-        uiBackground.transform.position = { x: xOffset, y: 50 };
-        uiBackground.init(this.stage);
-        this._objects.push(uiBackground);
-        const label = new Label("You died!", true);
-        label.transform.position = { x: xOffset + 286, y: 300 };
-        label.init(this.stage);
-        this._objects.push(label);
-        // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        // const buttonTryAgain = new Button("Restart Level", event => {
-        // 	// Global.levelManager.restartLevel();
-        // }, { width: 240, height: 60 });
-        // buttonTryAgain.transform.position = { x: xOffset + 160, y: 400 };
-        // buttonTryAgain.init(stage);
-        // this._objects.push(buttonTryAgain);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const buttonRestart = new Button("Start Over", event => {
-            // Global.levelManager.start();
-        }, { width: 240, height: 60 });
-        buttonRestart.transform.position = { x: xOffset + 160, y: 500 };
-        buttonRestart.init(stage);
-        this._objects.push(buttonRestart);
+        // Scrolling image in background
+        const backgroundImg = Global.assetManager.getResult(AssetName.Image_Background);
+        this.background = new ScrollingBackground(backgroundImg, 4);
+        this.stage.addChild(this.background.container);
+        // Translucent color to make text more readable
+        const uibackground = new UIBackground({ width: 400, height: 400 }, "#ff8888");
+        uibackground.transform.position = { x: 200, y: 100 };
+        uibackground.init(this.stage);
+        const title = new Label("You died", true);
+        title.transform.position = { x: 400, y: 180 };
+        title.init(this.stage);
+        // Retry button
+        const buttonRetry = new Button("Try again?", (event) => {
+            Global.sceneManager.setScene(SceneName.Game);
+        }, { width: 230, height: 50 });
+        buttonRetry.transform.position = { x: 285, y: 280 };
+        buttonRetry.init(stage);
+        this._objects.push(buttonRetry);
+        // Menu button
+        const buttonMenu = new Button("Menu", (event) => {
+            Global.sceneManager.setScene(SceneName.Menu);
+        }, { width: 230, height: 50 });
+        buttonMenu.transform.position = { x: 285, y: 340 };
+        buttonMenu.init(stage);
+        this._objects.push(buttonMenu);
     }
     init() {
         // Disabled by parent on destroy
@@ -40,6 +53,11 @@ export class LoseScene extends Scene {
     }
     update() {
         // console.log("menu update");
+        this.background.scroll(1);
+    }
+    destroy() {
+        super.destroy();
     }
 }
+// https://createjs.com/tutorials/Mouse%20Interaction/
 //# sourceMappingURL=LoseScene.js.map

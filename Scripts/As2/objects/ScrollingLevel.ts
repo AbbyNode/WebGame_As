@@ -66,6 +66,12 @@ export class ScrollingLevel {
 			enemy.update();
 		});
 	}
+	
+	destroy() {
+		this._objects.forEach(object => {
+			object.destroy();
+		});
+	}
 
 	/**
 	 * Attempt to scroll to the right

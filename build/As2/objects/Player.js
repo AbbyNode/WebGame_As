@@ -153,6 +153,7 @@ export class Player extends GameObject {
         if (this._canShoot) {
             this._canShoot = false;
             this._spriteRenderer.sprite.gotoAndPlay("shoot");
+            // Creation and destruction of this bullet is inexpensive and infrequent, so no pool required
             const bullet = new Bullet();
             const pos = this.transform.position;
             pos.x += 10;
