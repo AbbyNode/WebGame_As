@@ -1,4 +1,4 @@
-export class Label extends createjs.Text {
+export class Old_Label extends createjs.Text {
 	/**
 	 *Creates an instance of Label.
 	 * @param {string} text

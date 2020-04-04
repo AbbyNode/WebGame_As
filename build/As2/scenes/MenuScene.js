@@ -5,6 +5,7 @@ import { AssetName } from "../managers/AssetManager.js";
 import { SceneName } from "../managers/SceneManager.js";
 import { ScrollingBackground } from "../objects/ScrollingBackground.js";
 import { Label } from "../../objects/ui/Label.js";
+import { UIBackground } from "../../objects/ui/UIBackground.js";
 export class MenuScene extends Scene {
     constructor(stage) {
         super(stage);
@@ -13,21 +14,22 @@ export class MenuScene extends Scene {
         // background.scaleY = 4.48;
         // this.stage.addChild(background);
         // this._objects.push(background);
-        const title = new Label("2D Scrolling Game");
-        title.transform.position.x = 310;
-        title.transform.position.y = 270;
-        title.init(this.stage);
-        const subtitle = new Label("By Abby Shah");
-        subtitle.transform.position.x = 310;
-        subtitle.transform.position.y = 270;
-        subtitle.init(this.stage);
         const backgroundImg = Global.assetManager.getResult(AssetName.Image_Background);
         this.background = new ScrollingBackground(backgroundImg, 4);
         this.stage.addChild(this.background.container);
+        const uibackground = new UIBackground({ width: 400, height: 400 }, "#88aaff");
+        uibackground.transform.position = { x: 200, y: 100 };
+        uibackground.init(this.stage);
+        const title = new Label("2D Scrolling Game", true);
+        title.transform.position = { x: 400, y: 200 };
+        title.init(this.stage);
+        const subtitle = new Label("By Abby Shah", true);
+        subtitle.transform.position = { x: 400, y: 250 };
+        subtitle.init(this.stage);
         const buttonStart = new Button("Start", (event) => {
             Global.sceneManager.setScene(SceneName.Game);
         });
-        buttonStart.transform.position = { x: 310, y: 270 };
+        buttonStart.transform.position = { x: 310, y: 340 };
         buttonStart.init(stage);
         this._objects.push(buttonStart);
     }

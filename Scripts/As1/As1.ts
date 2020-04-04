@@ -1,7 +1,7 @@
 import { Game } from "../Game.js";
 import { Reel } from "./Reel.js";
-import { Button } from "./engine_old/Button.js";
-import { LabelNumber } from "./engine_old/LabelNumber.js";
+import { Old_Button } from "./engine_old/Button.js";
+import { Old_LabelNumber } from "./engine_old/LabelNumber.js";
 
 /**
  * Author: Abby Shah
@@ -35,14 +35,14 @@ export class As1 extends Game {
 	//#region private vars
 
 	private _reels: Reel[];
-	private _moneyLabel: LabelNumber;
-	private _jackpotLabel: LabelNumber;
+	private _moneyLabel: Old_LabelNumber;
+	private _jackpotLabel: Old_LabelNumber;
 
 	private _betInput: HTMLInputElement;
-	private _spinButton: Button;
+	private _spinButton: Old_Button;
 
-	private _restartButton: Button;
-	private _quitButton: Button;
+	private _restartButton: Old_Button;
+	private _quitButton: Old_Button;
 
 	private _spinningReelCount: number;
 
@@ -57,16 +57,16 @@ export class As1 extends Game {
 
 		this._reels = this._createReels(5);
 
-		this._moneyLabel = new LabelNumber(100, "12pt", "Consolas",
+		this._moneyLabel = new Old_LabelNumber(100, "12pt", "Consolas",
 			"#ffd800", 185, 413, false);
-		this._jackpotLabel = new LabelNumber(666, "12pt", "Consolas",
+		this._jackpotLabel = new Old_LabelNumber(666, "12pt", "Consolas",
 			"#ffd800", 659, 413, false);
 
 		this._betInput = document.getElementById("playerBet") as HTMLInputElement;
 
-		this._spinButton = new Button("./Assets/As1/images/Spin1.png", 452, 401, false);
-		this._restartButton = new Button("./Assets/As1/images/Reset1.png", 10, 366, false);
-		this._quitButton = new Button("./Assets/As1/images/Quit1.png", 10, 403, false);
+		this._spinButton = new Old_Button("./Assets/As1/images/Spin1.png", 452, 401, false);
+		this._restartButton = new Old_Button("./Assets/As1/images/Reset1.png", 10, 366, false);
+		this._quitButton = new Old_Button("./Assets/As1/images/Quit1.png", 10, 403, false);
 
 		this._spinningReelCount = 0;
 		this._usedBetAmt = 0;

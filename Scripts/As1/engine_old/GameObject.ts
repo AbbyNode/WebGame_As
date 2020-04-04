@@ -1,6 +1,6 @@
-import { Vector2 } from "./Vector2.js";
+import { Old_Vector2 } from "./Vector2.js";
 
-export abstract class GameObject extends createjs.Bitmap {
+export abstract class Old_GameObject extends createjs.Bitmap {
 	// MEMBER VARIABLES
 
 	private _width = 0;
@@ -8,7 +8,7 @@ export abstract class GameObject extends createjs.Bitmap {
 	private _halfWidth = 0;
 	private _halfHeight = 0;
 	private _isColliding = false;
-	private _position: Vector2 = new Vector2(0, 0);
+	private _position: Old_Vector2 = new Old_Vector2(0, 0);
 	private _isCentered = false;
 
 	// PROPERTIES
@@ -45,11 +45,11 @@ export abstract class GameObject extends createjs.Bitmap {
 		this._isColliding = isColliding;
 	}
 
-	get position(): Vector2 {
+	get position(): Old_Vector2 {
 		return this._position;
 	}
 
-	set position(position: Vector2) {
+	set position(position: Old_Vector2) {
 		this._position = position;
 		this.x = position.x;
 		this.y = position.y;
@@ -84,7 +84,7 @@ export abstract class GameObject extends createjs.Bitmap {
 		super(imagePath);
 
 		this.image.addEventListener("load", () => {
-			this.position = new Vector2(x, y);
+			this.position = new Old_Vector2(x, y);
 
 			this.width = this.getBounds().width;
 			this.height = this.getBounds().height;

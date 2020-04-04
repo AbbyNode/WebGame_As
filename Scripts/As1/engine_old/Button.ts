@@ -1,6 +1,6 @@
-import { GameObject } from "./GameObject.js";
+import { Old_GameObject } from "./GameObject.js";
 
-export class Button extends GameObject {
+export class Old_Button extends Old_GameObject {
 	constructor(imgPath = "./Assets/images/default.png", x = 0, y = 0, isCentered = false) {
 		super(imgPath, x, y, isCentered);
 

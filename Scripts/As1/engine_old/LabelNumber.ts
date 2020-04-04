@@ -1,6 +1,6 @@
-import { Label } from "./Label.js";
+import { Old_Label } from "./Label.js";
 
-export class LabelNumber extends Label {
+export class Old_LabelNumber extends Old_Label {
 	private _value: number;
 
 	public get value(): number {
