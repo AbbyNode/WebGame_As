@@ -15,7 +15,7 @@ import { UIBackground } from "../../objects/ui/UIBackground.js";
  * @extends {Scene}
  */
 export class MenuScene extends Scene {
-	private background: ScrollingBackground;
+	private _background: ScrollingBackground;
 
 	constructor(stage: createjs.Stage) {
 		super(stage);
@@ -28,8 +28,8 @@ export class MenuScene extends Scene {
 
 		// Scrolling image in background
 		const backgroundImg = Global.assetManager.getResult(AssetName.Image_Background);
-		this.background = new ScrollingBackground(backgroundImg, 4);
-		this.stage.addChild(this.background.container);
+		this._background = new ScrollingBackground(backgroundImg, 4);
+		this.stage.addChild(this._background.container);
 
 		// Translucent color to make text more readable
 		const uibackground = new UIBackground({width: 400, height: 400}, "#88aaff");
@@ -82,11 +82,13 @@ export class MenuScene extends Scene {
 
 	public update(): void {
 		// console.log("menu update");
-		this.background.scroll(1);
+		this._background.scroll(1);
 	}
 
 	public destroy(): void {
 		super.destroy();
+		
+		this.stage.removeChild(this._background.container);
 	}
 }
 

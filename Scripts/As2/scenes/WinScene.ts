@@ -15,7 +15,7 @@ import { UIBackground } from "../../objects/ui/UIBackground.js";
  * @extends {Scene}
  */
 export class WinScene extends Scene {
-	private background: ScrollingBackground;
+	private _background: ScrollingBackground;
 
 	constructor(stage: createjs.Stage) {
 		super(stage);
@@ -28,40 +28,26 @@ export class WinScene extends Scene {
 
 		// Scrolling image in background
 		const backgroundImg = Global.assetManager.getResult(AssetName.Image_Background);
-		this.background = new ScrollingBackground(backgroundImg, 4);
-		this.stage.addChild(this.background.container);
+		this._background = new ScrollingBackground(backgroundImg, 4);
+		this.stage.addChild(this._background.container);
 
 		// Translucent color to make text more readable
-		const uibackground = new UIBackground({width: 400, height: 400}, "#88aaff");
+		const uibackground = new UIBackground({width: 400, height: 400}, "#88ff88");
 		uibackground.transform.position = {x: 200, y: 100};
 		uibackground.init(this.stage);
 
-		// Game Title
-		const title = new Label("2D Scrolling Game", true);
+		const title = new Label("You won!", true);
 		title.transform.position = {x: 400, y: 180};
 		title.init(this.stage);
 
-		// Author
-		const subtitle = new Label("By Abby Shah", true);
-		subtitle.transform.position = {x: 400, y: 230};
-		subtitle.init(this.stage);
-
-		// Start button
-		const buttonStart = new Button("Start", (event) => {
-			Global.sceneManager.setScene(SceneName.Game);
+		// Menu button
+		const buttonMenu = new Button("Menu", (event) => {
+			Global.sceneManager.setScene(SceneName.Menu);
 		}, { width: 230, height: 50 });
-		buttonStart.transform.position = {x: 285, y: 280};
-		buttonStart.init(stage);
-		this._objects.push(buttonStart);
+		buttonMenu.transform.position = {x: 285, y: 340};
+		buttonMenu.init(stage);
+		this._objects.push(buttonMenu);
 
-		// Instructions button
-		const buttonInstructions = new Button("Instructions", (event) => {
-			Global.sceneManager.setScene(SceneName.Instructions);
-		}, { width: 230, height: 50 });
-		buttonInstructions.transform.position = {x: 285, y: 340};
-		buttonInstructions.init(stage);
-		this._objects.push(buttonInstructions);
-		
 		// Exit button
 		const buttonExit = new Button("Exit", (event) => {
 			if (window.history.length >= 1) {
@@ -82,11 +68,13 @@ export class WinScene extends Scene {
 
 	public update(): void {
 		// console.log("menu update");
-		this.background.scroll(1);
+		this._background.scroll(1);
 	}
 
 	public destroy(): void {
 		super.destroy();
+		
+		this.stage.removeChild(this._background.container);
 	}
 }
 

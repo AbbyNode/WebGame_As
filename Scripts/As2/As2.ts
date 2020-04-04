@@ -59,6 +59,7 @@ export class As2 extends Game {
 
 	public OnAssetLoad(): void {
 		Global.sceneManager.setScene(SceneName.Menu);
+		// Global.sceneManager.setScene(SceneName.Win);
 	}
 
 	public Update(): void {
