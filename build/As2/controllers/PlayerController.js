@@ -1,5 +1,4 @@
 import { KeyboardInput } from "./KeyboardInput.js";
-import { SpriteRenderer } from "../../engine/components/SpriteRenderer.js";
 export class PlayerController {
     constructor(player, scrollingLevel) {
         this._player = player;
@@ -15,14 +14,12 @@ export class PlayerController {
         // });
         this._keyboardInput.addKey("d", {
             down: () => {
-                var _a;
                 this._scrollingLevel.isScrolling = true;
-                (_a = this._player.getComponent(SpriteRenderer)) === null || _a === void 0 ? void 0 : _a.sprite.gotoAndPlay("walk");
+                this._player.isMoving = true;
             },
             up: () => {
-                var _a;
                 this._scrollingLevel.isScrolling = false;
-                (_a = this._player.getComponent(SpriteRenderer)) === null || _a === void 0 ? void 0 : _a.sprite.gotoAndPlay("idle");
+                this._player.isMoving = false;
             }
         });
         this._keyboardInput.addKey("w", {

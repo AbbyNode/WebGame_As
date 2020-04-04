@@ -7,6 +7,7 @@ export var AssetName;
     AssetName["Image_PlayerSpriteSheet"] = "Image_PlayerSpriteSheet";
     AssetName["Image_EnemySpriteSheet"] = "Image_EnemySpriteSheet";
     AssetName["Image_Platform"] = "Image_Platform";
+    AssetName["Image_SlimeSpriteSheet"] = "Image_SlimeSpriteSheet";
 })(AssetName || (AssetName = {}));
 /* eslint-enable @typescript-eslint/camelcase */
 export var AssetType;
@@ -38,6 +39,11 @@ export class AssetManager {
             {
                 id: AssetName.Image_Platform,
                 src: "./Assets/As2/images/Platform.png",
+                type: AssetType.IMAGE
+            },
+            {
+                id: AssetName.Image_SlimeSpriteSheet,
+                src: "./Assets/As2/images/SlimePink.png",
                 type: AssetType.IMAGE
             },
         ];

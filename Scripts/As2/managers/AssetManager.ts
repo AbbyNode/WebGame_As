@@ -7,7 +7,8 @@ export enum AssetName {
 	Image_Background = "Image_Background",
 	Image_PlayerSpriteSheet = "Image_PlayerSpriteSheet",
 	Image_EnemySpriteSheet = "Image_EnemySpriteSheet",
-	Image_Platform = "Image_Platform"
+	Image_Platform = "Image_Platform",
+	Image_SlimeSpriteSheet = "Image_SlimeSpriteSheet"
 }
 /* eslint-enable @typescript-eslint/camelcase */
 
@@ -39,6 +40,11 @@ export class AssetManager {
 		{
 			id: AssetName.Image_Platform,
 			src: "./Assets/As2/images/Platform.png",
+			type: AssetType.IMAGE
+		},
+		{
+			id: AssetName.Image_SlimeSpriteSheet,
+			src: "./Assets/As2/images/SlimePink.png",
 			type: AssetType.IMAGE
 		},
 	];

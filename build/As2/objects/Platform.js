@@ -23,8 +23,8 @@ export class Platform extends GameObject {
         this.addComponent(Collider, new Collider(this, {
             tag: ColliderTag.Platform,
             isTrigger: true,
-            size: this._size,
-            offset: { x: 0, y: 0 }
+            size: { width: this._size.width, height: 20 },
+            offset: { x: 0, y: -(this._size.height / 2) + 20 }
             // regXY: { x: this._size.width/2, y: this._size.height/2}
         }));
         // this.eventManager.addListener(EventName.GameObject_Init, () => {

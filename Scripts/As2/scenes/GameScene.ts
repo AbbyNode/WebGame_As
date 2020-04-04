@@ -23,20 +23,25 @@ export class GameScene extends Scene {
 		super(stage);
 		
 		const backgroundImg = Global.assetManager.getResult(AssetName.Image_Background);
-		this._background = new ScrollingBackground(backgroundImg, 2);
+		this._background = new ScrollingBackground(backgroundImg, 0.5);
 		this.stage.addChild(this._background.container);
 
 		const levelObjects: GameObject[] = [];
-
-		// const enemy = new Enemy();
-		// enemy.transform.position = {x: 400, y: 400};
-		// enemy.init(this.stage);
-		// levelObjects.push(enemy);
 
 		const platform = new Platform({ width: 200, height: 200 });
 		platform.transform.position = {x: 200, y: 500};
 		platform.init(this.stage);
 		levelObjects.push(platform);
+		
+		const platform2 = new Platform({ width: 200, height: 300 });
+		platform2.transform.position = {x: 500, y: 500};
+		platform2.init(this.stage);
+		levelObjects.push(platform2);
+		
+		const enemy = new Enemy();
+		enemy.transform.position = {x: 500, y: 300};
+		enemy.init(this.stage);
+		levelObjects.push(enemy);
 
 		this._scrollingLevel = new ScrollingLevel(levelObjects, this._background, 5);
 

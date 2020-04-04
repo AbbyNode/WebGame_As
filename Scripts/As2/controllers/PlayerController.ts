@@ -27,11 +27,11 @@ export class PlayerController {
 		this._keyboardInput.addKey("d", {
 			down: (): void => {
 				this._scrollingLevel.isScrolling = true;
-				this._player.getComponent(SpriteRenderer)?.sprite.gotoAndPlay("walk");
+				this._player.isMoving = true;
 			},
 			up: (): void => {
 				this._scrollingLevel.isScrolling = false;
-				this._player.getComponent(SpriteRenderer)?.sprite.gotoAndPlay("idle");
+				this._player.isMoving = false;
 			}
 		});
 		
