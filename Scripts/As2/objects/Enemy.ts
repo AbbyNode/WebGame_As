@@ -7,6 +7,13 @@ import { ColliderTag } from "../managers/ColliderTag.js";
 import { Mover } from "../../engine/components/Mover.js";
 import { EventName } from "../../engine/components/EventName.js";
 
+/**
+ * Enemy GameObject
+ *
+ * @export
+ * @class Enemy
+ * @extends {GameObject}
+ */
 export class Enemy extends GameObject {
 	private _spriteRenderer: SpriteRenderer;
 

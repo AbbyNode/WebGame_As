@@ -7,11 +7,34 @@ import { SceneName } from "./managers/SceneManager.js";
  * Creation Date: 2020, March
  * Description: 2D Scrolling Game
  * 
+ * Last Modified Date: 2020, April
+ * Last Modified By: Abby Shah
+ * 
+ * 
  * Revision History:
  * (See GitHub for detailed commit history)
  * 
- * v0.1:
+ * v0.7:
+ * Added health
  * 
+ * v0.6:
+ * Added win/lose conditions
+ * 
+ * v0.5:
+ * Added pickups
+ * 
+ * v0.4:
+ * Added enemies
+ * 
+ * v0.3:
+ * Added scrolling background
+ * Added scrolling levels
+ * 
+ * v0.2:
+ * Added player
+ * 
+ * v0.1:
+ * Added menus
  * 
  * @export
  * @class As2

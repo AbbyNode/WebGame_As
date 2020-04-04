@@ -7,6 +7,13 @@ import { ColliderTag } from "../managers/ColliderTag.js";
 import { Mover } from "../../engine/components/Mover.js";
 import { EventName } from "../../engine/components/EventName.js";
 
+/**
+ * Player GameObject. This class is the core of the player sprite and movement.
+ *
+ * @export
+ * @class Player
+ * @extends {GameObject}
+ */
 export class Player extends GameObject {
 	private _spriteRenderer: SpriteRenderer;
 

@@ -1,5 +1,12 @@
 import { Global } from "../managers/Global.js";
 
+/**
+ * Scrolling background loops a bitmap image to scroll across the screen by a specified amount.
+ * Can be used for paralax.
+ *
+ * @export
+ * @class ScrollingBackground
+ */
 export class ScrollingBackground {
 	private _scrollScale : number;
 	private _image : Object;
@@ -50,12 +57,24 @@ export class ScrollingBackground {
 		this._width = this._bitmap1.getBounds().width;
 	}
 
+	/**
+	 * Swaps the duplicate sprite to start the loop again.
+	 *
+	 * @private
+	 * @memberof ScrollingBackground
+	 */
 	private _scrollWarp() {
 		const bitmapTemp = this._bitmap1;
 		this._bitmap1 = this._bitmap2;
 		this._bitmap2 = bitmapTemp;
 	}
 
+	/**
+	 * Scrolls the background by specified amount
+	 *
+	 * @param {number} amount
+	 * @memberof ScrollingBackground
+	 */
 	public scroll(amount: number) {
 		this._bitmap1.x -= amount * this._scrollScale;
 

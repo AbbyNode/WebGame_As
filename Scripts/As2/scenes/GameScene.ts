@@ -11,6 +11,13 @@ import { ScrollingLevel } from "../objects/ScrollingLevel.js";
 import { GameObject } from "../../engine/gameobject/GameObject.js";
 import { Platform } from "../objects/Platform.js";
 
+/**
+ * The main game scene where all the game logic takes place.
+ *
+ * @export
+ * @class GameScene
+ * @extends {Scene}
+ */
 export class GameScene extends Scene {
 	private _background: ScrollingBackground;
 	private _scrollingLevel: ScrollingLevel;

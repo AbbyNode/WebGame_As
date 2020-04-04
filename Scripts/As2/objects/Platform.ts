@@ -9,6 +9,13 @@ import { Point2D } from "../../engine/interfaces/Point2D.js";
 import { Size2D } from "../../engine/interfaces/Size2D.js";
 import { ShapeRenderer } from "../../engine/components/ShapeRenderer.js";
 
+/**
+ * Platform GameObject
+ *
+ * @export
+ * @class Platform
+ * @extends {GameObject}
+ */
 export class Platform extends GameObject {
 	public static readonly fillColor = "#33ccff";
 	public static readonly fillColorHover = "#3399ff";

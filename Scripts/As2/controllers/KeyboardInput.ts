@@ -5,6 +5,12 @@ export type KeyMap = {
 	down: () => void;
 };
 
+/**
+ * Utility class to help track keyboard input.
+ *
+ * @export
+ * @class KeyboardInput
+ */
 export class KeyboardInput {
 	private _keyMap = new Map();
 	private _isDownMap = new Map();

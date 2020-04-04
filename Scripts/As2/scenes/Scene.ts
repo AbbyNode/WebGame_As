@@ -1,5 +1,12 @@
 import { GameObject } from "../../engine/gameobject/GameObject.js";
 
+/**
+ * Parent class for all scenes.
+ *
+ * @export
+ * @abstract
+ * @class Scene
+ */
 export abstract class Scene {
 	protected stage: createjs.Stage;
 	protected _objects: (createjs.DisplayObject | GameObject)[];

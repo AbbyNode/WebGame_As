@@ -19,6 +19,12 @@ export enum AssetType {
 	SOUND = "sound",
 }
 
+/**
+ * Asset manager initializes and tracks assets for the game.
+ *
+ * @export
+ * @class AssetManager
+ */
 export class AssetManager {
 	private _assetManifest = [
 		// Images
@@ -44,7 +50,7 @@ export class AssetManager {
 		},
 		{
 			id: AssetName.Image_SlimeSpriteSheet,
-			src: "./Assets/As2/images/SlimePink.png",
+			src: "./Assets/As2/images/SlimeBlue.png",
 			type: AssetType.IMAGE
 		},
 	];

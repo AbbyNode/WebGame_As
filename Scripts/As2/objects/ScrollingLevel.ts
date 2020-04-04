@@ -4,6 +4,13 @@ import { EventName } from "../../engine/components/EventName.js";
 import { Point2D } from "../../engine/interfaces/Point2D.js";
 import { ScrollingBackground } from "./ScrollingBackground.js";
 
+/**
+ * Scrolling Level class creates a level where the player stays stationary but the objects move as the player "scrolls".
+ * Ideal for 2D scrolling games.
+ *
+ * @export
+ * @class ScrollingLevel
+ */
 export class ScrollingLevel {
 	private _objects: GameObject[];
 	private _background: ScrollingBackground;
@@ -60,6 +67,12 @@ export class ScrollingLevel {
 		});
 	}
 
+	/**
+	 * Attempt to scroll to the right
+	 *
+	 * @private
+	 * @memberof ScrollingLevel
+	 */
 	private _attemptScrollRight(): void {
 		this._requestedMove = true;
 		this._allowedMovements = 0;
@@ -71,10 +84,22 @@ export class ScrollingLevel {
 		});
 	}
 
+	/**
+	 * Could not scroll due to collision
+	 *
+	 * @private
+	 * @memberof ScrollingLevel
+	 */
 	private _oneMoveRequestDenied(): void {
 		this._requestedMove = false;
 	}
 
+	/**
+	 * No collision with specified object
+	 *
+	 * @private
+	 * @memberof ScrollingLevel
+	 */
 	private _oneMoveRequestAccepted(): void {
 		if (this._requestedMove) {
 			this._allowedMovements++;
@@ -85,6 +110,12 @@ export class ScrollingLevel {
 		}
 	}
 
+	/**
+	 * No collision with any object, can scroll as requested
+	 *
+	 * @private
+	 * @memberof ScrollingLevel
+	 */
 	private _allMoveRequestsAccepted(): void {
 		this._objects.forEach(object => {
 			const newPos = object.transform.position;

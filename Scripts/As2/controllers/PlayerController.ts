@@ -4,6 +4,12 @@ import { ScrollingLevel } from "../objects/ScrollingLevel.js";
 import { SpriteRenderer } from "../../engine/components/SpriteRenderer.js";
 import { EventName } from "../../engine/components/EventName.js";
 
+/**
+ * Player Controller translates keyboard input into player movement and actions.
+ *
+ * @export
+ * @class PlayerController
+ */
 export class PlayerController {
 	private _player: Player;
 	private _scrollingLevel: ScrollingLevel;
