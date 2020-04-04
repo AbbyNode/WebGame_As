@@ -1,29 +1,44 @@
 import { KeyboardInput } from "./KeyboardInput.js";
-import { MoveDirection } from "../../engine/components/Mover.js";
-import { EventName } from "../../engine/components/EventName.js";
+import { SpriteRenderer } from "../../engine/components/SpriteRenderer.js";
 export class PlayerController {
-    constructor(player) {
+    constructor(player, scrollingLevel) {
         this._player = player;
+        this._scrollingLevel = scrollingLevel;
         this._keyboardInput = new KeyboardInput();
     }
     initWASD() {
-        // REMINDER when customizing controls, save and reuse the generated keymaps
-        this._keyboardInput.addKey("w", this.GenKeyMap(MoveDirection.Up));
-        this._keyboardInput.addKey("s", this.GenKeyMap(MoveDirection.Down));
-        this._keyboardInput.addKey("a", this.GenKeyMap(MoveDirection.Left));
-        this._keyboardInput.addKey("d", this.GenKeyMap(MoveDirection.Right));
-    }
-    GenKeyMap(direction) {
-        return {
+        // this._keyboardInput.addKey("a", {
+        // 	down: (): void => {
+        // 	},
+        // 	up: (): void => {
+        // 	}
+        // });
+        this._keyboardInput.addKey("d", {
             down: () => {
-                this._player.eventManager.invoke(EventName.Mover_RequestStart, direction);
-                // this._player.moveStart(direction);
+                var _a;
+                this._scrollingLevel.isScrolling = true;
+                (_a = this._player.getComponent(SpriteRenderer)) === null || _a === void 0 ? void 0 : _a.sprite.gotoAndPlay("walk");
             },
             up: () => {
-                this._player.eventManager.invoke(EventName.Mover_RequestStop, direction);
-                // this._player.moveStop(direction);
+                var _a;
+                this._scrollingLevel.isScrolling = false;
+                (_a = this._player.getComponent(SpriteRenderer)) === null || _a === void 0 ? void 0 : _a.sprite.gotoAndPlay("idle");
             }
-        };
+        });
+        this._keyboardInput.addKey("w", {
+            down: () => {
+                this._player.jump();
+            },
+            up: () => {
+                this._player.stopJump();
+            }
+        });
+        this._keyboardInput.addKey("s", {
+            down: () => {
+            },
+            up: () => {
+            }
+        });
     }
     destroy() {
         this._keyboardInput.destroy();

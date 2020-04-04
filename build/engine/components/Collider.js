@@ -23,8 +23,10 @@ export class Collider extends GameComponent {
         const graphics = new createjs.Graphics().beginStroke("#ff0000").drawRect(0, 0, data.size.width, data.size.height);
         this._debugShape = new createjs.Shape(graphics);
         // REMINDER: Don't hard-code regXY values
-        this._debugShape.regX = 32;
-        this._debugShape.regY = 32;
+        // this._debugShape.regX = 32;
+        // this._debugShape.regY = 32;
+        this._debugShape.regX = data.size.width / 2;
+        this._debugShape.regY = data.size.height / 2;
         this._debugShape.visible = Collider._debugViewEnabled;
         this.gameObject.container.addChild(this._debugShape);
         this._initEvents();
@@ -81,8 +83,10 @@ export class Collider extends GameComponent {
     }
     setPosition(position) {
         // this._aabb.position = Object.assign({}, position);
-        this._aabb.position.x = position.x + this._aabbOffset.x;
-        this._aabb.position.y = position.y + this._aabbOffset.y;
+        // world pos
+        this._aabb.position.x = position.x + this._aabbOffset.x - (this._aabb.size.width / 2);
+        this._aabb.position.y = position.y + this._aabbOffset.y - (this._aabb.size.height / 2);
+        // local pos
         this._debugShape.x = this._aabbOffset.x;
         this._debugShape.y = this._aabbOffset.y;
     }
@@ -161,8 +165,8 @@ export class Collider extends GameComponent {
         }
     }
     _setRequestedPosition(position) {
-        this._requestedAABB.position.x = position.x + this._aabbOffset.x;
-        this._requestedAABB.position.y = position.y + this._aabbOffset.y;
+        this._requestedAABB.position.x = position.x + this._aabbOffset.x - (this._aabb.size.width / 2);
+        this._requestedAABB.position.y = position.y + this._aabbOffset.y - (this._aabb.size.height / 2);
     }
     _acceptMoveRequest() {
         this.gameObject.eventManager.invoke(EventName.Collider_MoveRequestAccepted, this._requestedPos);
@@ -216,6 +220,7 @@ export class Collider extends GameComponent {
         if (index == -1) {
             this._currentTriggerOverlaps.push(otherCollider);
             this.gameObject.eventManager.invoke(EventName.Collider_TriggerEnter, otherCollider);
+            otherCollider.gameObject.eventManager.invoke(EventName.Collider_TriggerEnter, this);
         }
     }
     _removeTriggerOverlap(otherCollider) {
@@ -223,6 +228,7 @@ export class Collider extends GameComponent {
         if (index != -1) {
             this._currentTriggerOverlaps.splice(index, 1);
             this.gameObject.eventManager.invoke(EventName.Collider_TriggerExit, otherCollider);
+            otherCollider.gameObject.eventManager.invoke(EventName.Collider_TriggerExit, this);
         }
     }
     //#endregion

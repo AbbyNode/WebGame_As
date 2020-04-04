@@ -30,7 +30,8 @@ export class Enemy extends GameObject {
 				tag: ColliderTag.Enemy,
 				isTrigger: false,
 				size: { width: 40, height: 50 },
-				offset: { x: 14, y: 14 }
+				offset: { x: 0, y: 10 }
+				// regXY: { x: 32, y: 48 }
 			})
 		);
 

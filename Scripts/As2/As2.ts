@@ -51,7 +51,9 @@ new As2();
  *
  * https://opengameart.org/content/lpc-flames
  * 
+ * https://cdnb.artstation.com/p/assets/images/images/012/725/235/large/kailum-charter-smith-lava.jpg?1536193055
  * 
+ * https://opengameart.org/content/2d-platformer-volcano-pack-11
  * 
  */
 

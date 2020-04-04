@@ -10,6 +10,7 @@ export interface ColliderData {
 	isTrigger: boolean;
 	size: Size2D;
 	offset: Point2D;
+	// regXY: Point2D;
 }
 
 // FEATURE: Add priorities?
@@ -95,8 +96,10 @@ export class Collider extends GameComponent {
 		this._debugShape = new createjs.Shape(graphics);
 
 		// REMINDER: Don't hard-code regXY values
-		this._debugShape.regX = 32;
-		this._debugShape.regY = 32;
+		// this._debugShape.regX = 32;
+		// this._debugShape.regY = 32;
+		this._debugShape.regX = data.size.width/2;
+		this._debugShape.regY = data.size.height/2;
 		this._debugShape.visible = Collider._debugViewEnabled;
 
 		this.gameObject.container.addChild(this._debugShape);
@@ -153,9 +156,11 @@ export class Collider extends GameComponent {
 
 	public setPosition(position: Point2D): void {
 		// this._aabb.position = Object.assign({}, position);
-		this._aabb.position.x = position.x + this._aabbOffset.x;
-		this._aabb.position.y = position.y + this._aabbOffset.y;
+		// world pos
+		this._aabb.position.x = position.x + this._aabbOffset.x - (this._aabb.size.width/2);
+		this._aabb.position.y = position.y + this._aabbOffset.y - (this._aabb.size.height/2);
 
+		// local pos
 		this._debugShape.x = this._aabbOffset.x;
 		this._debugShape.y = this._aabbOffset.y;
 	}
@@ -246,8 +251,8 @@ export class Collider extends GameComponent {
 	}
 
 	private _setRequestedPosition(position: Point2D): void {
-		this._requestedAABB.position.x = position.x + this._aabbOffset.x;
-		this._requestedAABB.position.y = position.y + this._aabbOffset.y;
+		this._requestedAABB.position.x = position.x + this._aabbOffset.x - (this._aabb.size.width/2);
+		this._requestedAABB.position.y = position.y + this._aabbOffset.y - (this._aabb.size.height/2);
 	}
 
 	private _acceptMoveRequest(): void {
@@ -320,6 +325,7 @@ export class Collider extends GameComponent {
 		if (index == -1) {
 			this._currentTriggerOverlaps.push(otherCollider);
 			this.gameObject.eventManager.invoke(EventName.Collider_TriggerEnter, otherCollider);
+			otherCollider.gameObject.eventManager.invoke(EventName.Collider_TriggerEnter, this);
 		}
 	}
 
@@ -329,6 +335,7 @@ export class Collider extends GameComponent {
 		if (index != -1) {
 			this._currentTriggerOverlaps.splice(index, 1);
 			this.gameObject.eventManager.invoke(EventName.Collider_TriggerExit, otherCollider);
+			otherCollider.gameObject.eventManager.invoke(EventName.Collider_TriggerExit, this);
 		}
 	}
 

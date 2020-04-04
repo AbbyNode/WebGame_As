@@ -1,38 +1,56 @@
 import { Player } from "../objects/Player.js";
 import { KeyboardInput, KeyMap } from "./KeyboardInput.js";
-import { MoveDirection } from "../../engine/components/Mover.js";
+import { ScrollingLevel } from "../objects/ScrollingLevel.js";
+import { SpriteRenderer } from "../../engine/components/SpriteRenderer.js";
 import { EventName } from "../../engine/components/EventName.js";
 
 export class PlayerController {
 	private _player: Player;
+	private _scrollingLevel: ScrollingLevel;
 
 	private _keyboardInput: KeyboardInput;
 
-	constructor(player: Player) {
+	constructor(player: Player, scrollingLevel: ScrollingLevel) {
 		this._player = player;
+		this._scrollingLevel = scrollingLevel;
 
 		this._keyboardInput = new KeyboardInput();
 	}
 
 	public initWASD(): void {
-		// REMINDER when customizing controls, save and reuse the generated keymaps
-		this._keyboardInput.addKey("w", this.GenKeyMap(MoveDirection.Up));
-		this._keyboardInput.addKey("s", this.GenKeyMap(MoveDirection.Down));
-		this._keyboardInput.addKey("a", this.GenKeyMap(MoveDirection.Left));
-		this._keyboardInput.addKey("d", this.GenKeyMap(MoveDirection.Right));
-	}
-
-	private GenKeyMap(direction: MoveDirection): KeyMap {
-		return {
+		// this._keyboardInput.addKey("a", {
+		// 	down: (): void => {
+		// 	},
+		// 	up: (): void => {
+		// 	}
+		// });
+		this._keyboardInput.addKey("d", {
 			down: (): void => {
-				this._player.eventManager.invoke(EventName.Mover_RequestStart, direction);
-				// this._player.moveStart(direction);
+				this._scrollingLevel.isScrolling = true;
+				this._player.getComponent(SpriteRenderer)?.sprite.gotoAndPlay("walk");
 			},
 			up: (): void => {
-				this._player.eventManager.invoke(EventName.Mover_RequestStop, direction);
-				// this._player.moveStop(direction);
+				this._scrollingLevel.isScrolling = false;
+				this._player.getComponent(SpriteRenderer)?.sprite.gotoAndPlay("idle");
 			}
-		};
+		});
+		
+		this._keyboardInput.addKey("w", {
+			down: (): void => {
+				this._player.jump();
+			},
+			up: (): void => {
+				this._player.stopJump();
+			}
+		});
+		
+		this._keyboardInput.addKey("s", {
+			down: (): void => {
+			},
+			up: (): void => {
+
+			}
+		});
 	}
 
 	public destroy(): void {
