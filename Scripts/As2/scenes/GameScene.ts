@@ -46,7 +46,7 @@ export class GameScene extends Scene {
 		levelObjects.push(platform2);
 		
 		const enemy = new Enemy();
-		enemy.transform.position = {x: 500, y: 300};
+		enemy.transform.position = {x: 500, y: 330};
 		enemy.init(this.stage);
 		levelObjects.push(enemy);
 

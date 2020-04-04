@@ -5,6 +5,8 @@ import { AssetName } from "../managers/AssetManager.js";
 import { Collider } from "../../engine/components/Collider.js";
 import { ColliderTag } from "../managers/ColliderTag.js";
 import { EventName } from "../../engine/components/EventName.js";
+import { Bullet } from "./Bullet.js";
+import { SceneName } from "../managers/SceneManager.js";
 /**
  * Player GameObject. This class is the core of the player sprite and movement.
  *
@@ -18,12 +20,16 @@ export class Player extends GameObject {
         super();
         this._isMoving = false;
         this._jumpSpeed = 5;
-        this._jumpDuration = 600;
+        this._jumpDurationMax = 600;
+        this._jumpDurationMin = 200;
         this._numGrounds = 0;
         this._fallSpeed = 3;
+        this._canShoot = true;
+        this._shootDelay = 500;
         this._jumping = false;
         this._hasJump = true;
         this._grounded = false;
+        this._bullets = [];
         this._spriteRenderer = new SpriteRenderer(this, {
             images: [Global.assetManager.getResult(AssetName.Image_SlimeSpriteSheet)],
             frames: { width: 128, height: 128, regX: 64, regY: 64 },
@@ -34,7 +40,9 @@ export class Player extends GameObject {
                 // run: [2, 3, undefined, 0.2]
                 jump: [20, 23, "midair", 0.2],
                 midair: 24,
-                land: [25, 29, "idle", 0.2]
+                land: [25, 29, "idle", 0.2],
+                // shoot: [30, 39, undefined, 0.4],
+                shoot: [30, 39, "idle", 0.4],
             },
         });
         this.addComponent(SpriteRenderer, this._spriteRenderer);
@@ -52,6 +60,9 @@ export class Player extends GameObject {
         });
         this.eventManager.addListener(EventName.Collider_MoveRequestAccepted, (newPos) => {
             this.transform.position = newPos;
+            if (newPos.y >= 600) {
+                Global.sceneManager.setScene(SceneName.Lose);
+            }
         });
         this.eventManager.addListener(EventName.Collider_TriggerEnter, (collider) => {
             if (collider.tag == ColliderTag.Platform) {
@@ -87,6 +98,16 @@ export class Player extends GameObject {
             }
         }
     }
+    get canShoot() {
+        return this._canShoot;
+    }
+    set canShoot(v) {
+        this._canShoot = v;
+    }
+    init(stage) {
+        super.init(stage);
+        this._stage = stage;
+    }
     update() {
         super.update();
         if (this._jumping) {
@@ -99,6 +120,9 @@ export class Player extends GameObject {
             newPos.y += this._fallSpeed;
             this.eventManager.invoke(EventName.Collider_RequestMove, newPos);
         }
+        this._bullets.forEach(bullet => {
+            bullet.update();
+        });
     }
     jump() {
         if (this._jumping || !this._hasJump) {
@@ -109,15 +133,42 @@ export class Player extends GameObject {
         this._spriteRenderer.sprite.gotoAndPlay("jump");
         this._jumpingTimeout = setTimeout(() => {
             this._jumping = false;
-        }, this._jumpDuration);
+        }, this._jumpDurationMax);
     }
     stopJump() {
         if (!this._jumping) {
             return;
         }
-        this._jumping = false;
-        if (this._jumpingTimeout) {
-            clearTimeout(this._jumpingTimeout);
+        setTimeout(() => {
+            this._jumping = false;
+            if (this._jumpingTimeout) {
+                clearTimeout(this._jumpingTimeout);
+            }
+        }, this._jumpDurationMin);
+    }
+    shoot() {
+        if (!this._stage) {
+            throw new Error("Stage not found");
+        }
+        if (this._canShoot) {
+            this._canShoot = false;
+            this._spriteRenderer.sprite.gotoAndPlay("shoot");
+            const bullet = new Bullet();
+            const pos = this.transform.position;
+            pos.x += 10;
+            pos.y += 40;
+            bullet.transform.position = pos;
+            this._bullets.push(bullet);
+            bullet.eventManager.addListener(EventName.GameObject_Destroy, () => {
+                const index = this._bullets.indexOf(bullet);
+                if (index != -1) {
+                    this._bullets.splice(index, 1);
+                }
+            });
+            bullet.init(this._stage);
+            setTimeout(() => {
+                this._canShoot = true;
+            }, this._shootDelay);
         }
     }
 }

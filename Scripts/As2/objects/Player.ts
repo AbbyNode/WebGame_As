@@ -6,6 +6,8 @@ import { Collider } from "../../engine/components/Collider.js";
 import { ColliderTag } from "../managers/ColliderTag.js";
 import { Mover } from "../../engine/components/Mover.js";
 import { EventName } from "../../engine/components/EventName.js";
+import { Bullet } from "./Bullet.js";
+import { SceneName } from "../managers/SceneManager.js";
 
 /**
  * Player GameObject. This class is the core of the player sprite and movement.
@@ -15,12 +17,15 @@ import { EventName } from "../../engine/components/EventName.js";
  * @extends {GameObject}
  */
 export class Player extends GameObject {
+	private _stage?: createjs.Stage;
+
 	private _spriteRenderer: SpriteRenderer;
 
 	private _isMoving : boolean = false;
 
 	private _jumpSpeed: number = 5;
-	private _jumpDuration: number = 600;
+	private _jumpDurationMax: number = 600;
+	private _jumpDurationMin: number = 200;
 	private _jumping: boolean;
 	private _hasJump: boolean;
 	private _jumpingTimeout: any;
@@ -28,7 +33,11 @@ export class Player extends GameObject {
 	private _grounded: boolean;
 	private _numGrounds: number = 0;
 	private _fallSpeed: number = 3;
-
+	
+	private _canShoot : boolean = true;
+	private _shootDelay: number = 500;
+	private _bullets: Bullet[];
+	
 	//#region props
 
 	public get isMoving() : boolean {
@@ -45,6 +54,13 @@ export class Player extends GameObject {
 		}
 	}
 	
+	public get canShoot() : boolean {
+		return this._canShoot;
+	}
+	public set canShoot(v : boolean) {
+		this._canShoot = v;
+	}
+
 	//#endregion
 
 	constructor() {
@@ -53,6 +69,8 @@ export class Player extends GameObject {
 		this._jumping = false;
 		this._hasJump = true;
 		this._grounded = false;
+
+		this._bullets = [];
 
 		this._spriteRenderer = new SpriteRenderer(this, {
 			images: [Global.assetManager.getResult(AssetName.Image_SlimeSpriteSheet)],
@@ -64,7 +82,9 @@ export class Player extends GameObject {
 				// run: [2, 3, undefined, 0.2]
 				jump: [20, 23, "midair", 0.2],
 				midair: 24,
-				land: [25, 29, "idle", 0.2]
+				land: [25, 29, "idle", 0.2],
+				// shoot: [30, 39, undefined, 0.4],
+				shoot: [30, 39, "idle", 0.4],
 			},
 		});
 		this.addComponent(SpriteRenderer, this._spriteRenderer);
@@ -90,6 +110,10 @@ export class Player extends GameObject {
 
 		this.eventManager.addListener(EventName.Collider_MoveRequestAccepted, (newPos) => {
 			this.transform.position = newPos;
+
+			if (newPos.y >= 600) {
+				Global.sceneManager.setScene(SceneName.Lose);
+			}
 		});
 
 		this.eventManager.addListener(EventName.Collider_TriggerEnter, (collider) => {
@@ -113,6 +137,12 @@ export class Player extends GameObject {
 			}
 		});
 	}
+	
+	public init(stage: createjs.Stage): void {
+		super.init(stage);
+
+		this._stage = stage;
+	}
 
 	public update(): void {
 		super.update();
@@ -126,6 +156,10 @@ export class Player extends GameObject {
 			newPos.y += this._fallSpeed;
 			this.eventManager.invoke(EventName.Collider_RequestMove, newPos);
 		}
+
+		this._bullets.forEach(bullet => {
+			bullet.update();
+		});
 	}
 
 	public jump(): void {
@@ -139,17 +173,54 @@ export class Player extends GameObject {
 
 		this._jumpingTimeout = setTimeout(() => {
 			this._jumping = false;
-		}, this._jumpDuration);
+		}, this._jumpDurationMax);
 	}
 
 	stopJump() {
 		if (!this._jumping) {
 			return;
 		}
+		
+		setTimeout(() => {
+			this._jumping = false;
+			if (this._jumpingTimeout) {
+				clearTimeout(this._jumpingTimeout);
+			}
+		}, this._jumpDurationMin);
+	}
 
-		this._jumping = false;
-		if (this._jumpingTimeout) {
-			clearTimeout(this._jumpingTimeout);
+	shoot() {
+		if (!this._stage) {
+			throw new Error("Stage not found");
+		}
+
+		if (this._canShoot) {
+			this._canShoot = false;
+			
+			this._spriteRenderer.sprite.gotoAndPlay("shoot");
+
+			// Creation and destruction of this bullet is inexpensive and infrequent, so no pool required
+			const bullet = new Bullet();
+			
+			const pos = this.transform.position;
+			pos.x += 10;
+			pos.y += 40;
+			bullet.transform.position = pos;
+			
+			this._bullets.push(bullet);
+
+			bullet.eventManager.addListener(EventName.GameObject_Destroy, () => {
+				const index = this._bullets.indexOf(bullet);
+				if (index != -1) {
+					this._bullets.splice(index, 1);
+				}
+			});
+
+			bullet.init(this._stage);
+
+			setTimeout(() => {
+				this._canShoot = true;
+			}, this._shootDelay);
 		}
 	}
 }

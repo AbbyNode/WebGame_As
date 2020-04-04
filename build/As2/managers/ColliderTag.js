@@ -1,6 +1,7 @@
 export var ColliderTag;
 (function (ColliderTag) {
     ColliderTag["Player"] = "player";
+    ColliderTag["Bullet"] = "bullet";
     ColliderTag["Enemy"] = "enemy";
     ColliderTag["Platform"] = "platform";
     // Wall = "wall",

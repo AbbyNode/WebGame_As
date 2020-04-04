@@ -18,7 +18,7 @@ export class PlayerController {
         // 	up: (): void => {
         // 	}
         // });
-        this._keyboardInput.addKey("d", {
+        this._keyboardInput.addKey("d" /* D */, {
             down: () => {
                 this._scrollingLevel.isScrolling = true;
                 this._player.isMoving = true;
@@ -28,7 +28,7 @@ export class PlayerController {
                 this._player.isMoving = false;
             }
         });
-        this._keyboardInput.addKey("w", {
+        this._keyboardInput.addKey("w" /* W */, {
             down: () => {
                 this._player.jump();
             },
@@ -36,12 +36,20 @@ export class PlayerController {
                 this._player.stopJump();
             }
         });
-        this._keyboardInput.addKey("s", {
+        this._keyboardInput.addKey(" " /* Space */, {
             down: () => {
+                this._player.shoot();
             },
             up: () => {
+                // this._player.stopShoot();
             }
         });
+        // this._keyboardInput.addKey(Keys.S, {
+        // 	down: (): void => {
+        // 	},
+        // 	up: (): void => {
+        // 	}
+        // });
     }
     destroy() {
         this._keyboardInput.destroy();

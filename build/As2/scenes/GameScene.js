@@ -31,7 +31,7 @@ export class GameScene extends Scene {
         platform2.init(this.stage);
         levelObjects.push(platform2);
         const enemy = new Enemy();
-        enemy.transform.position = { x: 500, y: 300 };
+        enemy.transform.position = { x: 500, y: 330 };
         enemy.init(this.stage);
         levelObjects.push(enemy);
         this._scrollingLevel = new ScrollingLevel(levelObjects, this._background, 5);
