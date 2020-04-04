@@ -4,7 +4,9 @@ import { FunctionEmpty } from "../../engine/interfaces/CommonTypes.js";
 export enum AssetName {
 	// Images
 	// Image_SpriteSheet = "Image_SpriteSheet",
-	Image_Background = "Image_Background"
+	Image_Background = "Image_Background",
+	Image_PlayerSpriteSheet = "Image_PlayerSpriteSheet",
+	Image_EnemySpriteSheet = "Image_EnemySpriteSheet"
 }
 /* eslint-enable @typescript-eslint/camelcase */
 
@@ -21,6 +23,16 @@ export class AssetManager {
 		{
 			id: AssetName.Image_Background,
 			src: "./Assets/As2/images/background.png",
+			type: AssetType.IMAGE
+		},
+		{
+			id: AssetName.Image_PlayerSpriteSheet,
+			src: "./Assets/As2/images/WaterSpriteSheet.png",
+			type: AssetType.IMAGE
+		},
+		{
+			id: AssetName.Image_EnemySpriteSheet,
+			src: "./Assets/As2/images/FlameSpriteSheet.png",
 			type: AssetType.IMAGE
 		},
 	];

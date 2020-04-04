@@ -21,7 +21,7 @@ export class Global {
         this._assetManager = new AssetManager();
         this._sceneManager = new SceneManager(stage);
         Collider.init();
-        // Collider.toggleDebugView(true);
+        Collider.toggleDebugView(true);
     }
 }
 //# sourceMappingURL=Global.js.map

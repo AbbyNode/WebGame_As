@@ -7,19 +7,19 @@ import { ColliderTag } from "../managers/ColliderTag.js";
 import { Mover } from "../../engine/components/Mover.js";
 import { EventName } from "../../engine/components/EventName.js";
 
-export class Player extends GameObject {
+export class Enemy extends GameObject {
 	private _spriteRenderer: SpriteRenderer;
 
 	constructor() {
 		super();
 
 		this._spriteRenderer = new SpriteRenderer(this, {
-			images: [Global.assetManager.getResult(AssetName.Image_PlayerSpriteSheet)],
+			images: [Global.assetManager.getResult(AssetName.Image_EnemySpriteSheet)],
 			frames: { width: 64, height: 96, regX: 32, regY: 48 },
 			animations: {
-				idle: [5, 6, undefined, 0.1],
-				walk: [2, 3, undefined, 0.1],
-				// run: [2, 3, undefined, 0.2]
+				idle: [0, 3, undefined, 0.1],
+				// walk: [4, 7, undefined, 0.1],
+				// run: [4, 7, undefined, 0.2]
 			}
 		});
 		this.addComponent(SpriteRenderer, this._spriteRenderer);
@@ -27,14 +27,12 @@ export class Player extends GameObject {
 		this.addComponent(
 			Collider,
 			new Collider(this, {
-				tag: ColliderTag.Player,
+				tag: ColliderTag.Enemy,
 				isTrigger: false,
-				size: { width: 41, height: 60 },
-				offset: { x: 12, y: 4 }
+				size: { width: 40, height: 50 },
+				offset: { x: 14, y: 14 }
 			})
 		);
-
-		this.addComponent(Mover, new Mover(this));
 
 		this.eventManager.addListener(EventName.GameObject_Init, () => {
 			this._spriteRenderer.sprite.gotoAndPlay("idle");

@@ -35,6 +35,6 @@ export class Global {
 		this._sceneManager = new SceneManager(stage);
 
 		Collider.init();
-		// Collider.toggleDebugView(true);
+		Collider.toggleDebugView(true);
 	}
 }

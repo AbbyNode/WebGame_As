@@ -1,5 +1,5 @@
-import { Label } from "./Label.js";
-export class LabelNumber extends Label {
+import { Old_Label } from "./Label.js";
+export class Old_LabelNumber extends Old_Label {
     constructor(value, fontSize = "1", fontFamily = "Consolas", fontColor = "#000000", x = 0, y = 0, isCentered = false) {
         super(value.toString(), fontSize, fontFamily, fontColor, x, y, isCentered);
         this._value = value;

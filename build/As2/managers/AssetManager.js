@@ -4,6 +4,8 @@ export var AssetName;
     // Images
     // Image_SpriteSheet = "Image_SpriteSheet",
     AssetName["Image_Background"] = "Image_Background";
+    AssetName["Image_PlayerSpriteSheet"] = "Image_PlayerSpriteSheet";
+    AssetName["Image_EnemySpriteSheet"] = "Image_EnemySpriteSheet";
 })(AssetName || (AssetName = {}));
 /* eslint-enable @typescript-eslint/camelcase */
 export var AssetType;
@@ -20,6 +22,16 @@ export class AssetManager {
             {
                 id: AssetName.Image_Background,
                 src: "./Assets/As2/images/background.png",
+                type: AssetType.IMAGE
+            },
+            {
+                id: AssetName.Image_PlayerSpriteSheet,
+                src: "./Assets/As2/images/WaterSpriteSheet.png",
+                type: AssetType.IMAGE
+            },
+            {
+                id: AssetName.Image_EnemySpriteSheet,
+                src: "./Assets/As2/images/FlameSpriteSheet.png",
                 type: AssetType.IMAGE
             },
         ];

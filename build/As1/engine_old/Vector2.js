@@ -1,4 +1,4 @@
-export class Vector2 {
+export class Old_Vector2 {
     // CONSTRUCTOR
     constructor(x = 0, y = 0) {
         // PRIVATE INSTANCE
@@ -37,7 +37,7 @@ export class Vector2 {
         this._sqrMagnitude = sqrMagnitude;
     }
     get normalized() {
-        const vector2 = new Vector2(this.x, this.y);
+        const vector2 = new Old_Vector2(this.x, this.y);
         vector2.normalize();
         return vector2;
     }
@@ -56,22 +56,22 @@ export class Vector2 {
         this.y *= scalar;
     }
     static zero() {
-        return new Vector2(0, 0);
+        return new Old_Vector2(0, 0);
     }
     static one() {
-        return new Vector2(1, 1);
+        return new Old_Vector2(1, 1);
     }
     static up() {
-        return new Vector2(0, 1);
+        return new Old_Vector2(0, 1);
     }
     static down() {
-        return new Vector2(0, -1);
+        return new Old_Vector2(0, -1);
     }
     static right() {
-        return new Vector2(1, 0);
+        return new Old_Vector2(1, 0);
     }
     static left() {
-        return new Vector2(-1, 0);
+        return new Old_Vector2(-1, 0);
     }
     normalize() {
         const magnitude = this.magnitude;
@@ -81,7 +81,7 @@ export class Vector2 {
             return this;
         }
         else {
-            return Vector2.zero();
+            return Old_Vector2.zero();
         }
     }
     static dot(lhs, rhs) {
@@ -91,8 +91,8 @@ export class Vector2 {
      * Returns distance between p1 and p2
      *
      * @static
-     * @param {Vector2} p1
-     * @param {Vector2} p2
+     * @param {Old_Vector2} p1
+     * @param {Old_Vector2} p2
      * @returns {number}
      * @memberof Vector2
      */
@@ -106,8 +106,8 @@ export class Vector2 {
      * Return square distance between p1 and p2
      *
      * @static
-     * @param {Vector2} p1
-     * @param {Vector2} p2
+     * @param {Old_Vector2} p1
+     * @param {Old_Vector2} p2
      * @returns {number}
      * @memberof Vector2
      */
@@ -117,7 +117,7 @@ export class Vector2 {
         return xDiff * xDiff + yDiff * yDiff;
     }
     static subtract(lhs, rhs) {
-        return new Vector2(lhs.x - rhs.x, lhs.y - rhs.y);
+        return new Old_Vector2(lhs.x - rhs.x, lhs.y - rhs.y);
     }
 }
 //# sourceMappingURL=Vector2.js.map

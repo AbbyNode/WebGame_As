@@ -1,5 +1,5 @@
-import { Vector2 } from "./Vector2.js";
-export class GameObject extends createjs.Bitmap {
+import { Old_Vector2 } from "./Vector2.js";
+export class Old_GameObject extends createjs.Bitmap {
     // CONSTRUCTOR
     /**
      * Creates an instance of GameObject.
@@ -17,10 +17,10 @@ export class GameObject extends createjs.Bitmap {
         this._halfWidth = 0;
         this._halfHeight = 0;
         this._isColliding = false;
-        this._position = new Vector2(0, 0);
+        this._position = new Old_Vector2(0, 0);
         this._isCentered = false;
         this.image.addEventListener("load", () => {
-            this.position = new Vector2(x, y);
+            this.position = new Old_Vector2(x, y);
             this.width = this.getBounds().width;
             this.height = this.getBounds().height;
             this.isCentered = isCentered;
