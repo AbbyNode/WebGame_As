@@ -3,6 +3,7 @@ export var AssetName;
 (function (AssetName) {
     // Images
     // Image_SpriteSheet = "Image_SpriteSheet",
+    AssetName["Image_Background"] = "Image_Background";
 })(AssetName || (AssetName = {}));
 /* eslint-enable @typescript-eslint/camelcase */
 export var AssetType;
@@ -15,12 +16,12 @@ export var AssetType;
 export class AssetManager {
     constructor() {
         this._assetManifest = [
-        // Images
-        // {
-        // 	id: AssetName.Image_SpriteSheet,
-        // 	src: "./assets/images/AgentMorris_SpriteSheet.png",
-        // 	type: AssetType.IMAGE
-        // },
+            // Images
+            {
+                id: AssetName.Image_Background,
+                src: "./Assets/As2/images/background.png",
+                type: AssetType.IMAGE
+            },
         ];
         this._loadQueue = new createjs.LoadQueue();
         this._loadQueue.installPlugin(createjs.Sound);

@@ -4,6 +4,7 @@ import { FunctionEmpty } from "../../engine/interfaces/CommonTypes.js";
 export enum AssetName {
 	// Images
 	// Image_SpriteSheet = "Image_SpriteSheet",
+	Image_Background = "Image_Background"
 }
 /* eslint-enable @typescript-eslint/camelcase */
 
@@ -17,11 +18,11 @@ export enum AssetType {
 export class AssetManager {
 	private _assetManifest = [
 		// Images
-		// {
-		// 	id: AssetName.Image_SpriteSheet,
-		// 	src: "./assets/images/AgentMorris_SpriteSheet.png",
-		// 	type: AssetType.IMAGE
-		// },
+		{
+			id: AssetName.Image_Background,
+			src: "./Assets/As2/images/background.png",
+			type: AssetType.IMAGE
+		},
 	];
 
 	private _loadQueue: createjs.LoadQueue;

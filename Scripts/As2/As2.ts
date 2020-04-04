@@ -26,13 +26,16 @@ export class As2 extends Game {
 		super();
 		
 		Global.init(this._stage);
-		Global.assetManager.onComplete(this.Start, this);
+		Global.assetManager.onComplete(this.OnAssetLoad, this);
 		Global.assetManager.load();
 	}
 
 	public Start(): void {
-		Global.sceneManager.setScene(SceneName.Menu);
 		super.Start();
+	}
+
+	public OnAssetLoad(): void {
+		Global.sceneManager.setScene(SceneName.Menu);
 	}
 
 	public Update(): void {

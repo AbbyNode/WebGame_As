@@ -22,12 +22,14 @@ export class As2 extends Game {
     constructor() {
         super();
         Global.init(this._stage);
-        Global.assetManager.onComplete(this.Start, this);
+        Global.assetManager.onComplete(this.OnAssetLoad, this);
         Global.assetManager.load();
     }
     Start() {
-        Global.sceneManager.setScene(SceneName.Menu);
         super.Start();
+    }
+    OnAssetLoad() {
+        Global.sceneManager.setScene(SceneName.Menu);
     }
     Update() {
         Global.sceneManager.update();
@@ -37,6 +39,9 @@ export class As2 extends Game {
 new As2();
 /**
  * Asset Sources
+ *
+ * https://opengameart.org/content/lpc-flames
+ *
  *
  *
  */
