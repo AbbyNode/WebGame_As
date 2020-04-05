@@ -1,11 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/camelcase */
 export var AssetName;
 (function (AssetName) {
     // Images
@@ -15,8 +7,11 @@ export var AssetName;
     AssetName["Image_SlimeSpriteSheet"] = "Image_SlimeSpriteSheet";
     AssetName["Image_EnemySpriteSheet"] = "Image_EnemySpriteSheet";
     AssetName["Image_PortalSpriteSheet"] = "Image_PortalSpriteSheet";
+    AssetName["Image_Pickup"] = "Image_Pickup";
+    // Sounds
     AssetName["Sound_BackgroundMusic"] = "Sound_BackgroundMusic";
     AssetName["Sound_Shoot"] = "Sound_Shoot";
+    AssetName["Sound_Pickup"] = "Sound_Pickup";
     AssetName["Sound_EnemyDie"] = "Sound_EnemyDie";
     AssetName["Sound_SlimeDie"] = "Sound_SlimeDie";
 })(AssetName || (AssetName = {}));
@@ -64,6 +59,11 @@ export class AssetManager {
                 src: "./Assets/As2/images/PortalSpriteSheet_Purple.png",
                 type: AssetType.IMAGE
             },
+            {
+                id: AssetName.Image_Pickup,
+                src: "./Assets/As2/images/strawberry.png",
+                type: AssetType.IMAGE
+            },
             // Sounds
             {
                 id: AssetName.Sound_BackgroundMusic,
@@ -73,6 +73,11 @@ export class AssetManager {
             {
                 id: AssetName.Sound_Shoot,
                 src: "./Assets/As2/sounds/Spit_Splat_2-Mike_Koenig-1283100514.mp3",
+                type: AssetType.SOUND
+            },
+            {
+                id: AssetName.Sound_Pickup,
+                src: "./Assets/As2/sounds/Blop-Mark_DiAngelo-79054334.mp3",
                 type: AssetType.SOUND
             },
             {

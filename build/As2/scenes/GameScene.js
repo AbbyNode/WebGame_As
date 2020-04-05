@@ -53,10 +53,19 @@ export class GameScene extends Scene {
         this._scrollingLevel.init();
         this._playerController.initWASD();
         this._player.eventManager.addListener(EventName.Collider_TriggerEnter, (collider) => {
+            // Player collide with enemy
             if (collider.tag == ColliderTag.Enemy) {
                 this._loseLife();
                 this._hurtOverlay.show();
                 createjs.Sound.play(AssetName.Sound_SlimeDie);
+                if (collider.gameObject instanceof GameObject) {
+                    collider.gameObject.destroy();
+                }
+            }
+            // Player collide with pickup
+            if (collider.tag == ColliderTag.Pickup) {
+                Global.score += 5;
+                createjs.Sound.play(AssetName.Sound_Pickup);
                 if (collider.gameObject instanceof GameObject) {
                     collider.gameObject.destroy();
                 }

@@ -1,13 +1,5 @@
 import { FunctionEmpty } from "../../engine/interfaces/CommonTypes.js";
 
-/* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/camelcase */
 export enum AssetName {
 	// Images
 	// Image_SpriteSheet = "Image_SpriteSheet",
@@ -16,10 +8,13 @@ export enum AssetName {
 	Image_SlimeSpriteSheet = "Image_SlimeSpriteSheet",
 	Image_EnemySpriteSheet = "Image_EnemySpriteSheet",
 	Image_PortalSpriteSheet = "Image_PortalSpriteSheet",
+	Image_Pickup = "Image_Pickup",
+	// Sounds
 	Sound_BackgroundMusic = "Sound_BackgroundMusic",
 	Sound_Shoot = "Sound_Shoot",
+	Sound_Pickup = "Sound_Pickup",
 	Sound_EnemyDie = "Sound_EnemyDie",
-	Sound_SlimeDie = "Sound_SlimeDie"
+	Sound_SlimeDie = "Sound_SlimeDie",
 }
 /* eslint-enable @typescript-eslint/camelcase */
 
@@ -65,6 +60,11 @@ export class AssetManager {
 			src: "./Assets/As2/images/PortalSpriteSheet_Purple.png",
 			type: AssetType.IMAGE
 		},
+		{
+			id: AssetName.Image_Pickup,
+			src: "./Assets/As2/images/strawberry.png",
+			type: AssetType.IMAGE
+		},
 
 		// Sounds
 		{
@@ -75,6 +75,11 @@ export class AssetManager {
 		{
 			id: AssetName.Sound_Shoot,
 			src: "./Assets/As2/sounds/Spit_Splat_2-Mike_Koenig-1283100514.mp3",
+			type: AssetType.SOUND
+		},
+		{
+			id: AssetName.Sound_Pickup,
+			src: "./Assets/As2/sounds/Blop-Mark_DiAngelo-79054334.mp3",
 			type: AssetType.SOUND
 		},
 		{

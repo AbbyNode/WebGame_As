@@ -2,6 +2,7 @@ import { GameObject } from "../../engine/gameobject/GameObject.js";
 import { Platform } from "../objects/Platform.js";
 import { Enemy } from "../objects/Enemy.js";
 import { Portal } from "../objects/Portal.js";
+import { Pickup } from "../objects/Pickup.js";
 
 export class LevelGenerator {
 	public static GenerateLevel(stage: createjs.Stage, platformCount: number = 10): GameObject[] {
@@ -10,8 +11,11 @@ export class LevelGenerator {
 		const heightValues = [200, 300, 400];
 		const distanceValues = [0, 100, 200, 300];
 
-		const enemyXVariation = [-60, 0, 60]
+		const enemyXVariation = [-60, 0, 60];
 		const enemyYValues = [360, 310, 260];
+		
+		const pickupXVariation = [-100, 0, 100];
+		const pickupYValues = [260, 210, 160];
 
 		let x = 200;
 
@@ -28,6 +32,7 @@ export class LevelGenerator {
 
 			//
 
+			// Generate platforms
 			let heightIndex = LevelGenerator.RandomInt(0, heightValues.length-1);
 			let height = heightValues[heightIndex];
 
@@ -37,6 +42,7 @@ export class LevelGenerator {
 
 			//
 
+			// Generate enemies
 			if (Math.random() >= 0.6) {
 				const xVarIndex = LevelGenerator.RandomInt(0, enemyXVariation.length-1);
 				const xVar = enemyXVariation[xVarIndex];
@@ -46,6 +52,18 @@ export class LevelGenerator {
 				const enemy = LevelGenerator.GenerateEnemy(x + xVar, enemyY);
 				enemy.init(stage);
 				levelObjects.push(enemy);
+			}
+
+			// Generate pickups
+			if (Math.random() >= 0.4) {
+				const xVarIndex = LevelGenerator.RandomInt(0, pickupXVariation.length-1);
+				const xVar = pickupXVariation[xVarIndex];
+
+				const pickupY = pickupYValues[heightIndex];
+
+				const pickup = LevelGenerator.GeneratePickup(x + xVar, pickupY);
+				pickup.init(stage);
+				levelObjects.push(pickup);
 			}
 		}
 
@@ -76,6 +94,12 @@ export class LevelGenerator {
 		const enemy = new Enemy();
 		enemy.transform.position = {x: x, y: y};
 		return enemy;
+	}
+
+	public static GeneratePickup(x: number, y: number): GameObject {
+		const pickup = new Pickup();
+		pickup.transform.position = {x: x, y: y};
+		return pickup;
 	}
 
 	// https://stackoverflow.com/questions/4959975/generate-random-number-between-two-numbers-in-javascript

@@ -76,6 +76,8 @@ new As2();
  *
  * https://elthen.itch.io/2d-pixel-art-portal-sprites
  *
+ * https://opengameart.org/content/platform-game-sprites
+ *
  *
  * Sound
  *
@@ -87,8 +89,7 @@ new As2();
  *
  * http://soundbible.com/1728-Spit-Splat-2.html
  *
- *
- *
+ * http://soundbible.com/2067-Blop.html
  *
  */
 //# sourceMappingURL=As2.js.map

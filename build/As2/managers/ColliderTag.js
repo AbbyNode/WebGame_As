@@ -5,7 +5,6 @@ export var ColliderTag;
     ColliderTag["Enemy"] = "enemy";
     ColliderTag["Platform"] = "platform";
     ColliderTag["Portal"] = "portal";
-    // Wall = "wall",
-    // Exit = "exit"
+    ColliderTag["Pickup"] = "pickup";
 })(ColliderTag || (ColliderTag = {}));
 //# sourceMappingURL=ColliderTag.js.map
