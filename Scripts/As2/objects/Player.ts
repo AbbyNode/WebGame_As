@@ -95,7 +95,7 @@ export class Player extends GameObject {
 			Collider,
 			new Collider(this, {
 				tag: ColliderTag.Player,
-				isTrigger: false,
+				isTrigger: true,
 				size: { width: 48, height: 20 },
 				offset: { x: 0, y: 60 },
 			})

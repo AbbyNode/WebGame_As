@@ -54,6 +54,11 @@ export class ScrollingLevel {
 			object.eventManager.addListener(EventName.Collider_MoveRequestDenied, () => {
 				this._oneMoveRequestDenied();
 			});
+			object.eventManager.addListener(EventName.GameObject_Destroy, () => {
+				const index = this._objects.indexOf(object);
+				this._objects.splice(index, 1);
+				this._objectCount--;
+			});
 		});
 	}
 

@@ -220,7 +220,7 @@ export class Collider extends GameComponent {
         if (index == -1) {
             this._currentTriggerOverlaps.push(otherCollider);
             this.gameObject.eventManager.invoke(EventName.Collider_TriggerEnter, otherCollider);
-            otherCollider.gameObject.eventManager.invoke(EventName.Collider_TriggerEnter, this);
+            // otherCollider.gameObject.eventManager.invoke(EventName.Collider_TriggerEnter, this);
         }
     }
     _removeTriggerOverlap(otherCollider) {
@@ -228,7 +228,7 @@ export class Collider extends GameComponent {
         if (index != -1) {
             this._currentTriggerOverlaps.splice(index, 1);
             this.gameObject.eventManager.invoke(EventName.Collider_TriggerExit, otherCollider);
-            otherCollider.gameObject.eventManager.invoke(EventName.Collider_TriggerExit, this);
+            // otherCollider.gameObject.eventManager.invoke(EventName.Collider_TriggerExit, this);
         }
     }
     //#endregion

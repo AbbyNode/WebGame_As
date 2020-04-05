@@ -2,6 +2,7 @@ import { GameObject } from "../../engine/gameobject/GameObject.js";
 import { ShapeRenderer } from "../../engine/components/ShapeRenderer.js";
 import { Collider } from "../../engine/components/Collider.js";
 import { ColliderTag } from "../managers/ColliderTag.js";
+import { EventName } from "../../engine/components/EventName.js";
 export class Bullet extends GameObject {
     constructor() {
         super();
@@ -24,11 +25,29 @@ export class Bullet extends GameObject {
         setTimeout(() => {
             this.destroy();
         }, this._duration);
+        this.eventManager.addListener(EventName.Collider_MoveRequestAccepted, (newPos) => {
+            this.transform.position = newPos;
+        });
+        this.eventManager.addListener(EventName.Collider_MoveRequestDenied, (newPos) => {
+            this.transform.position = newPos;
+        });
+        this.eventManager.addListener(EventName.Collider_TriggerEnter, (collider) => {
+            if (collider instanceof Collider) {
+                if (collider.tag == ColliderTag.Enemy) {
+                    // console.log(collider);
+                    // console.trace();
+                    // console.log(collider.gameObject);
+                    collider.gameObject.destroy();
+                    this.destroy();
+                }
+            }
+        });
     }
     update() {
+        super.update();
         const newPos = this.transform.position;
         newPos.x += this._speed;
-        this.transform.position = newPos;
+        this.eventManager.invoke(EventName.Collider_RequestMove, newPos);
     }
 }
 Bullet.fillColor = "#33ccff";

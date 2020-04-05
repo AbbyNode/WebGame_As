@@ -4,7 +4,7 @@ import { Portal } from "../objects/Portal.js";
 export class LevelGenerator {
     static GenerateLevel(stage) {
         const levelObjects = [];
-        const platformCount = 2;
+        const platformCount = 10;
         const heightValues = [200, 300, 400];
         const distanceValues = [0, 100, 200, 300];
         const enemyXVariation = [-60, 0, 60];

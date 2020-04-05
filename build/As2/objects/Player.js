@@ -49,7 +49,7 @@ export class Player extends GameObject {
         this._spriteRenderer.sprite.scaleX = -1;
         this.addComponent(Collider, new Collider(this, {
             tag: ColliderTag.Player,
-            isTrigger: false,
+            isTrigger: true,
             size: { width: 48, height: 20 },
             offset: { x: 0, y: 60 },
         }));
