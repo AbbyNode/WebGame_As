@@ -29,7 +29,7 @@ export class GameScene extends Scene {
 	private _playerController: PlayerController;
 	private _playerScreenPos: Point2D;
 	
-	private _goopManager: GoopManager;
+	// private _goopManager: GoopManager;
 
 	constructor(stage: createjs.Stage) {
 		super(stage);
@@ -42,7 +42,7 @@ export class GameScene extends Scene {
 
 		this._scrollingLevel = new ScrollingLevel(levelObjects, this._background, 5);
 
-		this._playerScreenPos = {x: 200, y: 300};
+		this._playerScreenPos = {x: 200, y: 100};
 
 		this._player = new Player();
 		this._player.transform.position = this._playerScreenPos;

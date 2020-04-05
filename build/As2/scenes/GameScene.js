@@ -15,6 +15,7 @@ import { LevelGenerator } from "../managers/LevelGenerator.js";
  * @extends {Scene}
  */
 export class GameScene extends Scene {
+    // private _goopManager: GoopManager;
     constructor(stage) {
         super(stage);
         const backgroundImg = Global.assetManager.getResult(AssetName.Image_Background);
@@ -22,7 +23,7 @@ export class GameScene extends Scene {
         this.stage.addChild(this._background.container);
         const levelObjects = LevelGenerator.GenerateLevel(this.stage);
         this._scrollingLevel = new ScrollingLevel(levelObjects, this._background, 5);
-        this._playerScreenPos = { x: 200, y: 300 };
+        this._playerScreenPos = { x: 200, y: 100 };
         this._player = new Player();
         this._player.transform.position = this._playerScreenPos;
         this._player.init(this.stage);
