@@ -12,10 +12,10 @@ export class Label extends GameObject {
 		this._textRenderer.text = text;
 	}
 
-	constructor(text: string, centered = false) {
+	constructor(text: string, centered: boolean = false, color: string = "black") {
 		super();
 
-		this._textRenderer = new TextRenderer(this, text);
+		this._textRenderer = new TextRenderer(this, text, color);
 		if (centered) {
 			this._textRenderer.centered = centered;
 		}

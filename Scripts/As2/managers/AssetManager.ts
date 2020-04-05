@@ -1,6 +1,9 @@
 import { FunctionEmpty } from "../../engine/interfaces/CommonTypes.js";
 
 /* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
 export enum AssetName {
 	// Images
 	// Image_SpriteSheet = "Image_SpriteSheet",
@@ -8,7 +11,10 @@ export enum AssetName {
 	Image_Platform = "Image_Platform",
 	Image_SlimeSpriteSheet = "Image_SlimeSpriteSheet",
 	Image_EnemySpriteSheet = "Image_EnemySpriteSheet",
-	Image_PortalSpriteSheet = "Image_PortalSpriteSheet"
+	Image_PortalSpriteSheet = "Image_PortalSpriteSheet",
+	Sound_BackgroundMusic = "Sound_BackgroundMusic",
+	Sound_Shoot = "Sound_Shoot",
+	Sound_EnemyDie = "Sound_EnemyDie",
 }
 /* eslint-enable @typescript-eslint/camelcase */
 
@@ -40,7 +46,8 @@ export class AssetManager {
 		},
 		{
 			id: AssetName.Image_SlimeSpriteSheet,
-			src: "./Assets/As2/images/SlimeBlue.png",
+			// src: "./Assets/As2/images/SlimeBlue.png",
+			src: "./Assets/As2/images/SlimePink.png",
 			type: AssetType.IMAGE
 		},
 		{
@@ -52,6 +59,23 @@ export class AssetManager {
 			id: AssetName.Image_PortalSpriteSheet,
 			src: "./Assets/As2/images/PortalSpriteSheet_Purple.png",
 			type: AssetType.IMAGE
+		},
+
+		// Sounds
+		{
+			id: AssetName.Sound_BackgroundMusic,
+			src: "./Assets/As2/sounds/SLOWER-TEMPO2019-12-09_-_Retro_Forest_-_David_Fesliyan.mp3",
+			type: AssetType.SOUND
+		},
+		{
+			id: AssetName.Sound_Shoot,
+			src: "./Assets/As2/sounds/Spit_Splat_2-Mike_Koenig-1283100514.mp3",
+			type: AssetType.SOUND
+		},
+		{
+			id: AssetName.Sound_EnemyDie,
+			src: "./Assets/As2/sounds/Flame Arrow-SoundBible.com-618067908.mp3",
+			type: AssetType.SOUND
 		},
 	];
 

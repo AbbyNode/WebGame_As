@@ -37,6 +37,8 @@ export class Player extends GameObject {
 	private _canShoot : boolean = true;
 	private _shootDelay: number = 500;
 	private _bullets: Bullet[];
+
+	private _died: boolean = false;
 	
 	//#region props
 
@@ -45,7 +47,7 @@ export class Player extends GameObject {
 	}
 	public set isMoving(v : boolean) {
 		this._isMoving = v;
-		if (this._grounded) {
+		if (this._grounded && !this._died) {
 			if (this._isMoving) {
 				this._spriteRenderer.sprite.gotoAndPlay("walk");
 			} else {
@@ -72,6 +74,8 @@ export class Player extends GameObject {
 
 		this._bullets = [];
 
+		this._died = false;
+
 		this._spriteRenderer = new SpriteRenderer(this, {
 			images: [Global.assetManager.getResult(AssetName.Image_SlimeSpriteSheet)],
 			frames: { width: 128, height: 128, regX: 64, regY: 64 },
@@ -85,6 +89,8 @@ export class Player extends GameObject {
 				land: [25, 29, "idle", 0.2],
 				// shoot: [30, 39, undefined, 0.4],
 				shoot: [30, 39, "idle", 0.4],
+				die: [40, 48, "dead", 0.2],
+				dead: 49,
 			},
 		});
 		this.addComponent(SpriteRenderer, this._spriteRenderer);
@@ -120,7 +126,9 @@ export class Player extends GameObject {
 			if (collider.tag == ColliderTag.Platform) {
 				if (!this._grounded) {
 					this._grounded = true;
-					this._spriteRenderer.sprite.gotoAndPlay("land");
+					if (!this._died) {
+						this._spriteRenderer.sprite.gotoAndPlay("land");
+					}
 				}
 
 				this._numGrounds++;
@@ -169,14 +177,16 @@ export class Player extends GameObject {
 
 		this._hasJump = false;
 		this._jumping = true;
-		this._spriteRenderer.sprite.gotoAndPlay("jump");
+		if (!this._died) {
+			this._spriteRenderer.sprite.gotoAndPlay("jump");
+		}
 
 		this._jumpingTimeout = setTimeout(() => {
 			this._jumping = false;
 		}, this._jumpDurationMax);
 	}
 
-	stopJump() {
+	public stopJump(): void {
 		if (!this._jumping) {
 			return;
 		}
@@ -189,15 +199,17 @@ export class Player extends GameObject {
 		}, this._jumpDurationMin);
 	}
 
-	shoot() {
+	public shoot(): void {
 		if (!this._stage) {
 			throw new Error("Stage not found");
 		}
 
-		if (this._canShoot) {
+		if (this._canShoot && !this._died) {
 			this._canShoot = false;
 			
 			this._spriteRenderer.sprite.gotoAndPlay("shoot");
+			
+			createjs.Sound.play(AssetName.Sound_Shoot);
 
 			// Creation and destruction of this bullet is inexpensive and infrequent, so no pool required
 			const bullet = new Bullet();
@@ -222,5 +234,10 @@ export class Player extends GameObject {
 				this._canShoot = true;
 			}, this._shootDelay);
 		}
+	}
+
+	public die(): void {
+		this._died = true;
+		this._spriteRenderer.sprite.gotoAndPlay("die");
 	}
 }

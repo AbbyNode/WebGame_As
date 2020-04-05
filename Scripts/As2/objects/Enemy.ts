@@ -17,6 +17,8 @@ import { EventName } from "../../engine/components/EventName.js";
 export class Enemy extends GameObject {
 	private _spriteRenderer: SpriteRenderer;
 
+	private _scoreOnKill: number = 10;
+
 	constructor() {
 		super();
 
@@ -45,5 +47,11 @@ export class Enemy extends GameObject {
 		this.eventManager.addListener(EventName.GameObject_Init, () => {
 			this._spriteRenderer.sprite.gotoAndPlay("idle");
 		});
+	}
+
+	public kill(): void {
+		createjs.Sound.play(AssetName.Sound_EnemyDie);
+		Global.score += this._scoreOnKill;
+		this.destroy();
 	}
 }

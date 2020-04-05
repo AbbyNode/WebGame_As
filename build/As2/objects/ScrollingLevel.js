@@ -49,7 +49,8 @@ export class ScrollingLevel {
         });
     }
     destroy() {
-        this._objects.forEach(object => {
+        const objectsTemp = Object.assign([], this._objects);
+        objectsTemp.forEach(object => {
             object.destroy();
         });
     }

@@ -73,7 +73,9 @@ export class ScrollingLevel {
 	}
 	
 	destroy() {
-		this._objects.forEach(object => {
+		const objectsTemp: GameObject[] = Object.assign([], this._objects);
+
+		objectsTemp.forEach(object => {
 			object.destroy();
 		});
 	}

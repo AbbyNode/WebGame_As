@@ -154,6 +154,10 @@ export class Collider extends GameComponent {
 		this.gameObject.container.removeChild(this._debugShape);
 	}
 
+	public static destroyAll(): void {
+		this._colliders = [];
+	}
+
 	public setPosition(position: Point2D): void {
 		// this._aabb.position = Object.assign({}, position);
 		// world pos

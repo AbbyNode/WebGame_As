@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
 export var AssetName;
 (function (AssetName) {
     // Images
@@ -8,6 +11,9 @@ export var AssetName;
     AssetName["Image_SlimeSpriteSheet"] = "Image_SlimeSpriteSheet";
     AssetName["Image_EnemySpriteSheet"] = "Image_EnemySpriteSheet";
     AssetName["Image_PortalSpriteSheet"] = "Image_PortalSpriteSheet";
+    AssetName["Sound_BackgroundMusic"] = "Sound_BackgroundMusic";
+    AssetName["Sound_Shoot"] = "Sound_Shoot";
+    AssetName["Sound_EnemyDie"] = "Sound_EnemyDie";
 })(AssetName || (AssetName = {}));
 /* eslint-enable @typescript-eslint/camelcase */
 export var AssetType;
@@ -39,7 +45,8 @@ export class AssetManager {
             },
             {
                 id: AssetName.Image_SlimeSpriteSheet,
-                src: "./Assets/As2/images/SlimeBlue.png",
+                // src: "./Assets/As2/images/SlimeBlue.png",
+                src: "./Assets/As2/images/SlimePink.png",
                 type: AssetType.IMAGE
             },
             {
@@ -51,6 +58,22 @@ export class AssetManager {
                 id: AssetName.Image_PortalSpriteSheet,
                 src: "./Assets/As2/images/PortalSpriteSheet_Purple.png",
                 type: AssetType.IMAGE
+            },
+            // Sounds
+            {
+                id: AssetName.Sound_BackgroundMusic,
+                src: "./Assets/As2/sounds/SLOWER-TEMPO2019-12-09_-_Retro_Forest_-_David_Fesliyan.mp3",
+                type: AssetType.SOUND
+            },
+            {
+                id: AssetName.Sound_Shoot,
+                src: "./Assets/As2/sounds/Spit_Splat_2-Mike_Koenig-1283100514.mp3",
+                type: AssetType.SOUND
+            },
+            {
+                id: AssetName.Sound_EnemyDie,
+                src: "./Assets/As2/sounds/Flame Arrow-SoundBible.com-618067908.mp3",
+                type: AssetType.SOUND
             },
         ];
         this._loadQueue = new createjs.LoadQueue();

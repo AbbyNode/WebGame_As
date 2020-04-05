@@ -3,6 +3,7 @@ import { WinScene } from "../scenes/WinScene.js";
 import { LoseScene } from "../scenes/LoseScene.js";
 import { GameScene } from "../scenes/GameScene.js";
 import { InstructionsScene } from "../scenes/InstructionsScene.js";
+import { Collider } from "../../engine/components/Collider.js";
 export var SceneName;
 (function (SceneName) {
     SceneName[SceneName["Menu"] = 0] = "Menu";
@@ -25,6 +26,7 @@ export class SceneManager {
         // Ideally the scene should have removed everything, but just in case
         this._stage.removeAllChildren();
         this._stage.removeAllEventListeners();
+        Collider.destroyAll();
         this._currentScene = this._newScene(sceneName);
         this._currentScene.init();
         return this._currentScene;

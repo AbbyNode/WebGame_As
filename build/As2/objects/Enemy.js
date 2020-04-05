@@ -15,6 +15,7 @@ import { EventName } from "../../engine/components/EventName.js";
 export class Enemy extends GameObject {
     constructor() {
         super();
+        this._scoreOnKill = 10;
         this._spriteRenderer = new SpriteRenderer(this, {
             images: [Global.assetManager.getResult(AssetName.Image_EnemySpriteSheet)],
             frames: { width: 64, height: 96, regX: 32, regY: 48 },
@@ -33,6 +34,11 @@ export class Enemy extends GameObject {
         this.eventManager.addListener(EventName.GameObject_Init, () => {
             this._spriteRenderer.sprite.gotoAndPlay("idle");
         });
+    }
+    kill() {
+        createjs.Sound.play(AssetName.Sound_EnemyDie);
+        Global.score += this._scoreOnKill;
+        this.destroy();
     }
 }
 //# sourceMappingURL=Enemy.js.map

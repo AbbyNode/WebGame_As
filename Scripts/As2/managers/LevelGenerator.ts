@@ -4,10 +4,8 @@ import { Enemy } from "../objects/Enemy.js";
 import { Portal } from "../objects/Portal.js";
 
 export class LevelGenerator {
-	public static GenerateLevel(stage: createjs.Stage): GameObject[] {
+	public static GenerateLevel(stage: createjs.Stage, platformCount: number = 10): GameObject[] {
 		const levelObjects: GameObject[] = [];
-
-		const platformCount = 10;
 		
 		const heightValues = [200, 300, 400];
 		const distanceValues = [0, 100, 200, 300];

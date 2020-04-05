@@ -64,6 +64,8 @@ new As2();
 /**
  * Asset Sources
  *
+ * Art
+ *
  * https://opengameart.org/content/lpc-flames
  *
  * https://cdnb.artstation.com/p/assets/images/images/012/725/235/large/kailum-charter-smith-lava.jpg?1536193055
@@ -73,6 +75,20 @@ new As2();
  * https://opengameart.org/content/animated-slime
  *
  * https://elthen.itch.io/2d-pixel-art-portal-sprites
+ *
+ *
+ * Sound
+ *
+ * https://www.fesliyanstudios.com/royalty-free-music/download/retro-forest/451
+ *
+ * http://soundbible.com/1356-Flame-Arrow.html
+ *
+ * http://soundbible.com/1081-Splat-And-Squirt.html
+ *
+ * http://soundbible.com/1728-Spit-Splat-2.html
+ *
+ *
+ *
  *
  */
 //# sourceMappingURL=As2.js.map

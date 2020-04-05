@@ -1,9 +1,9 @@
 import { GameObject } from "../../engine/gameobject/GameObject.js";
 import { TextRenderer } from "../../engine/components/TextRenderer.js";
 export class Label extends GameObject {
-    constructor(text, centered = false) {
+    constructor(text, centered = false, color = "black") {
         super();
-        this._textRenderer = new TextRenderer(this, text);
+        this._textRenderer = new TextRenderer(this, text, color);
         if (centered) {
             this._textRenderer.centered = centered;
         }

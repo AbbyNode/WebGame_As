@@ -4,6 +4,8 @@ import { Collider } from "../../engine/components/Collider.js";
 import { ColliderTag } from "../managers/ColliderTag.js";
 import { EventName } from "../../engine/components/EventName.js";
 import { Global } from "../managers/Global.js";
+import { AssetName } from "../managers/AssetManager.js";
+import { Enemy } from "./Enemy.js";
 
 export class Bullet extends GameObject {
 	public static readonly fillColor = "#33ccff";
@@ -56,7 +58,10 @@ export class Bullet extends GameObject {
 					// console.log(collider);
 					// console.trace();
 					// console.log(collider.gameObject);
-					collider.gameObject.destroy();
+					// collider.gameObject.destroy();
+					if (collider.gameObject instanceof Enemy) {
+						collider.gameObject.kill();
+					}
 					this.destroy();
 				}
 			}
