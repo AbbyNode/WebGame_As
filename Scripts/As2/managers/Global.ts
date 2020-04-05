@@ -52,6 +52,8 @@ export class Global {
 
 		this._score = 0;
 		this._scoreLabel = new Label("Score: 0", false, "white");
+		this.scoreLabel.init(stage);
+		stage.removeChild(this.scoreLabel.container);
 
 		Collider.init();
 		// Collider.toggleDebugView(true);

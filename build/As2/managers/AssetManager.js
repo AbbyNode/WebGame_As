@@ -45,8 +45,8 @@ export class AssetManager {
             },
             {
                 id: AssetName.Image_SlimeSpriteSheet,
-                // src: "./Assets/As2/images/SlimeBlue.png",
-                src: "./Assets/As2/images/SlimePink.png",
+                src: "./Assets/As2/images/SlimeBlue.png",
+                // src: "./Assets/As2/images/SlimePink.png",
                 type: AssetType.IMAGE
             },
             {

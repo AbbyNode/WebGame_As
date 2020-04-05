@@ -30,14 +30,14 @@ export class InstructionsScene extends Scene {
         uibackground.transform.position = { x: 50, y: 50 };
         uibackground.init(this.stage);
         //
-        const intro = new Label("You are a slime");
-        intro.transform.position = { x: 340, y: 120 };
+        const intro = new Label("You are a Squishy Slime");
+        intro.transform.position = { x: 320, y: 100 };
         intro.init(this.stage);
-        const controlsMove = new Label("W and D to move");
-        controlsMove.transform.position = { x: 340, y: 160 };
+        const controlsMove = new Label("W and D to move/jump");
+        controlsMove.transform.position = { x: 320, y: 140 };
         controlsMove.init(this.stage);
         const controlsShoot = new Label("Space to shoot");
-        controlsShoot.transform.position = { x: 340, y: 200 };
+        controlsShoot.transform.position = { x: 320, y: 180 };
         controlsShoot.init(this.stage);
         //
         // Visual of player
@@ -51,15 +51,32 @@ export class InstructionsScene extends Scene {
         const slimeSpriteSheet = new createjs.SpriteSheet(slimeSpriteData);
         const slimeSprite = new createjs.Sprite(slimeSpriteSheet);
         slimeSprite.x = 200;
-        slimeSprite.y = 150;
+        slimeSprite.y = 120;
         slimeSprite.scaleX = -1;
         slimeSprite.gotoAndPlay("shoot");
         this.stage.addChild(slimeSprite);
         //
-        const objective1 = new Label("Clense fire enemies");
-        objective1.transform.position = { x: 100, y: 280 };
+        const objective1 = new Label("Collect berries");
+        objective1.transform.position = { x: 100, y: 250 };
         objective1.init(this.stage);
+        const objective2 = new Label("Clense fire enemies");
+        objective2.transform.position = { x: 100, y: 290 };
+        objective2.init(this.stage);
         //
+        // Berry visual
+        const berrySpriteData = {
+            images: [Global.assetManager.getResult(AssetName.Image_Pickup)],
+            frames: { width: 32, height: 32, regX: 16, regY: 16 },
+            animations: {
+                idle: 0,
+            }
+        };
+        const berrySpriteSheet = new createjs.SpriteSheet(berrySpriteData);
+        const berrySprite = new createjs.Sprite(berrySpriteSheet);
+        berrySprite.x = 500;
+        berrySprite.y = 280;
+        berrySprite.gotoAndPlay("idle");
+        this.stage.addChild(berrySprite);
         // Enemy visual
         const enemySpriteData = {
             images: [Global.assetManager.getResult(AssetName.Image_EnemySpriteSheet)],
@@ -71,13 +88,13 @@ export class InstructionsScene extends Scene {
         const enemySpriteSheet = new createjs.SpriteSheet(enemySpriteData);
         const enemySprite = new createjs.Sprite(enemySpriteSheet);
         enemySprite.x = 600;
-        enemySprite.y = 300;
+        enemySprite.y = 260;
         enemySprite.gotoAndPlay("idle");
         this.stage.addChild(enemySprite);
         //
-        const objective2 = new Label("Reach the portal");
-        objective2.transform.position = { x: 340, y: 360 };
-        objective2.init(this.stage);
+        const goal = new Label("Reach the portal");
+        goal.transform.position = { x: 320, y: 360 };
+        goal.init(this.stage);
         //
         // Portal visual
         const portalSpriteData = {

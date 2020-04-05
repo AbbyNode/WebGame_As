@@ -36,9 +36,15 @@ export class WinScene extends Scene {
 		uibackground.transform.position = {x: 200, y: 100};
 		uibackground.init(this.stage);
 
+		// Win message
 		const title = new Label("You won!", true);
-		title.transform.position = {x: 400, y: 180};
+		title.transform.position = {x: 400, y: 160};
 		title.init(this.stage);
+
+		// Score
+		const score = new Label("Score: " + Global.score, true);
+		score.transform.position = {x: 400, y: 200};
+		score.init(this.stage);
 
 		// Menu button
 		const buttonMenu = new Button("Menu", (event) => {

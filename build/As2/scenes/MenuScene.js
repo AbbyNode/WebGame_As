@@ -30,7 +30,7 @@ export class MenuScene extends Scene {
         uibackground.transform.position = { x: 200, y: 100 };
         uibackground.init(this.stage);
         // Game Title
-        const title = new Label("2D Scrolling Game", true);
+        const title = new Label("Squishy Slime", true);
         title.transform.position = { x: 400, y: 180 };
         title.init(this.stage);
         // Author

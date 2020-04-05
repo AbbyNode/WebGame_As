@@ -26,8 +26,8 @@ export class Pickup extends GameObject {
 			new Collider(this, {
 				tag: ColliderTag.Pickup,
 				isTrigger: true,
-				size: { width: 32, height: 32 },
-				offset: { x: 0, y: 0 }
+				size: { width: 32, height: 64 },
+				offset: { x: 0, y: 16 }
 				// regXY: { x: 32, y: 48 }
 			})
 		);

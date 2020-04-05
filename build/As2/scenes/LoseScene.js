@@ -29,9 +29,14 @@ export class LoseScene extends Scene {
         const uibackground = new UIBackground({ width: 400, height: 400 }, "#ff8888");
         uibackground.transform.position = { x: 200, y: 100 };
         uibackground.init(this.stage);
+        // Lose message
         const title = new Label("You died", true);
-        title.transform.position = { x: 400, y: 180 };
+        title.transform.position = { x: 400, y: 160 };
         title.init(this.stage);
+        // Score
+        const score = new Label("Score: " + Global.score, true);
+        score.transform.position = { x: 400, y: 200 };
+        score.init(this.stage);
         // Retry button
         const buttonRetry = new Button("Try again?", (event) => {
             Global.sceneManager.setScene(SceneName.Game);

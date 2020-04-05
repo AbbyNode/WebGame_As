@@ -74,8 +74,8 @@ export class GameScene extends Scene {
 		this.stage.addChild(this._hurtOverlay.shape);
 
 		Global.score = 0;
-		Global.scoreLabel.transform.position = {x: 600, y: 40};
-		Global.scoreLabel.init(this.stage);
+		Global.scoreLabel.transform.position = {x: 640, y: 20};
+		this.stage.addChild(Global.scoreLabel.container);
 	}
 
 	public init(): void {
