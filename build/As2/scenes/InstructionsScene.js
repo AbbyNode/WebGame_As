@@ -23,46 +23,93 @@ export class InstructionsScene extends Scene {
         // this._objects.push(background);
         // Scrolling image in background
         const backgroundImg = Global.assetManager.getResult(AssetName.Image_Background);
-        this.background = new ScrollingBackground(backgroundImg, 4);
-        this.stage.addChild(this.background.container);
+        this._background = new ScrollingBackground(backgroundImg, 4);
+        this.stage.addChild(this._background.container);
         // Translucent color to make text more readable
-        const uibackground = new UIBackground({ width: 400, height: 400 }, "#88aaff");
-        uibackground.transform.position = { x: 200, y: 100 };
+        const uibackground = new UIBackground({ width: 700, height: 500 }, "#88aaff");
+        uibackground.transform.position = { x: 50, y: 50 };
         uibackground.init(this.stage);
-        // Game Title
-        const title = new Label("2D Scrolling Game", true);
-        title.transform.position = { x: 400, y: 180 };
-        title.init(this.stage);
-        // Author
-        const subtitle = new Label("By Abby Shah", true);
-        subtitle.transform.position = { x: 400, y: 230 };
-        subtitle.init(this.stage);
+        //
+        const intro = new Label("You are a slime");
+        intro.transform.position = { x: 340, y: 120 };
+        intro.init(this.stage);
+        const controlsMove = new Label("W and D to move");
+        controlsMove.transform.position = { x: 340, y: 160 };
+        controlsMove.init(this.stage);
+        const controlsShoot = new Label("Space to shoot");
+        controlsShoot.transform.position = { x: 340, y: 200 };
+        controlsShoot.init(this.stage);
+        //
+        // Visual of player
+        const slimeSpriteData = {
+            images: [Global.assetManager.getResult(AssetName.Image_SlimeSpriteSheet)],
+            frames: { width: 128, height: 128, regX: 64, regY: 64 },
+            animations: {
+                shoot: [30, 39, undefined, 0.4],
+            },
+        };
+        const slimeSpriteSheet = new createjs.SpriteSheet(slimeSpriteData);
+        const slimeSprite = new createjs.Sprite(slimeSpriteSheet);
+        slimeSprite.x = 200;
+        slimeSprite.y = 150;
+        slimeSprite.scaleX = -1;
+        slimeSprite.gotoAndPlay("shoot");
+        this.stage.addChild(slimeSprite);
+        //
+        const objective1 = new Label("Clense fire enemies");
+        objective1.transform.position = { x: 100, y: 280 };
+        objective1.init(this.stage);
+        //
+        // Enemy visual
+        const enemySpriteData = {
+            images: [Global.assetManager.getResult(AssetName.Image_EnemySpriteSheet)],
+            frames: { width: 64, height: 96, regX: 32, regY: 48 },
+            animations: {
+                idle: [0, 3, undefined, 0.1],
+            }
+        };
+        const enemySpriteSheet = new createjs.SpriteSheet(enemySpriteData);
+        const enemySprite = new createjs.Sprite(enemySpriteSheet);
+        enemySprite.x = 600;
+        enemySprite.y = 300;
+        enemySprite.gotoAndPlay("idle");
+        this.stage.addChild(enemySprite);
+        //
+        const objective2 = new Label("Reach the portal");
+        objective2.transform.position = { x: 340, y: 360 };
+        objective2.init(this.stage);
+        //
+        // Portal visual
+        const portalSpriteData = {
+            images: [Global.assetManager.getResult(AssetName.Image_PortalSpriteSheet)],
+            frames: { width: 256, height: 256, regX: 128, regY: 128 },
+            animations: {
+                idle: [0, 7, undefined, 0.1],
+            }
+        };
+        const portalSpriteSheet = new createjs.SpriteSheet(portalSpriteData);
+        const portalSprite = new createjs.Sprite(portalSpriteSheet);
+        portalSprite.scaleX = 0.5;
+        portalSprite.scaleY = 0.5;
+        portalSprite.x = 200;
+        portalSprite.y = 360;
+        portalSprite.gotoAndPlay("idle");
+        this.stage.addChild(portalSprite);
+        //
+        // Menu button
+        const buttonMenu = new Button("Menu", (event) => {
+            Global.sceneManager.setScene(SceneName.Menu);
+        }, { width: 230, height: 50 });
+        buttonMenu.transform.position = { x: 285 - 200, y: 450 };
+        buttonMenu.init(stage);
+        this._objects.push(buttonMenu);
         // Start button
-        const buttonStart = new Button("Start", (event) => {
+        const buttonStart = new Button("Play", (event) => {
             Global.sceneManager.setScene(SceneName.Game);
         }, { width: 230, height: 50 });
-        buttonStart.transform.position = { x: 285, y: 280 };
+        buttonStart.transform.position = { x: 285 + 200, y: 450 };
         buttonStart.init(stage);
         this._objects.push(buttonStart);
-        // Instructions button
-        const buttonInstructions = new Button("Instructions", (event) => {
-            Global.sceneManager.setScene(SceneName.Instructions);
-        }, { width: 230, height: 50 });
-        buttonInstructions.transform.position = { x: 285, y: 340 };
-        buttonInstructions.init(stage);
-        this._objects.push(buttonInstructions);
-        // Exit button
-        const buttonExit = new Button("Exit", (event) => {
-            if (window.history.length >= 1) {
-                window.history.back();
-            }
-            else {
-                window.close();
-            }
-        }, { width: 230, height: 50 });
-        buttonExit.transform.position = { x: 285, y: 400 };
-        buttonExit.init(stage);
-        this._objects.push(buttonExit);
     }
     init() {
         // Disabled by parent on destroy
@@ -70,10 +117,11 @@ export class InstructionsScene extends Scene {
     }
     update() {
         // console.log("menu update");
-        this.background.scroll(1);
+        this._background.scroll(1);
     }
     destroy() {
         super.destroy();
+        this.stage.removeChild(this._background.container);
     }
 }
 // https://createjs.com/tutorials/Mouse%20Interaction/

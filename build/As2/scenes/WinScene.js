@@ -23,8 +23,8 @@ export class WinScene extends Scene {
         // this._objects.push(background);
         // Scrolling image in background
         const backgroundImg = Global.assetManager.getResult(AssetName.Image_Background);
-        this.background = new ScrollingBackground(backgroundImg, 4);
-        this.stage.addChild(this.background.container);
+        this._background = new ScrollingBackground(backgroundImg, 4);
+        this.stage.addChild(this._background.container);
         // Translucent color to make text more readable
         const uibackground = new UIBackground({ width: 400, height: 400 }, "#88ff88");
         uibackground.transform.position = { x: 200, y: 100 };
@@ -58,10 +58,11 @@ export class WinScene extends Scene {
     }
     update() {
         // console.log("menu update");
-        this.background.scroll(1);
+        this._background.scroll(1);
     }
     destroy() {
         super.destroy();
+        this.stage.removeChild(this._background.container);
     }
 }
 // https://createjs.com/tutorials/Mouse%20Interaction/

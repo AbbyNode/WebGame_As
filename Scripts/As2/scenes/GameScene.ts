@@ -10,6 +10,7 @@ import { Point2D } from "../../engine/interfaces/Point2D.js";
 import { ScrollingLevel } from "../objects/ScrollingLevel.js";
 import { GameObject } from "../../engine/gameobject/GameObject.js";
 import { Platform } from "../objects/Platform.js";
+import { Portal } from "../objects/Portal.js";
 
 /**
  * The main game scene where all the game logic takes place.
@@ -49,6 +50,11 @@ export class GameScene extends Scene {
 		enemy.transform.position = {x: 500, y: 330};
 		enemy.init(this.stage);
 		levelObjects.push(enemy);
+
+		const portal = new Portal();
+		portal.transform.position = {x: 200, y: 330};
+		portal.init(this.stage);
+		levelObjects.push(portal);
 
 		this._scrollingLevel = new ScrollingLevel(levelObjects, this._background, 5);
 

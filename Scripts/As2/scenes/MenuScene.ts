@@ -47,7 +47,7 @@ export class MenuScene extends Scene {
 		subtitle.init(this.stage);
 
 		// Start button
-		const buttonStart = new Button("Start", (event) => {
+		const buttonStart = new Button("Play", (event) => {
 			Global.sceneManager.setScene(SceneName.Game);
 		}, { width: 230, height: 50 });
 		buttonStart.transform.position = {x: 285, y: 280};

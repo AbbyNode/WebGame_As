@@ -5,10 +5,10 @@ export enum AssetName {
 	// Images
 	// Image_SpriteSheet = "Image_SpriteSheet",
 	Image_Background = "Image_Background",
-	Image_PlayerSpriteSheet = "Image_PlayerSpriteSheet",
-	Image_EnemySpriteSheet = "Image_EnemySpriteSheet",
 	Image_Platform = "Image_Platform",
-	Image_SlimeSpriteSheet = "Image_SlimeSpriteSheet"
+	Image_SlimeSpriteSheet = "Image_SlimeSpriteSheet",
+	Image_EnemySpriteSheet = "Image_EnemySpriteSheet",
+	Image_PortalSpriteSheet = "Image_PortalSpriteSheet"
 }
 /* eslint-enable @typescript-eslint/camelcase */
 
@@ -34,8 +34,13 @@ export class AssetManager {
 			type: AssetType.IMAGE
 		},
 		{
-			id: AssetName.Image_PlayerSpriteSheet,
-			src: "./Assets/As2/images/WaterSpriteSheet.png",
+			id: AssetName.Image_Platform,
+			src: "./Assets/As2/images/Platform.png",
+			type: AssetType.IMAGE
+		},
+		{
+			id: AssetName.Image_SlimeSpriteSheet,
+			src: "./Assets/As2/images/SlimeBlue.png",
 			type: AssetType.IMAGE
 		},
 		{
@@ -44,13 +49,8 @@ export class AssetManager {
 			type: AssetType.IMAGE
 		},
 		{
-			id: AssetName.Image_Platform,
-			src: "./Assets/As2/images/Platform.png",
-			type: AssetType.IMAGE
-		},
-		{
-			id: AssetName.Image_SlimeSpriteSheet,
-			src: "./Assets/As2/images/SlimeBlue.png",
+			id: AssetName.Image_PortalSpriteSheet,
+			src: "./Assets/As2/images/PortalSpriteSheet_Purple.png",
 			type: AssetType.IMAGE
 		},
 	];

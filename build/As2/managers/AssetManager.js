@@ -4,10 +4,10 @@ export var AssetName;
     // Images
     // Image_SpriteSheet = "Image_SpriteSheet",
     AssetName["Image_Background"] = "Image_Background";
-    AssetName["Image_PlayerSpriteSheet"] = "Image_PlayerSpriteSheet";
-    AssetName["Image_EnemySpriteSheet"] = "Image_EnemySpriteSheet";
     AssetName["Image_Platform"] = "Image_Platform";
     AssetName["Image_SlimeSpriteSheet"] = "Image_SlimeSpriteSheet";
+    AssetName["Image_EnemySpriteSheet"] = "Image_EnemySpriteSheet";
+    AssetName["Image_PortalSpriteSheet"] = "Image_PortalSpriteSheet";
 })(AssetName || (AssetName = {}));
 /* eslint-enable @typescript-eslint/camelcase */
 export var AssetType;
@@ -33,8 +33,13 @@ export class AssetManager {
                 type: AssetType.IMAGE
             },
             {
-                id: AssetName.Image_PlayerSpriteSheet,
-                src: "./Assets/As2/images/WaterSpriteSheet.png",
+                id: AssetName.Image_Platform,
+                src: "./Assets/As2/images/Platform.png",
+                type: AssetType.IMAGE
+            },
+            {
+                id: AssetName.Image_SlimeSpriteSheet,
+                src: "./Assets/As2/images/SlimeBlue.png",
                 type: AssetType.IMAGE
             },
             {
@@ -43,13 +48,8 @@ export class AssetManager {
                 type: AssetType.IMAGE
             },
             {
-                id: AssetName.Image_Platform,
-                src: "./Assets/As2/images/Platform.png",
-                type: AssetType.IMAGE
-            },
-            {
-                id: AssetName.Image_SlimeSpriteSheet,
-                src: "./Assets/As2/images/SlimeBlue.png",
+                id: AssetName.Image_PortalSpriteSheet,
+                src: "./Assets/As2/images/PortalSpriteSheet_Purple.png",
                 type: AssetType.IMAGE
             },
         ];

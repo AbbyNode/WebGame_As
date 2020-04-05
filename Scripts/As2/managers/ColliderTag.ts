@@ -3,6 +3,7 @@ export enum ColliderTag {
 	Bullet = "bullet",
 	Enemy = "enemy",
 	Platform = "platform",
+	Portal = "portal",
 	// Wall = "wall",
-	Exit = "exit"
+	// Exit = "exit"
 }
