@@ -4,11 +4,9 @@ import { ScrollingBackground } from "../objects/ScrollingBackground.js";
 import { AssetName } from "../managers/AssetManager.js";
 import { Player } from "../objects/Player.js";
 import { PlayerController } from "../controllers/PlayerController.js";
-import { Enemy } from "../objects/Enemy.js";
 import { EventName } from "../../engine/components/EventName.js";
 import { ScrollingLevel } from "../objects/ScrollingLevel.js";
-import { Platform } from "../objects/Platform.js";
-import { Portal } from "../objects/Portal.js";
+import { LevelGenerator } from "../managers/LevelGenerator.js";
 /**
  * The main game scene where all the game logic takes place.
  *
@@ -22,23 +20,7 @@ export class GameScene extends Scene {
         const backgroundImg = Global.assetManager.getResult(AssetName.Image_Background);
         this._background = new ScrollingBackground(backgroundImg, 0.5);
         this.stage.addChild(this._background.container);
-        const levelObjects = [];
-        const platform = new Platform({ width: 200, height: 200 });
-        platform.transform.position = { x: 200, y: 500 };
-        platform.init(this.stage);
-        levelObjects.push(platform);
-        const platform2 = new Platform({ width: 200, height: 300 });
-        platform2.transform.position = { x: 500, y: 500 };
-        platform2.init(this.stage);
-        levelObjects.push(platform2);
-        const enemy = new Enemy();
-        enemy.transform.position = { x: 500, y: 330 };
-        enemy.init(this.stage);
-        levelObjects.push(enemy);
-        const portal = new Portal();
-        portal.transform.position = { x: 200, y: 330 };
-        portal.init(this.stage);
-        levelObjects.push(portal);
+        const levelObjects = LevelGenerator.GenerateLevel(this.stage);
         this._scrollingLevel = new ScrollingLevel(levelObjects, this._background, 5);
         this._playerScreenPos = { x: 200, y: 300 };
         this._player = new Player();
