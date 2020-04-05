@@ -50,7 +50,7 @@ export class WinScene extends Scene {
 		const buttonMenu = new Button("Menu", (event) => {
 			Global.sceneManager.setScene(SceneName.Menu);
 		}, { width: 230, height: 50 });
-		buttonMenu.transform.position = {x: 285, y: 340};
+		buttonMenu.transform.position = {x: 285, y: 280};
 		buttonMenu.init(stage);
 		this._objects.push(buttonMenu);
 
@@ -62,7 +62,7 @@ export class WinScene extends Scene {
 				window.close();
 			}
 		}, { width: 230, height: 50 });
-		buttonExit.transform.position = {x: 285, y: 400};
+		buttonExit.transform.position = {x: 285, y: 340};
 		buttonExit.init(stage);
 		this._objects.push(buttonExit);
 	}

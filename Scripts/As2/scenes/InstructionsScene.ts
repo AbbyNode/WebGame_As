@@ -74,7 +74,7 @@ export class InstructionsScene extends Scene {
 		objective1.transform.position = {x: 100, y: 250};
 		objective1.init(this.stage);
 
-		const objective2 = new Label("Clense fire enemies");
+		const objective2 = new Label("Cleanse fire enemies");
 		objective2.transform.position = {x: 100, y: 290};
 		objective2.init(this.stage);
 
