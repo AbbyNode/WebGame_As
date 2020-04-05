@@ -7,7 +7,7 @@ export class Global {
 	private static _assetManager: AssetManager;
 	private static _sceneManager: SceneManager;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	private static _tileMapStrings: Map<string, TileType<any>>;
+	// private static _tileMapStrings: Map<string, TileType<any>>;
 
 	//#region props
 
@@ -18,11 +18,11 @@ export class Global {
 	public static get sceneManager(): SceneManager {
 		return this._sceneManager;
 	}
-
+	
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	public static get tileMapStrings(): Map<string, TileType<any>> {
-		return this._tileMapStrings;
-	}
+	// public static get tileMapStrings(): Map<string, TileType<any>> {
+	// 	return this._tileMapStrings;
+	// }
 
 	//#endregion
 

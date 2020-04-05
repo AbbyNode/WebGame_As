@@ -49,6 +49,8 @@ export class GameScene extends Scene {
 		this._player.init(this.stage);
 
 		this._playerController = new PlayerController(this._player, this._scrollingLevel);
+
+		
 	}
 
 	public init(): void {

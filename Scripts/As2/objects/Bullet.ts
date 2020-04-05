@@ -3,6 +3,7 @@ import { ShapeRenderer } from "../../engine/components/ShapeRenderer.js";
 import { Collider } from "../../engine/components/Collider.js";
 import { ColliderTag } from "../managers/ColliderTag.js";
 import { EventName } from "../../engine/components/EventName.js";
+import { Global } from "../managers/Global.js";
 
 export class Bullet extends GameObject {
 	public static readonly fillColor = "#33ccff";
