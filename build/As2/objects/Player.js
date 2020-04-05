@@ -31,6 +31,7 @@ export class Player extends GameObject {
         this._hasJump = true;
         this._grounded = false;
         this._bullets = [];
+        this._died = false;
         this._spriteRenderer = new SpriteRenderer(this, {
             images: [Global.assetManager.getResult(AssetName.Image_SlimeSpriteSheet)],
             frames: { width: 128, height: 128, regX: 64, regY: 64 },

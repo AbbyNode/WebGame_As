@@ -34,7 +34,7 @@ export class Global {
         this._score = 0;
         this._scoreLabel = new Label("Score: 0", false, "white");
         Collider.init();
-        Collider.toggleDebugView(true);
+        // Collider.toggleDebugView(true);
     }
 }
 //# sourceMappingURL=Global.js.map

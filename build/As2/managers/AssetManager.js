@@ -2,6 +2,10 @@
 /* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
 export var AssetName;
 (function (AssetName) {
     // Images
@@ -14,6 +18,7 @@ export var AssetName;
     AssetName["Sound_BackgroundMusic"] = "Sound_BackgroundMusic";
     AssetName["Sound_Shoot"] = "Sound_Shoot";
     AssetName["Sound_EnemyDie"] = "Sound_EnemyDie";
+    AssetName["Sound_SlimeDie"] = "Sound_SlimeDie";
 })(AssetName || (AssetName = {}));
 /* eslint-enable @typescript-eslint/camelcase */
 export var AssetType;
@@ -73,6 +78,11 @@ export class AssetManager {
             {
                 id: AssetName.Sound_EnemyDie,
                 src: "./Assets/As2/sounds/Flame Arrow-SoundBible.com-618067908.mp3",
+                type: AssetType.SOUND
+            },
+            {
+                id: AssetName.Sound_SlimeDie,
+                src: "./Assets/As2/sounds/Splat And Squirt-SoundBible.com-2136633229.mp3",
                 type: AssetType.SOUND
             },
         ];

@@ -4,6 +4,10 @@ import { FunctionEmpty } from "../../engine/interfaces/CommonTypes.js";
 /* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
 export enum AssetName {
 	// Images
 	// Image_SpriteSheet = "Image_SpriteSheet",
@@ -15,6 +19,7 @@ export enum AssetName {
 	Sound_BackgroundMusic = "Sound_BackgroundMusic",
 	Sound_Shoot = "Sound_Shoot",
 	Sound_EnemyDie = "Sound_EnemyDie",
+	Sound_SlimeDie = "Sound_SlimeDie"
 }
 /* eslint-enable @typescript-eslint/camelcase */
 
@@ -75,6 +80,11 @@ export class AssetManager {
 		{
 			id: AssetName.Sound_EnemyDie,
 			src: "./Assets/As2/sounds/Flame Arrow-SoundBible.com-618067908.mp3",
+			type: AssetType.SOUND
+		},
+		{
+			id: AssetName.Sound_SlimeDie,
+			src: "./Assets/As2/sounds/Splat And Squirt-SoundBible.com-2136633229.mp3",
 			type: AssetType.SOUND
 		},
 	];

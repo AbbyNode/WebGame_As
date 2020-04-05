@@ -54,6 +54,6 @@ export class Global {
 		this._scoreLabel = new Label("Score: 0", false, "white");
 
 		Collider.init();
-		Collider.toggleDebugView(true);
+		// Collider.toggleDebugView(true);
 	}
 }

@@ -15,6 +15,8 @@ import { LevelGenerator } from "../managers/LevelGenerator.js";
 import { LivesManager } from "../managers/LivesManager.js";
 import { ColliderTag } from "../managers/ColliderTag.js";
 import { SceneName } from "../managers/SceneManager.js";
+import { UIBackground } from "../../objects/ui/UIBackground.js";
+import { HurtOverlay } from "../../objects/ui/HurtOverlay.js";
 
 /**
  * The main game scene where all the game logic takes place.
@@ -34,6 +36,8 @@ export class GameScene extends Scene {
 	private _playerScreenPos: Point2D;
 
 	private _livesManager: LivesManager;
+
+	private _hurtOverlay: HurtOverlay;
 	
 	// private _goopManager: GoopManager;
 
@@ -44,8 +48,7 @@ export class GameScene extends Scene {
 		this._background = new ScrollingBackground(backgroundImg, 0.5);
 		this.stage.addChild(this._background.container);
 
-		// TODO: Change 3 to 20
-		const levelObjects = LevelGenerator.GenerateLevel(this.stage, 10);
+		const levelObjects = LevelGenerator.GenerateLevel(this.stage, 20);
 		this._scrollingLevel = new ScrollingLevel(levelObjects, this._background, 5);
 
 		this._playerScreenPos = {x: 200, y: 100};
@@ -59,12 +62,16 @@ export class GameScene extends Scene {
 		this._livesManager = new LivesManager(3, () => {
 			// this._playerController.destroy();
 			this._player.die();
+			this._playerController.destroy();
 			setTimeout(() => {
 				Global.sceneManager.setScene(SceneName.Lose);
 			}, 1000);
 		});
 		this._livesManager.container.x = 40;
 		this.stage.addChild(this._livesManager.container);
+
+		this._hurtOverlay = new HurtOverlay();
+		this.stage.addChild(this._hurtOverlay.shape);
 
 		Global.score = 0;
 		Global.scoreLabel.transform.position = {x: 600, y: 40};
@@ -76,10 +83,13 @@ export class GameScene extends Scene {
 		this._playerController.initWASD();
 
 		this._player.eventManager.addListener(EventName.Collider_TriggerEnter, (collider) => {
-			// TODO: Remove
-			// console.log("trigger", collider);
 			if (collider.tag == ColliderTag.Enemy) {
 				this._loseLife();
+				this._hurtOverlay.show();
+				createjs.Sound.play(AssetName.Sound_SlimeDie);
+				if (collider.gameObject instanceof GameObject) {
+					collider.gameObject.destroy();
+				}
 			}
 		});
 		
@@ -107,6 +117,8 @@ export class GameScene extends Scene {
 		this._scrollingLevel.destroy();
 
 		this.stage.removeChild(this._livesManager.container);
+
+		this.stage.removeChild(this._hurtOverlay.shape);
 	}
 
 	private _loseLife(): void {
