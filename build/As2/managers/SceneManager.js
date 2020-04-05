@@ -29,9 +29,6 @@ export class SceneManager {
         this._currentScene.init();
         return this._currentScene;
     }
-    goToWinScene() {
-        this.setScene(SceneName.Win);
-    }
     _newScene(sceneName) {
         switch (sceneName) {
             case SceneName.Menu:

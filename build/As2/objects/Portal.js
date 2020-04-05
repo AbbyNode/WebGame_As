@@ -5,6 +5,7 @@ import { AssetName } from "../managers/AssetManager.js";
 import { Collider } from "../../engine/components/Collider.js";
 import { ColliderTag } from "../managers/ColliderTag.js";
 import { EventName } from "../../engine/components/EventName.js";
+import { SceneName } from "../managers/SceneManager.js";
 export class Portal extends GameObject {
     constructor() {
         super();
@@ -26,6 +27,13 @@ export class Portal extends GameObject {
         }));
         this.eventManager.addListener(EventName.GameObject_Init, () => {
             this._spriteRenderer.sprite.gotoAndPlay("idle");
+        });
+        this.eventManager.addListener(EventName.Collider_TriggerEnter, (collider) => {
+            if (collider instanceof Collider) {
+                if (collider.tag == ColliderTag.Player) {
+                    Global.sceneManager.setScene(SceneName.Win);
+                }
+            }
         });
     }
 }

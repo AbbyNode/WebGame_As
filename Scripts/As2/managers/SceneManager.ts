@@ -40,10 +40,6 @@ export class SceneManager {
 		return this._currentScene;
 	}
 
-	public goToWinScene(): void {
-		this.setScene(SceneName.Win);
-	}
-
 	private _newScene(sceneName: SceneName): Scene {
 		switch (sceneName) {
 			case SceneName.Menu:
