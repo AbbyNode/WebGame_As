@@ -26,7 +26,7 @@ export class GameScene extends Scene {
         const backgroundImg = Global.assetManager.getResult(AssetName.Image_Background);
         this._background = new ScrollingBackground(backgroundImg, 0.5);
         this.stage.addChild(this._background.container);
-        const levelObjects = LevelGenerator.GenerateLevel(this.stage, 3);
+        const levelObjects = LevelGenerator.GenerateLevel(this.stage, 20);
         this._scrollingLevel = new ScrollingLevel(levelObjects, this._background, 5);
         this._playerScreenPos = { x: 200, y: 100 };
         this._player = new Player();
